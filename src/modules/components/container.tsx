@@ -3,7 +3,7 @@ import structuralStyles, { FlexBoxType } from 'styles/layout.css';
 
 import { commonStyles } from './styles.css';
 
-interface ContainerProps extends React.ComponentProps<'div'> {
+export interface ContainerProps extends React.ComponentProps<'div'> {
   flexbox?: FlexBoxType;
   withHeader?: boolean;
 }

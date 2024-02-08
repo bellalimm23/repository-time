@@ -1,4 +1,5 @@
-import { Card } from '@mantine/core';
+import { Burger, Card, Modal } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
   MagnifyingGlass,
   SignIn,
@@ -8,7 +9,8 @@ import {
 } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { StaticRoutes, StaticRoutesType } from 'common/routes/routes';
-import Button from 'components/elements/button';
+import breakpoints from 'common/styles/breakpoint';
+import Button, { ButtonProps } from 'components/elements/button';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -16,79 +18,130 @@ import structuralStyles from 'styles/layout.css';
 
 export default function Header() {
   const { pathname, push } = useRouter();
-  const isCurrent = (link: StaticRoutesType) => pathname.includes(link);
+  const [isOpened, { open, close }] = useDisclosure();
+  const isCurrent = React.useCallback(
+    (link: StaticRoutesType) => pathname.includes(link),
+    [pathname],
+  );
+
+  const isMobile = useMediaQuery(breakpoints.screenMaxMd);
+
+  const authActions = React.useMemo<ButtonProps[]>(() => {
+    const size = isMobile ? 'small' : undefined;
+    const miw = isMobile ? undefined : 120;
+    return [
+      {
+        variant: {
+          size,
+          variant: 'primary',
+        },
+        miw,
+        leftSection: <SignIn size={14} />,
+        onClick: () => push(StaticRoutes.login),
+        children: 'Login',
+      },
+      {
+        variant: {
+          size,
+          variant: 'secondary',
+        },
+        miw,
+        leftSection: <UserPlus size={14} />,
+        onClick: () => push(StaticRoutes.register),
+        children: 'Register',
+      },
+      // {
+      //   miw: 120,
+      //   variant: {
+      //     variant: 'tertiaryError',
+      //   },
+      //   leftSection: <SignOut size={14} />,
+      //   onClick: () => push(StaticRoutes.login),
+      //   children: 'Logout',
+      // },
+    ];
+  }, [isMobile, push]);
+
+  const actions = React.useMemo<ButtonProps[]>(() => {
+    return [
+      {
+        miw: 120,
+        variant: {
+          variant: isCurrent(StaticRoutes.thesis) ? 'primary' : 'tertiary',
+        },
+        leftSection: <MagnifyingGlass size={14} />,
+        onClick: () => push(StaticRoutes.thesis),
+        children: 'Cari Skripsi',
+      },
+      {
+        miw: 120,
+        variant: {
+          variant: isCurrent(StaticRoutes.users) ? 'primary' : 'tertiary',
+        },
+        leftSection: <User size={14} />,
+        onClick: () => push(StaticRoutes.users),
+        children: 'Cari Penulis',
+      },
+    ];
+  }, [isCurrent, push]);
+
   return (
-    <Card
-      withBorder
-      shadow="lg"
-      className={classNames(
-        structuralStyles.fill({ width: true }),
-        structuralStyles.flexbox({
-          direction: 'row',
-          justify: 'between',
-        }),
-      )}
-      radius={0}
-      padding={0}
-      px={16}
-    >
-      <BrandIconDirectHome />
-      <div
+    <>
+      <Card
+        withBorder
+        shadow="lg"
         className={classNames(
+          structuralStyles.fill({ width: true }),
           structuralStyles.flexbox({
             direction: 'row',
-            gap: 'md',
+            justify: 'between',
           }),
         )}
+        radius={0}
+        padding={0}
+        px={16}
       >
-        <Button
-          miw={120}
-          variant={{
-            variant: isCurrent(StaticRoutes.thesis) ? 'primary' : 'tertiary',
-          }}
-          leftSection={<MagnifyingGlass size={14} />}
-          onClick={() => push(StaticRoutes.thesis)}
+        <div
+          className={structuralStyles.flexbox({
+            direction: 'row',
+            gap: 'sm',
+          })}
         >
-          Cari Skripsi
-        </Button>
-        <Button
-          miw={120}
-          variant={{
-            variant: isCurrent(StaticRoutes.users) ? 'primary' : 'tertiary',
-          }}
-          leftSection={<User size={14} />}
-          onClick={() => push(StaticRoutes.users)}
+          {isMobile && <Burger size={16} opened={isOpened} onClick={open} />}
+          <BrandIconDirectHome />
+        </div>
+        <div
+          className={classNames(
+            structuralStyles.flexbox({
+              direction: 'row',
+              gap: 'md',
+            }),
+          )}
         >
-          Cari Penulis
-        </Button>
-        <Button
-          miw={120}
-          leftSection={<SignIn size={14} />}
-          onClick={() => push(StaticRoutes.login)}
+          {!isMobile && (
+            <>
+              {actions.map((action) => (
+                <Button {...action} />
+              ))}
+            </>
+          )}
+          {authActions.map((action) => (
+            <Button {...action} />
+          ))}
+        </div>
+      </Card>
+      <Modal opened={isOpened} onClose={close} withCloseButton={false} centered>
+        <div
+          className={structuralStyles.flexbox({
+            direction: 'column',
+            gap: 'md',
+          })}
         >
-          Login
-        </Button>
-        <Button
-          variant={{
-            variant: 'secondary',
-          }}
-          miw={120}
-          leftSection={<UserPlus size={14} />}
-          onClick={() => push(StaticRoutes.register)}
-        >
-          Register
-        </Button>
-        {/* <Button
-          miw={120}
-          variant={{
-            variant: 'tertiaryError',
-          }}
-          leftSection={<SignOut size={14} />}
-          onClick={() => push(StaticRoutes.login)}
-        >
-          Keluar
-        </Button> */}
-      </div>
-    </Card>
+          {actions.map((action) => (
+            <Button fullWidth {...action} />
+          ))}
+        </div>
+      </Modal>
+    </>
   );
 }

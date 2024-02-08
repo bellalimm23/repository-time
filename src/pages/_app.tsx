@@ -3,8 +3,12 @@ import '@mantine/carousel/styles.css';
 import 'styles/globals.css';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { StaticRoutes } from 'common/routes/routes';
+import AdminLayout from 'components/common/admin-layout';
+import UserLayout from 'components/common/user-layout';
 import { ThemeProvider } from 'hooks/use-theme';
 import merge from 'lodash/merge';
+import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { IBM_Plex_Sans } from 'next/font/google';
 import Head from 'next/head';
@@ -24,8 +28,16 @@ const ibmPlexSans = IBM_Plex_Sans({
   variable: '--font-ibm_plex_sans',
 });
 
-function App({ Component, pageProps }: AppProps) {
-  const { locale } = useRouter();
+export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: React.ReactElement) => React.ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function App({ Component, pageProps }: AppPropsWithLayout) {
+  const { locale, pathname } = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -41,6 +53,28 @@ function App({ Component, pageProps }: AppProps) {
       setLocale(yupIdValidation as any);
     }
   }, [locale]);
+
+  const isAdmin = pathname.includes(StaticRoutes.adminHome);
+
+  const isAuth = [
+    StaticRoutes.login,
+    StaticRoutes.register,
+    StaticRoutes.adminLogin,
+  ].some((route) => pathname.includes(route));
+
+  const getLayout =
+    Component.getLayout ||
+    ((page) => {
+      if (isAuth) {
+        return page;
+      }
+
+      if (isAdmin) {
+        return <AdminLayout>{page}</AdminLayout>;
+      }
+
+      return <UserLayout>{page}</UserLayout>;
+    });
 
   return (
     <>
@@ -73,13 +107,7 @@ function App({ Component, pageProps }: AppProps) {
           zIndex={9999999}
           autoClose={4000}
         />
-        <ThemeProvider>
-          {(Component as any).getLayout ? (
-            (Component as any).getLayout(<Component {...pageProps} />)
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </ThemeProvider>
+        <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
       </MantineProvider>
     </>
   );
