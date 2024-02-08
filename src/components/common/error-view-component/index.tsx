@@ -1,7 +1,6 @@
 import { Loader } from '@mantine/core';
-// import { RefreshIcon } from 'common/assets';
-// import { mantineColors } from 'common/styles/default-colors';
-// import Text from 'components/elements/text';
+import { ArrowCounterClockwise } from '@phosphor-icons/react';
+import { PageErrorSVG } from 'assets/svg';
 import useTranslation from 'next-translate/useTranslation';
 import * as React from 'react';
 
@@ -30,24 +29,19 @@ export default function ErrorViewComponent(props: ErrorViewComponentProps) {
       }}
     >
       <div className={errorViewStyles.content({ vertical })}>
-        {/* <Text textVariant="BodyBoldDefault">
-          {t('error:load_failed_title')}
-        </Text> */}
+        <PageErrorSVG />
         <Separator gap={8} />
-        <div className={errorViewStyles.errorSpan}>
-          {t('error:load_failed_message')}
-        </div>
+        <div className={errorViewStyles.errorSpan}>Data Gagal Ditampilkan</div>
       </div>
       <div>
         {isLoading ? (
           <Loader size={vertical ? 40 : 30} />
         ) : (
           <div className={errorViewStyles.refreshContainer}>
-            {/* <RefreshIcon
+            <ArrowCounterClockwise
               width={vertical ? 40 : 30}
               height={vertical ? 40 : 30}
-              color={mantineColors()}
-            /> */}
+            />
           </div>
         )}
       </div>

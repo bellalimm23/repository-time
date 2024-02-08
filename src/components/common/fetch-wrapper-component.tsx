@@ -1,22 +1,20 @@
+import { EmptyDataSVG } from 'assets/svg';
+import Text from 'components/elements/text';
 import React from 'react';
 
 import ErrorView, { ErrorViewComponentProps } from './error-view-component';
 import LoadingViewComponent, {
   LoadingViewComponentProps,
 } from './loading-view-component';
+import Separator from './separator';
 
 export interface WrapperProps {
   isLoading?: boolean;
   error?: React.ReactNode;
-  loadingComponent?: React.ReactNode;
-  errorComponent?: React.ReactNode;
-  component: React.ReactNode;
+  component?: React.ReactNode;
   errorVertical?: boolean;
   onRetry?: () => void;
-  emptyText?: string;
-  showEmptyText?: boolean;
   showEmptyComponent?: boolean;
-
   loadingViewComponentProps?: LoadingViewComponentProps;
   errorViewComponentProps?: ErrorViewComponentProps;
 }
@@ -26,33 +24,39 @@ export default function FetchWrapperComponent(props: WrapperProps) {
     isLoading = false,
     error,
     onRetry,
-    loadingComponent,
     component,
-    errorComponent,
-    errorVertical = false,
     loadingViewComponentProps,
+    errorVertical = false,
+    showEmptyComponent,
     errorViewComponentProps,
   } = props;
 
   if (isLoading) {
-    return <>{loadingComponent}</> || null;
-  } else if (error) {
-    if (errorComponent) {
-      return (
-        <>
-          {errorComponent ?? (
-            <LoadingViewComponent {...loadingViewComponentProps} />
-          )}
-        </>
-      );
-    }
+    return <LoadingViewComponent {...loadingViewComponentProps} />;
+  }
 
+  if (error) {
     return (
       <ErrorView
         vertical={errorVertical}
         refetch={onRetry}
         {...errorViewComponentProps}
       />
+    );
+  }
+
+  if (showEmptyComponent) {
+    return (
+      <div
+        style={{
+          height: '100vh',
+          width: '100vw',
+        }}
+      >
+        <EmptyDataSVG />
+        <Separator gap={16} />
+        <Text>Tidak ada data</Text>
+      </div>
     );
   }
 

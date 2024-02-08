@@ -25,6 +25,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     error: isError,
     noPadding,
     variant,
+    leftSection = <span />,
+    rightSection = <span />,
     ...rest
   } = props;
 
@@ -35,6 +37,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
       type={type}
       radius="md"
       className={classNames(buttonStyles(variant), className)}
+      leftSection={leftSection}
+      rightSection={rightSection}
     />
   );
 });

@@ -9,7 +9,6 @@ import { FormContext } from '../form/context';
 export interface ButtonFieldProps extends ButtonProps {
   type: 'submit';
   text?: string;
-  hideIcon?: boolean;
 }
 
 export default function ButtonField(props: ButtonFieldProps) {
@@ -17,7 +16,7 @@ export default function ButtonField(props: ButtonFieldProps) {
   const {
     disabled: _disabled,
     text = t('common:save'),
-    hideIcon = true,
+
     ...rest
   } = props;
   const {

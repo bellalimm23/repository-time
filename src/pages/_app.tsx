@@ -46,7 +46,7 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <MantineProvider forceColorScheme="light" theme={theme}>
         <Head>
-          <title>KuroSIM</title>
+          <title>Repository - Time</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
           <link
