@@ -1,3 +1,5 @@
-export default function HomeScreen(){
-  return <></>
+import Home from 'modules/home/home';
+
+export default function HomePage() {
+  return <Home />;
 }
