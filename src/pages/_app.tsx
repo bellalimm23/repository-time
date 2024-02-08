@@ -6,7 +6,6 @@ import { Notifications } from '@mantine/notifications';
 import { StaticRoutes } from 'common/routes/routes';
 import AdminLayout from 'components/common/admin-layout';
 import UserLayout from 'components/common/user-layout';
-import { ThemeProvider } from 'hooks/use-theme';
 import merge from 'lodash/merge';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
@@ -107,7 +106,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
           zIndex={9999999}
           autoClose={4000}
         />
-        <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+        {getLayout(<Component {...pageProps} />)}
       </MantineProvider>
     </>
   );

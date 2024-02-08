@@ -5,7 +5,6 @@ import AlertSection from './components/alert-section';
 import ButtonExample from './components/button-example';
 import CheckboxExample from './components/checkbox-example';
 import ColorExample from './components/color-example';
-import CounterExample from './components/counter-example';
 import PinInputExample from './components/pin-input-example';
 import RadioExample from './components/radio-example';
 import SliderExample from './components/slider-example';
@@ -20,7 +19,6 @@ export default function ExampleSection() {
       <ColorExample />
       <TextInputExample />
       <SliderExample />
-      <CounterExample />
       <SwitchExample />
       <CheckboxExample />
       <RadioExample />
