@@ -54,7 +54,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
         children: 'Jurusan',
         onClick: () => push(StaticRoutes.adminSubject),
         variant: {
-          variant: isCurrent(StaticRoutes.adminDivision)
+          variant: isCurrent(StaticRoutes.adminSubject)
             ? 'primary'
             : 'tertiary',
         },
