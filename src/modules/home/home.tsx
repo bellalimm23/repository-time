@@ -1,4 +1,4 @@
-import { Card, SimpleGrid } from '@mantine/core';
+import { Card, Center, SimpleGrid } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { BookSVG, BookshelfSVG, SeasonChangeSVG } from 'assets/svg';
 import { Brand } from 'common/constants/brand';
@@ -33,20 +33,26 @@ export default function Home() {
       </Text>
       <Separator gap={64} />
       <SimpleGrid mx="auto" maw={550} cols={isMobile ? 1 : 3}>
-        <Card>
-          <BookSVG width={128} height={128} />
+        <Card withBorder shadow="xs">
+          <Center>
+            <BookSVG width={128} height={128} />
+          </Center>
           <Text textVariant="body2Semibold" ta="center">
             Cari Skripsi Terlengkap STMIK TIME
           </Text>
         </Card>
-        <Card>
-          <BookshelfSVG width={128} height={128} />
+        <Card withBorder shadow="xs">
+          <Center>
+            <BookshelfSVG width={128} height={128} />
+          </Center>
           <Text ta="center" textVariant="body2Semibold">
             Cari dan Pilih Skripsi Alumni STMIK TIME
           </Text>
         </Card>
-        <Card>
-          <SeasonChangeSVG width={128} height={128} />
+        <Card withBorder shadow="xs">
+          <Center>
+            <SeasonChangeSVG width={128} height={128} />
+          </Center>
           <Text ta="center" textVariant="body2Semibold">
             Ingat Upload Skripsimu Sebelum Deadline
           </Text>
