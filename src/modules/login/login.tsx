@@ -1,5 +1,6 @@
 import { BackgroundImage, Card, Center } from '@mantine/core';
 import assets from 'assets/image';
+import { StaticRoutes } from 'common/routes/routes';
 import colors from 'common/styles/colors';
 import Separator from 'components/common/separator';
 import Button from 'components/elements/button';
@@ -9,6 +10,7 @@ import Text from 'components/elements/text';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
 import Container from 'modules/components/container';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -17,6 +19,7 @@ import { LoginFormSchema, LoginFormType } from './login-form-type';
 interface LoginProps {}
 
 export default function Login(props: LoginProps) {
+  const { push } = useRouter();
   const defaultValues = React.useMemo<LoginFormType>(() => {
     return {
       password: '',
@@ -60,21 +63,26 @@ export default function Login(props: LoginProps) {
           <Center>
             <BrandIconDirectHome />
           </Center>
-          <Text textVariant="h1" ta="center">
-            Login Repository
+          <Text textVariant="h3" ta="center">
+            Repository STMIK TIME
           </Text>
+          <Separator gap={16} />
+          <Text textVariant="h1" ta="center">
+            Halaman Login
+          </Text>
+          <Separator gap={16} />
           <Input
             type="text"
             name="username"
-            label="username"
-            placeholder="username"
+            label="Username"
+            placeholder="Username"
             required
           />
           <Input
             type="password"
             name="password"
-            label="password"
-            placeholder="password"
+            label="Password"
+            placeholder="Password"
             required
           />
           <Separator gap={24} />
@@ -84,6 +92,7 @@ export default function Login(props: LoginProps) {
             variant={{
               variant: 'secondary',
             }}
+            onClick={() => push(StaticRoutes.register)}
           >
             Register
           </Button>

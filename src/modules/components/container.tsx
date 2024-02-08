@@ -5,15 +5,19 @@ import { commonStyles } from './styles.css';
 
 interface ContainerProps extends React.ComponentProps<'div'> {
   flexbox?: FlexBoxType;
+  withHeader?: boolean;
 }
 
 export default function Container(props: ContainerProps) {
-  const { className, flexbox, ...rest } = props;
+  const { className, flexbox, style, withHeader = false, ...rest } = props;
 
   return (
     <div
       className={classNames(
         commonStyles.rootContainer(),
+        structuralStyles.fill({
+          width: true,
+        }),
         structuralStyles.flexbox(
           flexbox ?? {
             direction: 'column',
@@ -23,6 +27,10 @@ export default function Container(props: ContainerProps) {
         ),
         className,
       )}
+      style={{
+        minHeight: withHeader ? 'calc(100vh - 66px)' : undefined,
+        ...style,
+      }}
       {...rest}
     />
   );
