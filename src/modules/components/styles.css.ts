@@ -1,33 +1,10 @@
-import { RecipeVariants, recipe } from '@vanilla-extract/recipes';
-import { vars } from 'styles';
+import { recipe } from '@vanilla-extract/recipes';
 
 export const commonStyles = {
-  mobileContainer: recipe({
+  rootContainer: recipe({
     base: {
-      maxWidth: 420,
-      margin: 'auto',
-      width: '100%',
-    },
-  }),
-  fixedContainer: recipe({
-    base: {
-      position: 'fixed',
-      padding: 24,
-      backgroundColor: vars.color.backgroundScreen,
-      borderWidth: 1,
-      borderStyle: 'solid',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      borderColor: vars.color.borderPrimary,
+      minWidth: '100vw',
+      minHeight: '100vh',
     },
   }),
 };
-
-export type MobileContainerVariantType = RecipeVariants<
-  typeof commonStyles.mobileContainer
->;
-
-export type FixedContainerVariantType = RecipeVariants<
-  typeof commonStyles.fixedContainer
->;
