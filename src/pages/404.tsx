@@ -6,7 +6,7 @@ import Text from 'components/elements/text';
 export default function Custom404() {
   return (
     <Card withBorder radius="xl" shadow="xl">
-      <PageNotFoundSVG />
+      <PageNotFoundSVG width={300} height={300} />
       <Separator gap={24} />
       <Text textVariant="h1" ta="center">
         Page Not Found

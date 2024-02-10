@@ -1,4 +1,5 @@
 import { Card, SimpleGrid } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import {
   Books,
   CheckCircle,
@@ -7,45 +8,50 @@ import {
   UserGear,
   Users,
 } from '@phosphor-icons/react';
+import breakpoints from 'common/styles/breakpoint';
 import { string2money } from 'common/utils/string';
 import Separator from 'components/common/separator';
 import Text from 'components/elements/text';
 
 export default function AdminHome() {
+  const isMobile = useMediaQuery(breakpoints.screenMaxMd);
+  const textVariantLabel = isMobile ? 'body2Semibold' : 'h2';
+  const textVariantContent = isMobile ? 'body3Semibold' : 'body1Semibold';
+  const iconSize = isMobile ? 16 : 36;
   return (
     <>
       <Text textVariant="h1">Beranda</Text>
       <Separator gap={24} />
       <SimpleGrid cols={3}>
         <Card withBorder shadow="xs">
-          <Users size={36} />
-          <Text textVariant="h2">Jumlah Users</Text>
-          <Text textVariant="body1Semibold">{string2money(1200)}</Text>
+          <Users size={iconSize} />
+          <Text textVariant={textVariantLabel}>Jumlah Users</Text>
+          <Text textVariant={textVariantContent}>{string2money(1200)}</Text>
         </Card>
         <Card withBorder shadow="xs">
-          <User size={36} />
-          <Text textVariant="h2">Jumlah Mahasiswa</Text>
-          <Text textVariant="body1Semibold">{string2money(1997)}</Text>
+          <User size={iconSize} />
+          <Text textVariant={textVariantLabel}>Jumlah Mahasiswa</Text>
+          <Text textVariant={textVariantContent}>{string2money(1997)}</Text>
         </Card>
         <Card withBorder shadow="xs">
-          <UserGear size={36} />
-          <Text textVariant="h2">Jumlah Admin</Text>
-          <Text textVariant="body1Semibold">{string2money(3)}</Text>
+          <UserGear size={iconSize} />
+          <Text textVariant={textVariantLabel}>Jumlah Admin</Text>
+          <Text textVariant={textVariantContent}>{string2money(3)}</Text>
         </Card>
         <Card withBorder shadow="xs">
-          <Books size={36} />
-          <Text textVariant="h2">Jumlah Tesis</Text>
-          <Text textVariant="body1Semibold">{string2money(1000)}</Text>
+          <Books size={iconSize} />
+          <Text textVariant={textVariantLabel}>Jumlah Tesis</Text>
+          <Text textVariant={textVariantContent}>{string2money(1000)}</Text>
         </Card>
         <Card withBorder shadow="xs">
-          <CheckCircle size={36} />
-          <Text textVariant="h2">Jumlah Tesis Aktif</Text>
-          <Text textVariant="body1Semibold">{string2money(800)}</Text>
+          <CheckCircle size={iconSize} />
+          <Text textVariant={textVariantLabel}>Jumlah Tesis Aktif</Text>
+          <Text textVariant={textVariantContent}>{string2money(800)}</Text>
         </Card>
         <Card withBorder shadow="xs">
-          <ClockClockwise size={36} />
-          <Text textVariant="h2">Jumlah Tesis Pending</Text>
-          <Text textVariant="body1Semibold">{string2money(200)}</Text>
+          <ClockClockwise size={iconSize} />
+          <Text textVariant={textVariantLabel}>Jumlah Tesis Pending</Text>
+          <Text textVariant={textVariantContent}>{string2money(200)}</Text>
         </Card>
       </SimpleGrid>
     </>

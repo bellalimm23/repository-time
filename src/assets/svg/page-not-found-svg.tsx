@@ -8,6 +8,7 @@ function Icon(props: React.SVGProps<SVGSVGElement>) {
       height="571.148"
       data-name="Layer 1"
       viewBox="0 0 860.131 571.148"
+      {...props}
     >
       <path
         fill="#f2f2f2"
