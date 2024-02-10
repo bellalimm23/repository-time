@@ -1,5 +1,6 @@
 import { ActionIcon, ActionIconProps } from '@mantine/core';
-import { Eye } from '@phosphor-icons/react';
+// import { Eye } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import {
   DynamicRouteType,
   DynamicRoutes,
@@ -28,7 +29,7 @@ export default function TableActionRedirect(props: TableActionRedirectProps) {
 
   return (
     <ActionIcon onClick={onClick} variant="transparent" {...rest}>
-      <Eye />
+      <Icons.Eye />
     </ActionIcon>
   );
 }

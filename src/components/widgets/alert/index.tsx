@@ -1,5 +1,6 @@
 import { Notification, NotificationProps } from '@mantine/core';
-import { CheckCircle, WarningCircle, XCircle } from '@phosphor-icons/react';
+// import { CheckCircle, WarningCircle, XCircle } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import colors from 'common/styles/colors';
 import React from 'react';
 
@@ -21,11 +22,15 @@ export default function Alert(props: AlertProps) {
     switch (alertVariant) {
       case 'info':
         return (
-          <WarningCircle weight="fill" size={24} color={colors.lightCyan5} />
+          <Icons.WarningCircle
+            weight="fill"
+            size={24}
+            color={colors.lightCyan5}
+          />
         );
       case 'warn':
         return (
-          <WarningCircle
+          <Icons.WarningCircle
             weight="fill"
             size={24}
             color={colors.sentimentWarning}
@@ -33,11 +38,15 @@ export default function Alert(props: AlertProps) {
         );
       case 'error':
         return (
-          <XCircle weight="fill" size={24} color={colors.sentimentNegative} />
+          <Icons.XCircle
+            weight="fill"
+            size={24}
+            color={colors.sentimentNegative}
+          />
         );
       case 'success':
         return (
-          <CheckCircle
+          <Icons.CheckCircle
             weight="fill"
             size={24}
             color={colors.sentimentPositive}

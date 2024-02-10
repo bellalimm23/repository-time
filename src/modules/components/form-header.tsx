@@ -1,5 +1,6 @@
 import { useMediaQuery } from '@mantine/hooks';
-import { Check, Pencil, Trash, X } from '@phosphor-icons/react';
+// import { Check, Pencil, Trash, X } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import classNames from 'classnames';
 import breakpoints from 'common/styles/breakpoint';
 import Button from 'components/elements/button';
@@ -43,7 +44,7 @@ export default function FormHeader(props: FormHeaderProps) {
             }),
           )}
         >
-          <Input type="submit" text="Simpan" leftSection={<Check />} />
+          <Input type="submit" text="Simpan" leftSection={<Icons.Check />} />
           {data && (
             <Button
               variant={{
@@ -54,7 +55,7 @@ export default function FormHeader(props: FormHeaderProps) {
                 reset();
                 setIsEditable(false);
               }}
-              leftSection={<X />}
+              leftSection={<Icons.X />}
             >
               Batal
             </Button>
@@ -69,7 +70,7 @@ export default function FormHeader(props: FormHeaderProps) {
         >
           <Button
             miw={miw}
-            leftSection={<Pencil />}
+            leftSection={<Icons.Pencil />}
             onClick={() => setIsEditable(true)}
             variant={{
               size,
@@ -85,7 +86,7 @@ export default function FormHeader(props: FormHeaderProps) {
               }}
               miw={miw}
               onClick={onClickDelete}
-              leftSection={<Trash />}
+              leftSection={<Icons.Trash />}
             >
               Hapus
             </Button>

@@ -1,12 +1,7 @@
 import { Burger, Card, Modal } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import {
-  MagnifyingGlass,
-  SignIn,
-  // SignOut,
-  User,
-  UserPlus,
-} from '@phosphor-icons/react';
+// import { MagnifyingGlass, SignIn, User, UserPlus } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { StaticRoutes, StaticRoutesType } from 'common/routes/routes';
 import breakpoints from 'common/styles/breakpoint';
@@ -36,7 +31,7 @@ export default function Header() {
           variant: 'primary',
         },
         miw,
-        leftSection: <SignIn size={14} />,
+        leftSection: <Icons.SignIn size={14} />,
         onClick: () => push(StaticRoutes.login),
         children: 'Login',
       },
@@ -46,7 +41,7 @@ export default function Header() {
           variant: 'secondary',
         },
         miw,
-        leftSection: <UserPlus size={14} />,
+        leftSection: <Icons.UserPlus size={14} />,
         onClick: () => push(StaticRoutes.register),
         children: 'Register',
       },
@@ -69,7 +64,7 @@ export default function Header() {
         variant: {
           variant: isCurrent(StaticRoutes.thesis) ? 'primary' : 'tertiary',
         },
-        leftSection: <MagnifyingGlass size={14} />,
+        leftSection: <Icons.MagnifyingGlass size={14} />,
         onClick: () => push(StaticRoutes.thesis),
         children: 'Cari Skripsi',
       },
@@ -78,7 +73,7 @@ export default function Header() {
         variant: {
           variant: isCurrent(StaticRoutes.users) ? 'primary' : 'tertiary',
         },
-        leftSection: <User size={14} />,
+        leftSection: <Icons.User size={14} />,
         onClick: () => push(StaticRoutes.users),
         children: 'Cari Penulis',
       },

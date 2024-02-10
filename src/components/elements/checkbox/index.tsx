@@ -2,7 +2,8 @@ import {
   Checkbox as RawCheckbox,
   CheckboxProps as RawCheckboxProps,
 } from '@mantine/core';
-import { Check, Minus } from '@phosphor-icons/react';
+// import { Check, Minus } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import classNames from 'classnames';
 import useCombinedRefs from 'hooks/use-combined-refs';
 import { forwardRef, useRef } from 'react';
@@ -28,9 +29,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
 
   const icon: CheckboxProps['icon'] = ({ indeterminate, className }) =>
     indeterminate ? (
-      <Minus size={16} className={className} />
+      <Icons.Minus size={16} className={className} />
     ) : (
-      <Check size={16} className={className} />
+      <Icons.Check size={16} className={className} />
     );
 
   return (

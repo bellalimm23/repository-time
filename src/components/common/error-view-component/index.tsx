@@ -1,7 +1,7 @@
 import { Loader } from '@mantine/core';
-import { ArrowCounterClockwise } from '@phosphor-icons/react';
+// import { ArrowCounterClockwise } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import { PageErrorSVG } from 'assets/svg';
-import useTranslation from 'next-translate/useTranslation';
 import * as React from 'react';
 
 import { errorViewStyles } from './style.css';
@@ -16,7 +16,6 @@ export interface ErrorViewComponentProps {
 }
 
 export default function ErrorViewComponent(props: ErrorViewComponentProps) {
-  const { t } = useTranslation();
   const { isLoading, vertical = false, refetch } = props;
 
   return (
@@ -38,7 +37,7 @@ export default function ErrorViewComponent(props: ErrorViewComponentProps) {
           <Loader size={vertical ? 40 : 30} />
         ) : (
           <div className={errorViewStyles.refreshContainer}>
-            <ArrowCounterClockwise
+            <Icons.ArrowCounterClockwise
               width={vertical ? 40 : 30}
               height={vertical ? 40 : 30}
             />

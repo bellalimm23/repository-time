@@ -1,5 +1,6 @@
 import { SimpleGrid } from '@mantine/core';
-import { ArrowLeft } from '@phosphor-icons/react';
+// import { ArrowLeft } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import Button, { ButtonProps, LoadingButton } from 'components/elements/button';
 import Text from 'components/elements/text';
 import React from 'react';
@@ -157,18 +158,18 @@ export default function ButtonExample() {
       case 'leftIcon':
         return {
           children: 'leftIcon',
-          leftSection: <ArrowLeft size={16} />,
+          leftSection: <Icons.ArrowLeft size={16} />,
         };
       case 'rightIcon':
         return {
           children: 'rightIcon',
-          rightSection: <ArrowLeft size={16} />,
+          rightSection: <Icons.ArrowLeft size={16} />,
         };
       case 'leftRightIcon':
         return {
           children: 'rightIcon',
-          leftSection: <ArrowLeft size={16} />,
-          rightSection: <ArrowLeft size={16} />,
+          leftSection: <Icons.ArrowLeft size={16} />,
+          rightSection: <Icons.ArrowLeft size={16} />,
         };
       case 'primary':
       default:

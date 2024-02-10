@@ -1,5 +1,6 @@
 import { useMediaQuery } from '@mantine/hooks';
-import { MagnifyingGlass, Plus } from '@phosphor-icons/react';
+// import { MagnifyingGlass, Plus } from '@phosphor-icons/react';
+import * as Icons from '@phosphor-icons/react';
 import classNames from 'classnames';
 import breakpoints from 'common/styles/breakpoint';
 import Separator from 'components/common/separator';
@@ -100,7 +101,7 @@ export default function AdminUserList() {
             staticRoute: '/admin/users/create',
             type: 'static',
           }}
-          leftSection={<Plus size={16} />}
+          leftSection={<Icons.Plus size={16} />}
         >
           Buat User
         </ButtonRedirect>
@@ -131,7 +132,7 @@ export default function AdminUserList() {
         />
         {!isMobile && (
           <Button
-            leftSection={<MagnifyingGlass weight="bold" />}
+            leftSection={<Icons.MagnifyingGlass weight="bold" />}
             variant={{
               variant: 'tertiary',
             }}
