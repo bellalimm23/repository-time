@@ -20,6 +20,11 @@ const nextConfig = {
       },
     ],
   },
+  modularizeImports: {
+    '@phosphor-icons/react': {
+      transform: '@phosphor-icons/react/{{member}}',
+    },
+  },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
