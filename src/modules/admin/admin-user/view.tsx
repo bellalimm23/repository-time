@@ -1,10 +1,12 @@
 import FetchWrapperComponent from 'components/common/fetch-wrapper-component';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import AdminUserForm from './components/form';
 import { AdminUserFormType, AdminUserMethodType } from './components/form-type';
 
 export default function AdminUserView() {
+  const { query } = useRouter();
   const onSubmit = React.useCallback(
     async (values: AdminUserFormType, form: AdminUserMethodType) => {
       return undefined;
@@ -13,6 +15,8 @@ export default function AdminUserView() {
   );
 
   return (
-    <FetchWrapperComponent component={<AdminUserForm onSubmit={onSubmit} />} />
+    <FetchWrapperComponent
+      component={<AdminUserForm onSubmit={onSubmit} adminUser={query} />}
+    />
   );
 }

@@ -31,3 +31,7 @@ globalStyle(`${base} .mantine-Select-error`, {
   marginTop: size.spacing.xs,
   marginBottom: size.spacing.xs,
 });
+
+globalStyle(`.mantine-Select-option`, {
+  ...typography.body1Regular,
+});

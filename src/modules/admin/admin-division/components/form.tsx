@@ -31,7 +31,7 @@ export default function AdminDivisionForm(props: AdminDivisionProps) {
   });
 
   const onSubmit = React.useCallback(
-    async (values: AdminDivisionMethodType) => {
+    async (values: AdminDivisionFormType) => {
       try {
         await props.onSubmit(values, methods);
       } catch (e) {

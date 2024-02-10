@@ -31,7 +31,7 @@ export default function AdminSubjectForm(props: AdminSubjectProps) {
   });
 
   const onSubmit = React.useCallback(
-    async (values: AdminSubjectMethodType) => {
+    async (values: AdminSubjectFormType) => {
       try {
         await props.onSubmit(values, methods);
       } catch (e) {

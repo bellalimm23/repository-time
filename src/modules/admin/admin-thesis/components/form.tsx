@@ -31,7 +31,7 @@ export default function AdminThesis(props: AdminThesisProps) {
   });
 
   const onSubmit = React.useCallback(
-    async (values: AdminThesisMethodType) => {
+    async (values: AdminThesisFormType) => {
       try {
         await props.onSubmit(values, methods);
       } catch (e) {

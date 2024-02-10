@@ -21,6 +21,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>((props, ref) => {
     noMargin = false,
     size = 'md',
     radius = 'md',
+    allowDeselect = false,
     ...rest
   } = props;
 
@@ -30,6 +31,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>((props, ref) => {
       size={size}
       radius={radius}
       ref={combinedRef}
+      allowDeselect={allowDeselect}
       className={classNames(selectStyles[`${noMargin}`], className)}
       inputWrapperOrder={['label', 'input', 'description', 'error']}
     />
