@@ -12,10 +12,11 @@ import {
   AdminUserFormSchema,
   AdminUserFormType,
   AdminUserMethodType,
+  UserModel,
 } from './form-type';
 
 interface AdminUserProps {
-  adminUser?: any;
+  adminUser?: UserModel;
   onSubmit: (
     values: AdminUserFormType,
     form: AdminUserMethodType,
@@ -23,17 +24,18 @@ interface AdminUserProps {
 }
 
 export default function AdminUserForm(props: AdminUserProps) {
+  const { adminUser } = props;
   const defaultValues = React.useMemo<AdminUserFormType>(() => {
     return {
-      nama_belakang: '',
-      nama_depan: '',
-      nama_tengah: '',
-      password: '',
-      username: '',
-      jurusan_id: 'sistem_informasi',
-      tipe_user: 'admin',
+      nama_belakang: adminUser?.nama_belakang || '',
+      nama_depan: adminUser?.nama_depan || '',
+      nama_tengah: adminUser?.nama_tengah || '',
+      password: adminUser?.password || '',
+      username: adminUser?.username || '',
+      jurusan_id: adminUser?.jurusan || 'sistem_informasi',
+      tipe_user: adminUser?.tipe_user || 'admin',
     };
-  }, []);
+  }, [adminUser]);
 
   const resolver = useYupValidationResolver(AdminUserFormSchema());
 
@@ -57,11 +59,14 @@ export default function AdminUserForm(props: AdminUserProps) {
 
   const noMargin = true;
 
+  const onClickDeleteUser = React.useCallback(() => {}, []);
+
   return (
-    <Form methods={methods} onSubmit={onSubmit}>
+    <Form methods={methods} onSubmit={onSubmit} defaultEditable={!adminUser}>
       <FormHeader
         title={props.adminUser ? 'Edit User' : 'Buat User'}
         data={props.adminUser}
+        onClickDelete={onClickDeleteUser}
       />
       <Separator gap={16} />
       <SimpleGrid cols={1}>

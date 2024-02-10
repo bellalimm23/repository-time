@@ -3,7 +3,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import AdminUserForm from './components/form';
-import { AdminUserFormType, AdminUserMethodType } from './components/form-type';
+import {
+  AdminUserFormType,
+  AdminUserMethodType,
+  users,
+} from './components/form-type';
 
 export default function AdminUserView() {
   const { query } = useRouter();
@@ -14,9 +18,13 @@ export default function AdminUserView() {
     [],
   );
 
+  const { id } = query;
+
+  const user = users.find((user) => user.id === id);
+
   return (
     <FetchWrapperComponent
-      component={<AdminUserForm onSubmit={onSubmit} adminUser={query} />}
+      component={<AdminUserForm onSubmit={onSubmit} adminUser={user} />}
     />
   );
 }

@@ -34,3 +34,16 @@ export const DynamicRoutes = {
 } as const;
 
 export type StaticRoutesType = (typeof StaticRoutes)[keyof typeof StaticRoutes];
+
+export type DynamicRoutesKeysType = keyof typeof DynamicRoutes;
+
+export type StaticRouteType = {
+  type: 'static';
+  staticRoute: StaticRoutesType;
+};
+
+export type DynamicRouteType = {
+  type: 'dynamic';
+  dynamicRoute: DynamicRoutesKeysType;
+  id: string;
+};
