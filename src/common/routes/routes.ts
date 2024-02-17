@@ -28,9 +28,11 @@ export const DynamicRoutes = {
   userShow: (id: string) => `${StaticRoutes.users}/${id}` as const,
   thesisShow: (id: string) => `${StaticRoutes.thesis}/${id}` as const,
   adminUserShow: (id: string) => `${StaticRoutes.adminUser}/${id}` as const,
-  adminThesis: (id: string) => `${StaticRoutes.adminThesis}/${id}` as const,
-  adminSubject: (id: string) => `${StaticRoutes.adminSubject}/${id}` as const,
-  adminDivision: (id: string) => `${StaticRoutes.adminDivision}/${id}` as const,
+  adminThesisShow: (id: string) => `${StaticRoutes.adminThesis}/${id}` as const,
+  adminSubjectShow: (id: string) =>
+    `${StaticRoutes.adminSubject}/${id}` as const,
+  adminDivisionShow: (id: string) =>
+    `${StaticRoutes.adminDivision}/${id}` as const,
 } as const;
 
 export type StaticRoutesType = (typeof StaticRoutes)[keyof typeof StaticRoutes];

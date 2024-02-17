@@ -26,7 +26,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
   const actions = React.useMemo<ButtonProps[]>(() => {
     return [
       {
-        children: 'Thesis',
+        children: 'Tugas Akhir',
         onClick: () => push(StaticRoutes.adminThesis),
         variant: {
           variant: isCurrent(StaticRoutes.adminThesis) ? 'primary' : 'tertiary',

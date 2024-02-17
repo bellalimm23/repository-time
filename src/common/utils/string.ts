@@ -109,14 +109,15 @@ export function padStart(
   return text.toString().padStart(length, fill);
 }
 
-export function sensorEmail(text: string): string {
-  const [mail, domain] = text.split('@');
-
-  const sensor = [
-    mail[0],
-    padStart('', mail.length - 2, '*'),
-    mail[mail.length - 1],
-  ].join('');
-
-  return [sensor, domain].join('@');
+export function IEEEFormatName(firstName = '', middleName = '', lastName = '') {
+  if (middleName && lastName) {
+    // Format: First Name, Middle Name, Last Name
+    return `${firstName} ${middleName} ${lastName}`;
+  } else if (!middleName && lastName) {
+    // Format: First Name, Last Name
+    return `${firstName} ${lastName}`;
+  } else {
+    // Format: First Name
+    return firstName;
+  }
 }

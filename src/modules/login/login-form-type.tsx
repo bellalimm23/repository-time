@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 export const LoginFormSchema = () =>
   Yup.object({
-    username: Yup.string().default('').required(),
+    nomor_identitas: Yup.string().default('').required(),
     password: Yup.string().default('').required(),
   });
 

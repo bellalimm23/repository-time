@@ -10,7 +10,6 @@ import {
 } from './components/form-type';
 
 export default function AdminUserView() {
-  const { query } = useRouter();
   const onSubmit = React.useCallback(
     async (values: AdminUserFormType, form: AdminUserMethodType) => {
       return undefined;
@@ -18,8 +17,8 @@ export default function AdminUserView() {
     [],
   );
 
+  const { query } = useRouter();
   const { id } = query;
-
   const user = users.find((user) => user.id === id);
 
   return (

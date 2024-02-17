@@ -23,7 +23,7 @@ export default function Login(props: LoginProps) {
   const defaultValues = React.useMemo<LoginFormType>(() => {
     return {
       password: '',
-      username: '',
+      nomor_identitas: '',
     };
   }, []);
   const resolver = useYupValidationResolver(LoginFormSchema());
@@ -73,9 +73,9 @@ export default function Login(props: LoginProps) {
           <Separator gap={16} />
           <Input
             type="text"
-            name="username"
-            label="Username"
-            placeholder="Username"
+            name="nomor_identitas"
+            label="Nomor Identitas"
+            placeholder="Nomor Identitas"
             required
           />
           <Input

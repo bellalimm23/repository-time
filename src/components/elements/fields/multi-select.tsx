@@ -76,7 +76,6 @@ export default function MultiSelectField(props: MultiSelectFieldProps) {
       {...rest}
       {...field}
       {...(!disabled && { required })}
-      data={data}
       error={error}
       onBlur={onBlur}
       onChange={onChange}

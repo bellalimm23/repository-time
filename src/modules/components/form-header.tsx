@@ -7,6 +7,7 @@ import Button from 'components/elements/button';
 import { Input } from 'components/elements/fields';
 import { useFormState } from 'components/elements/form/context';
 import Text from 'components/elements/text';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import structuralStyles from 'styles/layout.css';
 
@@ -14,16 +15,18 @@ interface FormHeaderProps {
   title: string;
   data?: any;
   onClickDelete?: () => void;
+  rightComponent?: React.ReactNode;
 }
 
 export default function FormHeader(props: FormHeaderProps) {
-  const { title, data, onClickDelete } = props;
+  const { title, data, onClickDelete, rightComponent } = props;
   const { editable, setIsEditable } = useFormState();
   const { reset } = useFormContext();
   const isMobile = useMediaQuery(breakpoints.screenMaxMd);
 
-  const size = isMobile ? 'small' : 'default';
-  const miw = isMobile ? undefined : 120;
+  const size = 'small';
+  const miw = undefined;
+  const textVariant = isMobile ? 'h3' : 'h1';
   return (
     <div
       className={classNames(
@@ -34,65 +37,70 @@ export default function FormHeader(props: FormHeaderProps) {
         structuralStyles.fill({ width: true }),
       )}
     >
-      <Text textVariant="h1">{title}</Text>
-      {editable ? (
-        <div
-          className={classNames(
-            structuralStyles.flexbox({
-              direction: 'row',
-              gap: 'md',
-            }),
-          )}
-        >
-          <Input type="submit" text="Simpan" leftSection={<Icons.Check />} />
-          {data && (
-            <Button
-              variant={{
-                size,
-                variant: 'secondaryError',
-              }}
-              onClick={() => {
-                reset();
-                setIsEditable(false);
-              }}
-              leftSection={<Icons.X />}
-            >
-              Batal
-            </Button>
-          )}
-        </div>
-      ) : (
-        <div
-          className={structuralStyles.flexbox({
+      <Text textVariant={textVariant}>{title}</Text>
+      <div
+        className={classNames(
+          structuralStyles.flexbox({
             direction: 'row',
             gap: 'md',
-          })}
-        >
-          <Button
-            miw={miw}
-            leftSection={<Icons.Pencil />}
-            onClick={() => setIsEditable(true)}
-            variant={{
-              size,
-            }}
-          >
-            Edit
-          </Button>
-          {onClickDelete && (
-            <Button
+          }),
+        )}
+      >
+        {rightComponent}
+        {editable ? (
+          <>
+            <Input
+              type="submit"
               variant={{
                 size,
-                variant: 'secondaryError',
               }}
+              text="Simpan"
+              leftSection={<Icons.Check />}
+            />
+            {data && (
+              <Button
+                variant={{
+                  size,
+                  variant: 'secondaryError',
+                }}
+                onClick={() => {
+                  reset();
+                  setIsEditable(false);
+                }}
+                leftSection={<Icons.X />}
+              >
+                Batal
+              </Button>
+            )}
+          </>
+        ) : (
+          <>
+            <Button
               miw={miw}
-              onClick={onClickDelete}
-              leftSection={<Icons.Trash />}
+              leftSection={<Icons.Pencil />}
+              onClick={() => setIsEditable(true)}
+              variant={{
+                size,
+              }}
             >
-              Hapus
+              Edit
             </Button>
-          )}
-        </div>
-      )}
+            {onClickDelete && (
+              <Button
+                variant={{
+                  size,
+                  variant: 'secondaryError',
+                }}
+                miw={miw}
+                onClick={onClickDelete}
+                leftSection={<Icons.Trash />}
+              >
+                Hapus
+              </Button>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

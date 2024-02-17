@@ -28,7 +28,7 @@ export default function Register() {
       nama_tengah: '',
       password: '',
       tipe_user: userType.user,
-      username: '',
+      nomor_identitas: '',
     };
   }, []);
 
@@ -85,9 +85,9 @@ export default function Register() {
             <Separator gap={16} />
             <Input
               type="text"
-              name="username"
-              label="Username"
-              placeholder="Username"
+              name="nomor_identitas"
+              label="Nomor Identitas"
+              placeholder="Nomor Identitas"
               required
             />
             <Input

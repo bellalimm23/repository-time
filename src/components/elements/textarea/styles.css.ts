@@ -19,6 +19,7 @@ globalStyle(`${base} .mantine-Textarea-label`, {
 
 globalStyle(`${base} .mantine-Textarea-input`, {
   ...typography.body1Regular,
+  minHeight: 160,
 });
 
 globalStyle(`${base} .mantine-Textarea-description`, {

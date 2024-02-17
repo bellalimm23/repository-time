@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 
 export const RegisterFormSchema = () =>
   Yup.object({
-    username: Yup.string().required(),
+    nomor_identitas: Yup.string().required(),
     password: Yup.string().required(),
     nama_depan: Yup.string().required(),
     nama_tengah: Yup.string().default(''),

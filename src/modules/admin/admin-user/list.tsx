@@ -2,6 +2,7 @@ import { useMediaQuery } from '@mantine/hooks';
 // import { MagnifyingGlass, Plus } from '@phosphor-icons/react';
 import * as Icons from '@phosphor-icons/react';
 import classNames from 'classnames';
+import { userType } from 'common/constants/user';
 import breakpoints from 'common/styles/breakpoint';
 import Separator from 'components/common/separator';
 import TableComponent from 'components/common/table/table';
@@ -38,8 +39,8 @@ function useGetAdminUserTableList() {
         },
       },
       {
-        data: (row) => row.username,
-        label: 'Username',
+        data: (row) => row.nomor_identitas,
+        label: 'Nomor Identitas',
         tdProps: () => {
           return {
             maw: 180,
@@ -59,7 +60,7 @@ function useGetAdminUserTableList() {
         },
       },
       {
-        data: (row) => row.jurusan,
+        data: (row) => [row.jurusan.kode, row.jurusan.nama].join(' - '),
         label: 'Jurusan',
         tdProps: () => {
           return {
@@ -85,6 +86,7 @@ function useGetAdminUserTableList() {
 export default function AdminUserList() {
   const columns = useGetAdminUserTableList();
   const isMobile = useMediaQuery(breakpoints.screenMaxMd);
+
   return (
     <div>
       <div
@@ -115,20 +117,21 @@ export default function AdminUserList() {
           }),
         )}
       >
-        <TextInput placeholder="Cari username, nama" noMargin />
+        <TextInput placeholder="Cari Nomor identitas, nama" noMargin />
         <Select
-          defaultValue="user"
+          noMargin
+          w={120}
+          placeholder="Cari Tipe"
           data={[
             {
               label: 'Admin',
-              value: 'admin',
+              value: userType.admin,
             },
             {
               label: 'User',
-              value: 'user',
+              value: userType.user,
             },
           ]}
-          noMargin
         />
         {!isMobile && (
           <Button
@@ -145,7 +148,7 @@ export default function AdminUserList() {
       <TableComponent
         columns={columns}
         data={users}
-        rowKey={(row) => row.username}
+        rowKey={(row) => row.nomor_identitas}
       />
     </div>
   );
