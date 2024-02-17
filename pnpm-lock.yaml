@@ -27,8 +27,8 @@ dependencies:
     specifier: ^7.4.1
     version: 7.4.1(@mantine/core@7.4.1)
   '@phosphor-icons/react':
-    specifier: ^2.0.15
-    version: 2.0.15(react-dom@18.2.0)(react@18.2.0)
+    specifier: 2.0.8
+    version: 2.0.8(react-dom@18.2.0)(react@18.2.0)
   '@supabase/supabase-js':
     specifier: ^2.39.6
     version: 2.39.6
@@ -1119,8 +1119,8 @@ packages:
       fastq: 1.16.0
     dev: true
 
-  /@phosphor-icons/react@2.0.15(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-PQKNcRrfERlC8gJGNz0su0i9xVmeubXSNxucPcbCLDd9u0cwJVTEyYK87muul/svf0UXFdL2Vl6bbeOhT1Mwow==}
+  /@phosphor-icons/react@2.0.8(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-VWACI+MkRGpol4htOcVtWKaDCosrcuCg8toJfPS0osgVjxM8i/KoSZSPxQvG5XYPCI8iyJoHKRpSfzOISAXFyg==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>= 16.8'
