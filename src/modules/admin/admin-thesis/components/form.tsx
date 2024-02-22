@@ -18,7 +18,10 @@ import {
   SubjectModel,
   subjects,
 } from 'modules/admin/admin-subject/components/form-type';
-import { users } from 'modules/admin/admin-user/components/form-type';
+import {
+  generateName,
+  users,
+} from 'modules/admin/admin-user/components/form-type';
 import FormHeader from 'modules/components/form-header';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -258,7 +261,7 @@ export default function AdminThesis(props: AdminThesisProps) {
           .map((user) => {
             return {
               value: user.id,
-              label: [user.nomor_identitas, user.nama_depan].join(' - '),
+              label: [user.nomor_identitas, generateName(user)].join(' - '),
             };
           })}
       />

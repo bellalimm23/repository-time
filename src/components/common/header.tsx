@@ -84,7 +84,6 @@ export default function Header() {
     <>
       <Card
         withBorder
-        shadow="lg"
         className={classNames(
           structuralStyles.fill({ width: true }),
           structuralStyles.flexbox({

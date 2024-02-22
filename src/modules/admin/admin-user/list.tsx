@@ -15,7 +15,7 @@ import TextInput from 'components/elements/text-input';
 import React from 'react';
 import structuralStyles from 'styles/layout.css';
 
-import { UserModel, users } from './components/form-type';
+import { UserModel, generateName, users } from './components/form-type';
 import ButtonRedirect from '../components/button-redirect';
 
 function useGetAdminUserTableList() {
@@ -48,10 +48,7 @@ function useGetAdminUserTableList() {
         },
       },
       {
-        data: (row) =>
-          [row.nama_depan, row.nama_tengah, row.nama_belakang]
-            .filter((val) => !!val)
-            .join(' '),
+        data: (row) => generateName(row),
         label: 'Nama',
         tdProps: () => {
           return {

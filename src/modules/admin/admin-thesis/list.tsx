@@ -4,7 +4,7 @@ import * as Icons from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { ThesisStatus, ThesisType } from 'common/constants/tesis';
 import breakpoints from 'common/styles/breakpoint';
-import { IEEEFormatName } from 'common/utils/string';
+import { generateIEEEFormatName } from 'common/utils/string';
 import Separator from 'components/common/separator';
 import TableComponent from 'components/common/table/table';
 import TableActionRedirect from 'components/common/table/table-action-redirect';
@@ -65,7 +65,7 @@ function useGetAdminThesisTableList() {
         data: (row) =>
           row.users
             .map((user) => {
-              return IEEEFormatName(
+              return generateIEEEFormatName(
                 user.nama_depan,
                 user.nama_belakang,
                 user.nama_depan,

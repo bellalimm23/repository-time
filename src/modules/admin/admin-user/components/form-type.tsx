@@ -139,3 +139,9 @@ export const UserTab = {
 } as const;
 
 export type UserTabType = (typeof UserTab)[keyof typeof UserTab];
+
+export function generateName(user: UserModel) {
+  return [user.nama_depan, user.nama_tengah, user.nama_belakang]
+    .filter(Boolean)
+    .join(' ');
+}

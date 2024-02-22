@@ -109,15 +109,59 @@ export function padStart(
   return text.toString().padStart(length, fill);
 }
 
-export function IEEEFormatName(firstName = '', middleName = '', lastName = '') {
-  if (middleName && lastName) {
-    // Format: First Name, Middle Name, Last Name
-    return `${firstName} ${middleName} ${lastName}`;
-  } else if (!middleName && lastName) {
-    // Format: First Name, Last Name
-    return `${firstName} ${lastName}`;
-  } else {
-    // Format: First Name
-    return firstName;
+export function generateIEEEFormatName(
+  firstName = '',
+  middleName = '',
+  lastName = '',
+) {
+  let formattedName = `${firstName.charAt(0).toUpperCase()}.`; // First name initial
+
+  if (middleName) {
+    // If there's a middle name, include its initial
+    formattedName += ` ${middleName.charAt(0).toUpperCase()}.`;
   }
+
+  // Append the last name, ensuring the first letter is capitalized
+  formattedName += ` ${lastName.charAt(0).toUpperCase()}${lastName.slice(1).toLowerCase()}`;
+
+  return formattedName;
+}
+
+export type IEEEReferenceModel = {
+  title: string;
+  publishYear: string;
+  publisher?: string;
+  users: { firstName: string; middleName: string; lastName: string }[];
+};
+
+export function generateIEEEReference(data: IEEEReferenceModel) {
+  // Destructure the data object for easier access
+  const { title, publishYear, publisher = 'STMIK TIME Medan', users } = data;
+
+  // Generate the authors string in the format "Last Name, F.M., Last Name, F.M., ..."
+  const authorsStr = users
+    .map((user) => {
+      const { firstName, middleName, lastName } = user;
+      // Always include the first name initial
+      let nameString = firstName.charAt(0) + '.';
+
+      // Include middle name initial if available
+      if (middleName) {
+        nameString += middleName.charAt(0) + '.';
+      }
+
+      // Append last name if available, otherwise use first name only
+      if (lastName) {
+        nameString += ' ' + lastName;
+      } else {
+        // If only the first name is provided, use the full first name
+        nameString = firstName;
+      }
+
+      return nameString;
+    })
+    .join(', ');
+
+  // Combine everything into the IEEE citation format
+  return `${authorsStr}, "${title}," ${publisher}, ${publishYear}.`;
 }

@@ -6,28 +6,35 @@ import Container, { ContainerProps } from 'modules/components/container';
 import Footer from './footer';
 import Header from './header';
 
-interface UserLayoutProps extends ContainerProps {}
+interface UserLayoutProps extends ContainerProps {
+  isShowBackground?: boolean;
+}
 
 export default function UserLayout(props: UserLayoutProps) {
+  const { isShowBackground = false } = props;
   return (
     <Container>
-      <Container
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: -2,
-          backgroundColor: colors.backgroundDark,
-        }}
-      />
-      <BackgroundImage
-        src={assets.repositoryBackground}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: -1,
-          opacity: 0.3,
-        }}
-      />
+      {isShowBackground && (
+        <>
+          <Container
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: -2,
+              backgroundColor: colors.backgroundDark,
+            }}
+          />
+          <BackgroundImage
+            src={assets.repositoryBackground}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: -1,
+              opacity: 0.3,
+            }}
+          />
+        </>
+      )}
       <Header />
       <Container
         {...props}

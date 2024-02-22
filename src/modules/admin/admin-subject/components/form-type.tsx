@@ -61,3 +61,7 @@ export const subjects: SubjectModel[] = [
     waktu_diubah: new Date(),
   },
 ];
+
+export function generateSubjectName(subject: SubjectModel) {
+  return [subject.kode, subject.nama].join(' - ');
+}
