@@ -40,15 +40,15 @@ export default function ThesisView() {
     switch (item.status) {
       case 'approved':
       case 'uploading':
-        return true;
+        return isContributor && true;
       case 'uploaded':
       case 'finished':
       case 'pending':
       case 'takedown':
       case 'canceled':
-        return false;
+        return isContributor && false;
     }
-  }, [item.status]);
+  }, [isContributor, item.status]);
 
   const defaultValues = React.useMemo<UploadThesisFormType>(() => {
     return {
