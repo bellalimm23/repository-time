@@ -14,7 +14,7 @@ import Document from './documents';
 import Profile from './profile';
 
 export default function ProfileIndex() {
-  const isMobile = useMediaQuery(breakpoints.screenMaxMd);
+  const isMobile = useMediaQuery(breakpoints.screenMaxLg);
   const span = isMobile ? 12 : 6;
 
   const [isOpenend, { open, close }] = useDisclosure();
@@ -28,7 +28,7 @@ export default function ProfileIndex() {
         <Grid.Col span={span}>
           <Profile />
         </Grid.Col>
-        <Grid.Col span={span}>
+        <Grid.Col span={span} order={{ base: 3, md: 2 }}>
           <Card withBorder radius="md" shadow="xs">
             <Text textVariant="h1">Daftar Tugas Akhir</Text>
             <Separator gap={16} />
@@ -37,7 +37,7 @@ export default function ProfileIndex() {
             <Button onClick={open}>Ajukan Tugas Akhir</Button>
           </Card>
         </Grid.Col>
-        <Grid.Col span={span}>
+        <Grid.Col span={span} order={{ base: 2, md: 3 }}>
           <Document />
         </Grid.Col>
       </Grid>
