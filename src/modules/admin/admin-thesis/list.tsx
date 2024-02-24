@@ -1,6 +1,6 @@
 import { Badge, Tabs } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import * as Icons from '@phosphor-icons/react';
+import { MagnifyingGlass, Plus } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { ThesisStatus, ThesisType } from 'common/constants/tesis';
 import breakpoints from 'common/styles/breakpoint';
@@ -119,7 +119,7 @@ export default function AdminThesisList() {
             staticRoute: '/admin/thesis/create',
             type: 'static',
           }}
-          leftSection={<Icons.Plus size={16} />}
+          leftSection={<Plus size={16} />}
         >
           Buat Tugas Akhir
         </ButtonRedirect>
@@ -152,7 +152,7 @@ export default function AdminThesisList() {
         />
         {!isMobile && (
           <Button
-            leftSection={<Icons.MagnifyingGlass weight="bold" />}
+            leftSection={<MagnifyingGlass weight="bold" />}
             variant={{
               variant: 'tertiary',
             }}

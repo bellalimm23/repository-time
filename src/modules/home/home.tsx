@@ -38,7 +38,7 @@ export default function Home() {
             <BookSVG width={128} height={128} />
           </Center>
           <Text textVariant="body2Semibold" ta="center">
-            Cari Skripsi Terlengkap STMIK TIME
+            Cari Tugas Akhir Terlengkap STMIK TIME
           </Text>
         </Card>
         <Card withBorder shadow="xs">
@@ -46,7 +46,7 @@ export default function Home() {
             <BookshelfSVG width={128} height={128} />
           </Center>
           <Text ta="center" textVariant="body2Semibold">
-            Cari dan Pilih Skripsi Alumni STMIK TIME
+            Cari dan Pilih Tugas Akhir Alumni STMIK TIME
           </Text>
         </Card>
         <Card withBorder shadow="xs">
@@ -54,7 +54,7 @@ export default function Home() {
             <SeasonChangeSVG width={128} height={128} />
           </Center>
           <Text ta="center" textVariant="body2Semibold">
-            Ingat Upload Skripsimu Sebelum Deadline
+            Ingat Upload Tugas Akhirmu Sebelum Deadline
           </Text>
         </Card>
       </SimpleGrid>

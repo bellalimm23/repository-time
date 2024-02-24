@@ -1,18 +1,16 @@
 import classNames from 'classnames';
 import { DynamicRoutes } from 'common/routes/routes';
 import colors from 'common/styles/colors';
-import { generateIEEEReference } from 'common/utils/string';
 import Text from 'components/elements/text';
-import { format } from 'date-fns';
-import { ThesisModel } from 'modules/admin/admin-thesis/components/form-type';
+import { DocumentModel } from 'modules/profile/form-type';
 import { useRouter } from 'next/router';
 import structuralStyles from 'styles/layout.css';
 
-interface ThesisTableListProps {
-  thesis: ThesisModel[];
+interface DocumentListProps {
+  documents: DocumentModel[];
 }
 
-export default function ThesisTableList(props: ThesisTableListProps) {
+export default function DocumentList(props: DocumentListProps) {
   const { push } = useRouter();
   return (
     <div
@@ -32,7 +30,7 @@ export default function ThesisTableList(props: ThesisTableListProps) {
           }),
         )}
       >
-        {props.thesis.map((item, index) => {
+        {props.documents.map((item, index) => {
           return (
             <div
               key={item.id}
@@ -52,18 +50,7 @@ export default function ThesisTableList(props: ThesisTableListProps) {
                     cursor: 'pointer',
                   }}
                 >
-                  {generateIEEEReference({
-                    users: item.users.map((user) => {
-                      return {
-                        firstName: user.nama_depan,
-                        lastName: user.nama_belakang,
-                        middleName: user.nama_tengah,
-                      };
-                    }),
-                    publishYear: format(item.waktu_disetujui, 'yyyy'),
-                    title: item.judul,
-                    publisher: 'STMIK TIME',
-                  })}
+                  {item.nama}
                 </Text>
               </Text>
             </div>

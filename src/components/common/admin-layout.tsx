@@ -1,7 +1,6 @@
 import { AppShell, AppShellMainProps, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-// import { Bank, Book, Chair, SignOut, User } from '@phosphor-icons/react';
-import * as Icons from '@phosphor-icons/react';
+import { Bank, Book, Chair, SignOut, User } from '@phosphor-icons/react';
 import { Brand } from 'common/constants/brand';
 import { StaticRoutes, StaticRoutesType } from 'common/routes/routes';
 import Button, { ButtonProps } from 'components/elements/button';
@@ -31,7 +30,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
         variant: {
           variant: isCurrent(StaticRoutes.adminThesis) ? 'primary' : 'tertiary',
         },
-        leftSection: <Icons.Book size={16} />,
+        leftSection: <Book size={16} />,
       },
       {
         children: 'Users',
@@ -39,7 +38,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
         variant: {
           variant: isCurrent(StaticRoutes.adminUser) ? 'primary' : 'tertiary',
         },
-        leftSection: <Icons.User size={16} />,
+        leftSection: <User size={16} />,
       },
       {
         children: 'Fakultas',
@@ -49,7 +48,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
             ? 'primary'
             : 'tertiary',
         },
-        leftSection: <Icons.Bank size={16} />,
+        leftSection: <Bank size={16} />,
       },
       {
         children: 'Jurusan',
@@ -59,7 +58,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
             ? 'primary'
             : 'tertiary',
         },
-        leftSection: <Icons.Chair size={16} />,
+        leftSection: <Chair size={16} />,
       },
     ];
   }, [isCurrent, push]);
@@ -98,7 +97,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
             }}
             fullWidth
             onClick={() => push(StaticRoutes.adminLogin)}
-            leftSection={<Icons.SignOut size={16} />}
+            leftSection={<SignOut size={16} />}
           >
             Logout
           </Button>

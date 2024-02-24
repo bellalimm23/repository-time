@@ -1,5 +1,5 @@
 import { useMediaQuery } from '@mantine/hooks';
-import * as Icons from '@phosphor-icons/react';
+import { MagnifyingGlass, Plus } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import breakpoints from 'common/styles/breakpoint';
 import Separator from 'components/common/separator';
@@ -79,7 +79,7 @@ export default function AdminSubjectList() {
             staticRoute: '/admin/subjects/create',
             type: 'static',
           }}
-          leftSection={<Icons.Plus size={16} />}
+          leftSection={<Plus size={16} />}
         >
           Buat Jurusan
         </ButtonRedirect>
@@ -96,7 +96,7 @@ export default function AdminSubjectList() {
         <TextInput placeholder="Cari Nama Jurusan" noMargin />
         {!isMobile && (
           <Button
-            leftSection={<Icons.MagnifyingGlass weight="bold" />}
+            leftSection={<MagnifyingGlass weight="bold" />}
             variant={{
               variant: 'tertiary',
             }}

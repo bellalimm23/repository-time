@@ -1,7 +1,13 @@
 import { Burger, Card, Modal } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-// import { MagnifyingGlass, SignIn, User, UserPlus } from '@phosphor-icons/react';
-import * as Icons from '@phosphor-icons/react';
+import {
+  MagnifyingGlass,
+  Pen,
+  SignIn,
+  // SignOut,
+  User,
+  UserPlus,
+} from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { StaticRoutes, StaticRoutesType } from 'common/routes/routes';
 import breakpoints from 'common/styles/breakpoint';
@@ -31,7 +37,7 @@ export default function Header() {
           variant: 'primary',
         },
         miw,
-        leftSection: <Icons.SignIn size={14} />,
+        leftSection: <SignIn size={14} />,
         onClick: () => push(StaticRoutes.login),
         children: 'Login',
       },
@@ -41,13 +47,14 @@ export default function Header() {
           variant: 'secondary',
         },
         miw,
-        leftSection: <Icons.UserPlus size={14} />,
+        leftSection: <UserPlus size={14} />,
         onClick: () => push(StaticRoutes.register),
         children: 'Register',
       },
       // {
       //   miw: 120,
       //   variant: {
+      //     size,
       //     variant: 'tertiaryError',
       //   },
       //   leftSection: <SignOut size={14} />,
@@ -64,18 +71,27 @@ export default function Header() {
         variant: {
           variant: isCurrent(StaticRoutes.thesis) ? 'primary' : 'tertiary',
         },
-        leftSection: <Icons.MagnifyingGlass size={14} />,
+        leftSection: <MagnifyingGlass size={14} />,
         onClick: () => push(StaticRoutes.thesis),
-        children: 'Cari Skripsi',
+        children: 'Cari Tugas Akhir',
       },
       {
         miw: 120,
         variant: {
           variant: isCurrent(StaticRoutes.users) ? 'primary' : 'tertiary',
         },
-        leftSection: <Icons.User size={14} />,
+        leftSection: <Pen size={14} />,
         onClick: () => push(StaticRoutes.users),
-        children: 'Cari Penulis',
+        children: 'Cari User',
+      },
+      {
+        miw: 120,
+        variant: {
+          variant: isCurrent(StaticRoutes.profile) ? 'primary' : 'tertiary',
+        },
+        leftSection: <User size={14} />,
+        onClick: () => push(StaticRoutes.profile),
+        children: 'Profil',
       },
     ];
   }, [isCurrent, push]);

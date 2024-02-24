@@ -2,7 +2,6 @@ import { Card, Grid } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import classNames from 'classnames';
 import breakpoints from 'common/styles/breakpoint';
-import colors from 'common/styles/colors';
 import Separator from 'components/common/separator';
 import Text from 'components/elements/text';
 import { generateSubjectName } from 'modules/admin/admin-subject/components/form-type';
@@ -12,10 +11,12 @@ import {
   users,
 } from 'modules/admin/admin-user/components/form-type';
 import Container from 'modules/components/container';
+import { documents } from 'modules/profile/form-type';
 import ThesisTableList from 'modules/thesis/components/table.desktop';
 import { useRouter } from 'next/router';
 import structuralStyles from 'styles/layout.css';
 
+import DocumentList from './components/document-list';
 import LabelContent from './components/label-content';
 
 export default function UserView() {
@@ -100,11 +101,11 @@ export default function UserView() {
         <Grid>{contents.map((content) => content)}</Grid>
       </Card>
 
-      <Separator gap={32} />
-      <hr
-        style={{ width: 'calc(100vw - 48px)', color: colors.borderOverlay }}
-      />
-      <Separator gap={32} />
+      <Separator gap={32} direction="vertical" />
+      <Text textVariant="h2">Daftar Dokumen</Text>
+      <Separator gap={24} />
+      <DocumentList documents={documents} />
+      <Separator gap={24} />
       <Text textVariant="h2">Daftar Thesis</Text>
       <Separator gap={24} />
       <ThesisTableList thesis={thesis} />

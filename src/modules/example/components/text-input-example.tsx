@@ -1,5 +1,5 @@
-// import { MagnifyingGlass } from '@phosphor-icons/react';
-import * as Icons from '@phosphor-icons/react';
+import { MagnifyingGlass } from '@phosphor-icons/react';
+//
 import Separator from 'components/common/separator';
 import Text from 'components/elements/text';
 import TextInput, { TextInputProps } from 'components/elements/text-input';
@@ -43,20 +43,20 @@ export default function TextInputExample() {
         return {
           placeholder: 'with right icon',
           label: 'with right icon',
-          rightSection: <Icons.MagnifyingGlass size={16} />,
+          rightSection: <MagnifyingGlass size={16} />,
         };
       case 'WithLeftIcon':
         return {
           placeholder: 'with left icon',
           label: 'with left icon',
-          leftSection: <Icons.MagnifyingGlass size={16} />,
+          leftSection: <MagnifyingGlass size={16} />,
         };
       case 'WithLeftRightIcon':
         return {
           placeholder: 'with left right icon',
           label: 'with left right icon',
-          leftSection: <Icons.MagnifyingGlass size={16} />,
-          rightSection: <Icons.MagnifyingGlass size={16} />,
+          leftSection: <MagnifyingGlass size={16} />,
+          rightSection: <MagnifyingGlass size={16} />,
         };
       case 'Default':
       default:

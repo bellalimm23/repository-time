@@ -1,4 +1,4 @@
-import * as Icons from '@phosphor-icons/react';
+import { DownloadSimple, File } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { FileType } from 'common/constants/file';
 import Separator from 'components/common/separator';
@@ -31,7 +31,7 @@ export default function FileDescriptor(props: FileDescriptorProps) {
           gap: 'md',
         })}
       >
-        <Icons.File size={16} />
+        <File size={16} />
         <Text textVariant="body1Regular">{fileType}.pdf</Text>
       </div>
       <Separator gap={24} />
@@ -48,7 +48,7 @@ export default function FileDescriptor(props: FileDescriptorProps) {
             size: 'small',
             variant: 'tertiary',
           }}
-          leftSection={<Icons.DownloadSimple />}
+          leftSection={<DownloadSimple />}
         >
           download
         </Button>

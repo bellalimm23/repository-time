@@ -1,6 +1,6 @@
 import { Drawer } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import * as Icons from '@phosphor-icons/react';
+import { Eye } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import { ThesisStatus, ThesisType } from 'common/constants/tesis';
 import { userType } from 'common/constants/user';
@@ -269,7 +269,7 @@ export default function AdminThesis(props: AdminThesisProps) {
         <Button
           onClick={openFile}
           w={150}
-          leftSection={<Icons.Eye size={16} />}
+          leftSection={<Eye size={16} />}
           variant={{
             variant: 'secondary',
             size: 'small',

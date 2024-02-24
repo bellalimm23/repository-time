@@ -25,7 +25,7 @@ export default function ThesisList() {
           width: true,
         })}
       >
-        <Text textVariant="h1">Daftar Skripsi</Text>
+        <Text textVariant="h1">Daftar Tugas Akhir</Text>
         <Separator gap={16} />
         <Grid>
           <Grid.Col span={isMobile ? 12 : 4}>
