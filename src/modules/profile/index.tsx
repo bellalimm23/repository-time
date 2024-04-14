@@ -10,8 +10,8 @@ import Container from 'modules/components/container';
 import ThesisTableList from 'modules/thesis/components/table.desktop';
 import structuralStyles from 'styles/layout.css';
 
-import Document from './documents';
 import Profile from './profile';
+import ProfileDocumentList from './profile-document-list';
 
 export default function ProfileIndex() {
   const isMobile = useMediaQuery(breakpoints.screenMaxLg);
@@ -38,7 +38,7 @@ export default function ProfileIndex() {
           </Card>
         </Grid.Col>
         <Grid.Col span={span} order={{ base: 2, md: 3 }}>
-          <Document />
+          <ProfileDocumentList />
         </Grid.Col>
       </Grid>
       <Drawer

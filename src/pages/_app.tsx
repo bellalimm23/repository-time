@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import 'styles/globals.css';
 import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { StaticRoutes } from 'common/routes/routes';
 import AdminLayout from 'components/common/admin-layout';
@@ -106,7 +107,13 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
           zIndex={9999999}
           autoClose={4000}
         />
-        {getLayout(<Component {...pageProps} />)}
+        <ModalsProvider
+          modalProps={{
+            centered: true,
+          }}
+        >
+          {getLayout(<Component {...pageProps} />)}
+        </ModalsProvider>
       </MantineProvider>
     </>
   );

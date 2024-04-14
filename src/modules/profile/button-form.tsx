@@ -1,5 +1,5 @@
 import { useMediaQuery } from '@mantine/hooks';
-import { Pen, X } from '@phosphor-icons/react';
+import { Disc, FloppyDisk, Pen, X } from '@phosphor-icons/react';
 import classNames from 'classnames';
 import breakpoints from 'common/styles/breakpoint';
 import Button from 'components/elements/button';
@@ -50,6 +50,7 @@ export default function ButtonForm() {
             size,
           }}
           className={className}
+          leftSection={<FloppyDisk />}
           type="submit"
           text="Simpan"
         />

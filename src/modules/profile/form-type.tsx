@@ -38,52 +38,91 @@ export type ProfileFormType = Yup.InferType<
 
 export type ProfileMethodType = ReturnType<typeof useForm<ProfileFormType>>;
 
-export const DocumentFormSchema = () =>
+//document
+export const DocumentSertificateFormSchema = () =>
   Yup.object({
-    path: Yup.string().required(),
-    nama: Yup.string().required(),
+    file_url: Yup.string().default(''),
   });
 
-export const UploadDocumentFormSchema = () =>
+export const DocumentFormSchema = () =>
   Yup.object({
-    documents: Yup.array(DocumentFormSchema()).default([]),
+    nama: Yup.string().default(''),
+    deskripsi: Yup.string().default(''),
+    tanggal_berlaku: Yup.date().default(new Date()),
+    tanggal_kadaluarsa: Yup.date().nullable(),
+    file_sertifikat: Yup.array(DocumentSertificateFormSchema()).default([]),
   });
 
 export type DocumentFormType = Yup.InferType<
   ReturnType<typeof DocumentFormSchema>
 >;
 
-export type UploadDocumentFormType = Yup.InferType<
-  ReturnType<typeof UploadDocumentFormSchema>
+export type DocumentSertificateFormType = Yup.InferType<
+  ReturnType<typeof DocumentSertificateFormSchema>
 >;
-
-export type UploadDocumentMethodType = ReturnType<
-  typeof useForm<UploadDocumentFormType>
->;
-
-export type DocumentModel = {
-  user: UserModel;
-  nama: string;
-  path: string;
-} & CommonModel;
 
 const user = users[0];
 
-export const documents: DocumentModel[] = [
+export type DocumentSertificateModel = {
+  file_url: string;
+} & CommonModel;
+
+export type DocumentModel = {
+  nama: string;
+  user: UserModel;
+  deskripsi: string;
+  tanggal_berlaku: Date;
+  tanggal_kadaluarsa: Date | null;
+  sertifikat: DocumentSertificateModel[];
+} & CommonModel;
+
+export const sertifikat: DocumentSertificateModel[] = [
   {
+    file_url: '',
     id: '1',
-    nama: 'Portfolio',
-    path: `${user.id}/portfolio.pdf`,
-    user,
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
   },
   {
-    id: '2',
-    nama: 'Sertifikat',
-    path: `${user.id}/sertifikat.pdf`,
+    file_url: '',
+    id: '1',
+    waktu_dibuat: new Date(),
+    waktu_diubah: new Date(),
+  },
+];
+
+export const documents: DocumentModel[] = [
+  {
+    deskripsi: 'Esse do sunt et consequat ullamco.',
+    id: '1',
+    nama: 'Sertifikat A',
+    tanggal_berlaku: new Date(),
+    tanggal_kadaluarsa: null,
     user,
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    sertifikat,
+  },
+  {
+    deskripsi: 'Esse do sunt et consequat ullamco.',
+    id: '2',
+    nama: 'Sertifikat B',
+    tanggal_berlaku: new Date(),
+    tanggal_kadaluarsa: null,
+    user,
+    waktu_dibuat: new Date(),
+    waktu_diubah: new Date(),
+    sertifikat,
+  },
+  {
+    deskripsi: 'Esse do sunt et consequat ullamco.',
+    id: '3',
+    nama: 'Sertifikat C',
+    tanggal_berlaku: new Date(),
+    tanggal_kadaluarsa: null,
+    user,
+    waktu_dibuat: new Date(),
+    waktu_diubah: new Date(),
+    sertifikat,
   },
 ];

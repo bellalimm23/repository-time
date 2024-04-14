@@ -16,8 +16,8 @@ import ThesisTableList from 'modules/thesis/components/table.desktop';
 import { useRouter } from 'next/router';
 import structuralStyles from 'styles/layout.css';
 
-import DocumentList from './components/document-list';
 import LabelContent from './components/label-content';
+import UserDocumentList from './components/user-document-list';
 
 export default function UserView() {
   const { query } = useRouter();
@@ -102,11 +102,11 @@ export default function UserView() {
       </Card>
 
       <Separator gap={32} direction="vertical" />
-      <Text textVariant="h2">Daftar Dokumen</Text>
+      <Text textVariant="h2">Sertifikat / Lisensi</Text>
       <Separator gap={24} />
-      <DocumentList documents={documents} />
+      <UserDocumentList documents={documents} />
       <Separator gap={24} />
-      <Text textVariant="h2">Daftar Thesis</Text>
+      <Text textVariant="h2">Tugas Akhir</Text>
       <Separator gap={24} />
       <ThesisTableList thesis={thesis} />
     </Container>
