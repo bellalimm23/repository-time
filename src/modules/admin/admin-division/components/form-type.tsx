@@ -26,10 +26,4 @@ export const divisions: DivisionModel[] = [
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
   },
-  {
-    id: '2',
-    nama: 'Fakultas Bisnis',
-    waktu_dibuat: new Date(),
-    waktu_diubah: new Date(),
-  },
 ];

@@ -1,4 +1,4 @@
-import { Card, Grid } from '@mantine/core';
+import { Card, Flex, Grid } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import classNames from 'classnames';
 import breakpoints from 'common/styles/breakpoint';
@@ -13,6 +13,7 @@ import {
 import Container from 'modules/components/container';
 import { documents } from 'modules/profile/form-type';
 import ThesisTableList from 'modules/thesis/components/table.desktop';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import structuralStyles from 'styles/layout.css';
 
@@ -83,10 +84,19 @@ export default function UserView() {
         padding: 24,
       }}
     >
-      <Text textVariant="h1">
-        User &nbsp;&nbsp;
-        <Text span>({label})</Text>
-      </Text>
+      <Flex mx="auto" direction="column" align="center">
+        <Image
+          src="/assets/photo-profile-example.jpeg"
+          width={128}
+          height={128}
+          alt="photo-profile"
+          style={{ objectFit: 'cover', objectPosition: 'top' }}
+        />
+        <Text textVariant="h2" mt={16}>
+          {label}
+        </Text>
+      </Flex>
+
       <Separator gap={16} />
       <Card
         withBorder

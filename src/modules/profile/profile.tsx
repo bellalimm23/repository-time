@@ -11,6 +11,7 @@ import {
   subjects,
 } from 'modules/admin/admin-subject/components/form-type';
 import { users } from 'modules/admin/admin-user/components/form-type';
+import Image from 'next/image';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -37,6 +38,7 @@ function ProfileButtonContainer() {
 export default function Profile() {
   const defaultValues = React.useMemo<ProfileFormType>(() => {
     return {
+      photo_url: users[0].photo_url || '',
       jurusan_id: users[0].jurusan.id || '',
       nama_belakang: users[0].nama_belakang || '',
       nama_depan: users[0].nama_depan || '',
@@ -66,7 +68,16 @@ export default function Profile() {
       <Card withBorder radius="md" shadow="xs">
         <Text textVariant="h1">Profil</Text>
         <Separator gap={24} />
+        <Text>Foto Profil</Text>
+        <Image
+          src="/assets/photo-profile-example.jpeg"
+          width={128}
+          height={128}
+          alt="photo-profile"
+          style={{ objectFit: 'cover', objectPosition: 'top' }}
+        />
         <Input
+          mt={16}
           type="text"
           name="nomor_identitas"
           label="Nomor Identitas"

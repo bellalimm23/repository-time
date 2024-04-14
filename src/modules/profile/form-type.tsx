@@ -25,6 +25,7 @@ export type ChangePasswordMethodType = ReturnType<
 
 export const ProfileFormSchema = () =>
   Yup.object({
+    photo_url: Yup.string().default(''),
     nomor_identitas: Yup.string().required().default(''),
     nama_depan: Yup.string().required().default(''),
     nama_tengah: Yup.string().required().default(''),

@@ -6,3 +6,4 @@ export { default as PageNotFoundSVG } from './page-not-found-svg';
 export { default as SearchSVG } from './search-svg';
 export { default as SeasonChangeSVG } from './season-change-svg';
 export { default as ServerPushSVG } from './server-push-svg';
+export { default as CertificateSVG } from './certificate-svg';

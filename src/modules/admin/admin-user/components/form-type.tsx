@@ -25,6 +25,7 @@ export type AdminUserFormType = Yup.InferType<
 export type AdminUserMethodType = ReturnType<typeof useForm<AdminUserFormType>>;
 
 export type UserModel = {
+  photo_url: string;
   nomor_identitas: string;
   password: string;
   nama_depan: string;
@@ -46,6 +47,7 @@ export const users: UserModel[] = [
     tipe_user: 'user',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
   {
     id: '2',
@@ -58,6 +60,7 @@ export const users: UserModel[] = [
     tipe_user: 'admin',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
   {
     id: '3',
@@ -70,6 +73,7 @@ export const users: UserModel[] = [
     tipe_user: 'user',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
   {
     id: '4',
@@ -82,6 +86,7 @@ export const users: UserModel[] = [
     tipe_user: 'user',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
   {
     id: '5',
@@ -94,6 +99,7 @@ export const users: UserModel[] = [
     tipe_user: 'admin',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
   {
     id: '6',
@@ -106,6 +112,7 @@ export const users: UserModel[] = [
     tipe_user: 'user',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
   {
     id: '7',
@@ -118,6 +125,7 @@ export const users: UserModel[] = [
     tipe_user: 'user',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
   {
     id: '8',
@@ -130,6 +138,7 @@ export const users: UserModel[] = [
     tipe_user: 'admin',
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
+    photo_url: '',
   },
 ];
 

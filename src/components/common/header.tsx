@@ -4,6 +4,7 @@ import {
   MagnifyingGlass,
   Pen,
   SignIn,
+  SignOut,
   // SignOut,
   User,
   UserPlus,
@@ -31,36 +32,36 @@ export default function Header() {
     const size = isMobile ? 'small' : undefined;
     const miw = isMobile ? undefined : 120;
     return [
-      {
-        variant: {
-          size,
-          variant: 'primary',
-        },
-        miw,
-        leftSection: <SignIn size={14} />,
-        onClick: () => push(StaticRoutes.login),
-        children: 'Login',
-      },
-      {
-        variant: {
-          size,
-          variant: 'secondary',
-        },
-        miw,
-        leftSection: <UserPlus size={14} />,
-        onClick: () => push(StaticRoutes.register),
-        children: 'Register',
-      },
       // {
-      //   miw: 120,
       //   variant: {
       //     size,
-      //     variant: 'tertiaryError',
+      //     variant: 'primary',
       //   },
-      //   leftSection: <SignOut size={14} />,
+      //   miw,
+      //   leftSection: <SignIn size={14} />,
       //   onClick: () => push(StaticRoutes.login),
-      //   children: 'Logout',
+      //   children: 'Login',
       // },
+      // {
+      //   variant: {
+      //     size,
+      //     variant: 'secondary',
+      //   },
+      //   miw,
+      //   leftSection: <UserPlus size={14} />,
+      //   onClick: () => push(StaticRoutes.register),
+      //   children: 'Register',
+      // },
+      {
+        miw: 120,
+        variant: {
+          size,
+          variant: 'tertiaryError',
+        },
+        leftSection: <SignOut size={14} />,
+        onClick: () => push(StaticRoutes.login),
+        children: 'Logout',
+      },
     ];
   }, [isMobile, push]);
 

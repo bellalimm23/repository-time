@@ -44,22 +44,6 @@ export const subjects: SubjectModel[] = [
     waktu_dibuat: new Date(),
     waktu_diubah: new Date(),
   },
-  {
-    id: '3',
-    nama: 'Akuntansi',
-    fakultas: divisions[1],
-    kode: 'AK',
-    waktu_dibuat: new Date(),
-    waktu_diubah: new Date(),
-  },
-  {
-    id: '4',
-    nama: 'Manajemen',
-    fakultas: divisions[1],
-    kode: 'MN',
-    waktu_dibuat: new Date(),
-    waktu_diubah: new Date(),
-  },
 ];
 
 export function generateSubjectName(subject: SubjectModel) {
