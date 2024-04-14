@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 
 export const AdminUserFormSchema = () =>
   Yup.object({
+    photo_url: Yup.string().default(''),
     nomor_identitas: Yup.string().required().default(''),
     password: Yup.string().required().default(''),
     nama_depan: Yup.string().required().default(''),

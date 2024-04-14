@@ -4,10 +4,12 @@ import notification from 'common/helpers/notification';
 import Separator from 'components/common/separator';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
+import Text from 'components/elements/text';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
 import { subjects } from 'modules/admin/admin-subject/components/form-type';
 import { AdminThesisTable } from 'modules/admin/admin-thesis/list';
 import FormHeader from 'modules/components/form-header';
+import Image from 'next/image';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -32,6 +34,17 @@ function UserInformationPanel() {
 
   return (
     <SimpleGrid cols={1}>
+      <div>
+        <Text>Foto Profil</Text>
+        <Image
+          src="/assets/photo-profile-example.jpeg"
+          width={128}
+          height={128}
+          alt="photo-profile"
+          style={{ objectFit: 'cover', objectPosition: 'top' }}
+        />
+      </div>
+
       <Input
         type="text"
         name="nama_depan"
@@ -107,6 +120,7 @@ export default function AdminUserForm(props: AdminUserProps) {
   const { adminUser } = props;
   const defaultValues = React.useMemo<AdminUserFormType>(() => {
     return {
+      photo_url: adminUser?.photo_url || '',
       nama_belakang: adminUser?.nama_belakang || '',
       nama_depan: adminUser?.nama_depan || '',
       nama_tengah: adminUser?.nama_tengah || '',
