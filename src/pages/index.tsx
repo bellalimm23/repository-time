@@ -1,8 +1,7 @@
 import UserLayout from 'components/common/user-layout';
-import Home from 'modules/home/home';
 
 export default function HomePage() {
-  return <Home />;
+  return <></>;
 }
 
 HomePage.getLayout = function (page) {
