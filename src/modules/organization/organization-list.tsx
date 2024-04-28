@@ -95,7 +95,7 @@ export default function OrganizationList(props: OrganizationListProps) {
           opened={isOpened}
           title={
             <Text textVariant="h2">
-              {organization ? 'Detail Sertifikasi' : 'Buat Sertifikasi'}
+              {organization ? 'Detail Organisasi' : 'Buat Organisasi'}
             </Text>
           }
         >

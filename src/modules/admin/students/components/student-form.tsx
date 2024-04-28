@@ -8,7 +8,6 @@ import CertificationList from 'modules/certification/certification-list';
 import EducationList from 'modules/education/education-list';
 import ExperienceList from 'modules/experience/experience-list';
 import OrganizationList from 'modules/organization/organization-list';
-import ThesisList from 'modules/thesis/thesis-list';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -59,7 +58,10 @@ export default function AdminStudentForm(props: AdminStudentFormProps) {
         </Tabs>
       )}
       {tab === 'information' && (
-        <StudentInformationForm files={files} setFiles={setFiles} />
+        <>
+          <StudentInformationForm files={files} setFiles={setFiles} />
+          <FormAction />
+        </>
       )}
       {tab === 'details' && (
         <Flex direction="column" gap={16}>
@@ -67,10 +69,8 @@ export default function AdminStudentForm(props: AdminStudentFormProps) {
           <EducationList student={student} isEditable />
           <CertificationList student={student} isEditable />
           <OrganizationList student={student} isEditable />
-          <ThesisList student={student} isEditable />
         </Flex>
       )}
-      <FormAction />
     </Form>
   );
 }
