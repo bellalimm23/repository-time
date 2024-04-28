@@ -1,10 +1,11 @@
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import 'styles/globals.css';
+import '@mantine/dropzone/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import { StaticRoutes } from 'common/routes/routes';
+import { NavigationRoute } from 'common/routes/routes';
 import AdminLayout from 'components/common/admin-layout';
 import UserLayout from 'components/common/user-layout';
 import merge from 'lodash/merge';
@@ -54,12 +55,12 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     }
   }, [locale]);
 
-  const isAdmin = pathname.includes(StaticRoutes.adminHome);
+  const isAdmin = pathname.includes(NavigationRoute.AdminHome);
 
   const isAuth = [
-    StaticRoutes.login,
-    StaticRoutes.register,
-    StaticRoutes.adminLogin,
+    NavigationRoute.Login,
+    NavigationRoute.Register,
+    NavigationRoute.AdminLogin,
   ].some((route) => pathname.includes(route));
 
   const getLayout =

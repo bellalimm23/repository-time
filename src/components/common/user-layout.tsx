@@ -12,6 +12,7 @@ interface UserLayoutProps extends ContainerProps {
 
 export default function UserLayout(props: UserLayoutProps) {
   const { isShowBackground = false } = props;
+
   return (
     <Container>
       {isShowBackground && (

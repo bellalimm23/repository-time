@@ -1,6 +1,6 @@
 import { Image, ImageProps } from '@mantine/core';
 import assets from 'assets/image';
-import { StaticRoutes } from 'common/routes/routes';
+import { NavigationRoute } from 'common/routes/routes';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,7 +24,9 @@ export default function BrandIconDirectHome(props: BrandIconDirectHomeProps) {
       src={src}
       w={w}
       h={h}
-      onClick={() => push(isAdmin ? StaticRoutes.adminHome : StaticRoutes.home)}
+      onClick={() =>
+        push(isAdmin ? NavigationRoute.AdminHome : NavigationRoute.Home)
+      }
       style={{
         cursor: 'pointer',
         ...style,

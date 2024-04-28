@@ -40,6 +40,7 @@ export default function PasswordInputField(props: PasswordInputFieldProps) {
         error={error}
         disabled={disabled}
         noMargin={noMargin}
+        value={value}
         onChange={(e) => onChange(e.target.value)}
       />
     </>
