@@ -12,7 +12,8 @@
     "prepare": "husky install",
     "bump:major": "pnpm version major --no-git-tag-version --no-commit-hooks",
     "bump:minor": "pnpm version minor --no-git-tag-version --no-commit-hooks",
-    "bump:patch": "pnpm version patch --no-git-tag-version --no-commit-hooks"
+    "bump:patch": "pnpm version patch --no-git-tag-version --no-commit-hooks",
+    "postinstall": "pnpx prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -25,6 +26,7 @@
     "@mantine/notifications": "^7.4.1",
     "@mantine/vanilla-extract": "^7.4.1",
     "@phosphor-icons/react": "2.0.8",
+    "@prisma/client": "^5.13.0",
     "@supabase/supabase-js": "^2.39.6",
     "@tanstack/react-query": "^4.35.3",
     "@tanstack/react-table": "^8.11.7",
@@ -76,6 +78,7 @@
     "lint-staged": "^15.2.0",
     "next-translate-plugin": "^2.6.2",
     "prettier": "^3.2.2",
+    "prisma": "^5.13.0",
     "typescript": "^5"
   }
 }
