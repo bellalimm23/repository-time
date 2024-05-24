@@ -50,6 +50,9 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.11.7
         version: 8.11.7(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/humps':
+        specifier: ^2.0.6
+        version: 2.0.6
       '@vanilla-extract/css':
         specifier: ^1.14.0
         version: 1.14.0
@@ -883,6 +886,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/humps@2.0.6':
+    resolution: {integrity: sha512-Fagm1/a/1J9gDKzGdtlPmmTN5eSw/aaTzHtj740oSfo+MODsSY2WglxMmhTdOglC8nxqUhGGQ+5HfVtBvxo3Kg==}
 
   '@types/invariant@2.2.37':
     resolution: {integrity: sha512-IwpIMieE55oGWiXkQPSBY1nw1nFs6bsKXTFskNY8sdS17K24vyEBRQZEwlRS7ZmXCWnJcQtbxWzly+cODWGs2A==}
@@ -3491,6 +3497,8 @@ snapshots:
       '@types/json-schema': 7.0.15
 
   '@types/estree@1.0.5': {}
+
+  '@types/humps@2.0.6': {}
 
   '@types/invariant@2.2.37': {}
 
