@@ -23,10 +23,55 @@ export const AdminResouceLiteModel = {
   tanggalDiubah: true,
 };
 
-export const ProgramStudiResouceLiteModel = {};
-export const ProgramStudiResouceModel = {};
+export const ProgramStudiResouceLiteModel = {
+  id: true,
+  kode: true,
+  nama: true,
+  tanggalDibuat: true,
+  tanggalDiubah: true,
+};
+export const ProgramStudiResouceModel = {
+  id: true,
+  kode: true,
+  nama: true,
+  tanggalDibuat: true,
+  tanggalDiubah: true,
+  Mahasiswa: {
+    select: {
+      deskripsi: true,
+      namaBelakang: true,
+      namaDepan: true,
+      namaTengah: true,
+      nomorIdentitas: true,
+      password: true,
+      photoUrl: true,
+      tanggalDibuat: true,
+      tanggalDiubah: true,
+    },
+  },
+};
 
-export const MahasiswaResouceLiteModel = {};
+export const MahasiswaResouceLiteModel = {
+  deskripsi: true,
+  namaBelakang: true,
+  namaDepan: true,
+  namaTengah: true,
+  nomorIdentitas: true,
+  password: true,
+  photoUrl: true,
+  tanggalDibuat: true,
+  tanggalDiubah: true,
+  programStudiId: true,
+  programStudi: {
+    select: {
+      id: true,
+      kode: true,
+      nama: true,
+      tanggalDibuat: true,
+      tanggalDiubah: true,
+    },
+  },
+};
 export const MahasiswaResouceModel = {};
 
 export const PengalamanResouceLiteModel = {};
