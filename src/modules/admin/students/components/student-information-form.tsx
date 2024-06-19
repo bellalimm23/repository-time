@@ -28,6 +28,14 @@ export default function StudentInformationForm(
       <Separator gap={16} />
       <Input
         type="text"
+        name="nomor_identitas"
+        label="Nomor Identitas"
+        placeholder="Masukkan Nomor Identitas"
+        required={!student}
+        disabled={!!student}
+      />
+      <Input
+        type="text"
         name="nama_depan"
         label="Nama Depan"
         placeholder="Masukkan Nama Depan"
@@ -44,14 +52,6 @@ export default function StudentInformationForm(
         label="Nama Belakang"
         placeholder="Masukkan Nama Belakang"
       />
-      {!student && (
-        <Input
-          type="password"
-          name="password"
-          label="Password"
-          placeholder="Masukkan Password"
-        />
-      )}
       <Input
         type="textarea"
         name="deskripsi"

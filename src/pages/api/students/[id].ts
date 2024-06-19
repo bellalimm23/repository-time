@@ -20,35 +20,45 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const method = req.method;
+  const id = req.query.id as string;
   const body = req.body;
-
   try {
+    const mahasiswa = await prisma.mahasiswa.findUnique({
+      where: { nomorIdentitas: id },
+      select: MahasiswaResouceModel,
+    });
+
+    if (!mahasiswa) {
+      return res.status(404).json({
+        message: 'Data tidak ditemukan',
+      });
+    }
     if (method === 'GET') {
-      const mahasiswa = await prisma.mahasiswa.findMany({});
       return res.status(200).json({
         data: decamelizeKeys(mahasiswa),
       });
     }
     await middleware(req, res, true);
-    if (method === 'POST') {
+    if (method === 'PUT') {
       const currentMahasiswa = await StudentFormSchema.validate(body);
-      const mahasiswa = await prisma.mahasiswa.create({
+      const mahasiswa = await prisma.mahasiswa.update({
+        where: { nomorIdentitas: id },
         data: {
           deskripsi: currentMahasiswa.deskripsi,
           namaBelakang: currentMahasiswa.nama_belakang,
           namaDepan: currentMahasiswa.nama_depan,
           namaTengah: currentMahasiswa.nama_tengah,
           programStudiId: currentMahasiswa.program_studi_id,
-          nomorIdentitas: currentMahasiswa.nomor_identitas,
-          password: '123456',
-          photoUrl: '',
         },
         select: MahasiswaResouceModel,
       });
       return res.status(200).json({
         data: decamelizeKeys(mahasiswa),
-        message:
-          'Mahasiswa Berhasil Ditambah, untuk default passwordnya 123456',
+        message: 'Mahasiswa Berhasil diubah',
+      });
+    } else if (method === 'DELETE') {
+      return res.status(200).json({
+        message: 'Mahasiswa Berhasil dihapus',
       });
     }
   } catch (e) {

@@ -29,6 +29,7 @@ export default function AdminStudentForm(props: AdminStudentFormProps) {
 
   const defaultValues = React.useMemo<StudentFormType>(() => {
     return {
+      nomor_identitas: student.nomor_identitas || '',
       deskripsi: student?.deskripsi ?? '',
       nama_belakang: student?.nama_belakang ?? '',
       nama_depan: student?.nama_depan ?? '',

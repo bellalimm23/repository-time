@@ -1,5 +1,8 @@
+import { generateId, middleware } from 'common/server';
 import { decamelizeKeys } from 'humps';
+import { EmployeeStatusEnum } from 'modules/admin/employee/components/employee-form-type';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as Yup from 'yup';
 
 import prisma from '../../../../prisma';
 import {
@@ -7,13 +10,25 @@ import {
   AdminResouceModel,
 } from '../../../../prisma/resource';
 
+export const EmployeeFormSchema = Yup.object({
+  nama_depan: Yup.string().required(),
+  nama_tengah: Yup.string().default(''),
+  nama_belakang: Yup.string().default(''),
+  deskripsi: Yup.string().default(''),
+  password: Yup.string().required(),
+  status: Yup.mixed<EmployeeStatusEnum>()
+    .oneOf(Object.values(EmployeeStatusEnum))
+    .default(EmployeeStatusEnum.active),
+});
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const method = req.method;
   const body = req.body;
-  console.log(body);
+
+  await middleware(req, res, true);
 
   try {
     if (method === 'GET') {
@@ -24,16 +39,18 @@ export default async function handler(
         data: decamelizeKeys(admin),
       });
     } else if (method === 'POST') {
+      const currentAdmin = await EmployeeFormSchema.validate(body);
+      const id = generateId();
       const admin = await prisma.admin.create({
         data: {
-          deskripsi: '',
-          namaBelakang: '',
-          namaDepan: '',
-          namaTengah: '',
-          nomorIdentitas: '',
-          password: '',
+          deskripsi: currentAdmin.deskripsi,
+          namaBelakang: currentAdmin.nama_belakang,
+          namaDepan: currentAdmin.nama_depan,
+          namaTengah: currentAdmin.nama_tengah,
+          nomorIdentitas: id,
+          password: currentAdmin.password,
+          status: currentAdmin.status,
           photoUrl: '',
-          status: 'active',
         },
         select: AdminResouceModel,
       });

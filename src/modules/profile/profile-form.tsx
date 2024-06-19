@@ -25,8 +25,8 @@ export default function ProfileForm(props: ProfileFormProps) {
       nama_belakang: student?.nama_belakang ?? '',
       nama_depan: student?.nama_depan ?? '',
       nama_tengah: student?.nama_tengah ?? '',
+      nomor_identitas: student.nomor_identitas || '',
       program_studi_id: student?.program_studi?.id ?? '',
-      password: student?.password ?? '',
       data: student,
     };
   }, [student]);
