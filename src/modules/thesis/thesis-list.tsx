@@ -1,6 +1,6 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Plus, Trash } from '@phosphor-icons/react';
+import { Plus } from '@phosphor-icons/react';
 import { MeModel } from 'api-hooks/auth/model';
 import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
 import { ThesisLiteModel } from 'api-hooks/thesis/model';
@@ -12,6 +12,7 @@ import colors from 'common/styles/colors';
 import ActionButton from 'components/action-button';
 import Text from 'components/elements/text';
 import LoaderView from 'components/loader-view';
+import DeleteButton from 'modules/components/delete-button';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -33,6 +34,12 @@ export default function ThesisList(props: ThesisListProps) {
   const isAdmin = pathname.includes('admin');
   const [isOpened, { open, close }] = useDisclosure();
 
+  const updateMutation = useUpdateThesis();
+  const createMutation = useCreateThesis();
+  const queryThesisList = useGetThesisList({
+    params: { nomor_identitas: props.student.nomorIdentitas },
+  });
+
   const createComponent = (isAdmin || isEditable) && (
     <ActionButton
       pos="absolute"
@@ -46,27 +53,6 @@ export default function ThesisList(props: ThesisListProps) {
       }}
     />
   );
-
-  const deleteComponent = (isAdmin || isEditable) && (
-    <ActionButton
-      pos="absolute"
-      top={16}
-      right={0}
-      type="icon"
-      color="red"
-      variant="outline"
-      children={<Trash size={16} />}
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    />
-  );
-
-  const updateMutation = useUpdateThesis();
-  const createMutation = useCreateThesis();
-  const queryThesisList = useGetThesisList({
-    params: { nomor_identitas: props.student.nomorIdentitas },
-  });
 
   return (
     <Card withBorder pos="relative">
@@ -97,7 +83,13 @@ export default function ThesisList(props: ThesisListProps) {
                       cursor: 'pointer',
                     }}
                   >
-                    {isAdmin && deleteComponent}
+                    {(isAdmin || isEditable) && (
+                      <DeleteButton
+                        type="icon"
+                        deleteType="/thesis"
+                        id={_thesis.id}
+                      />
+                    )}
                     <ThesisCard key={_thesis.id} {..._thesis} />
                   </div>
                 );

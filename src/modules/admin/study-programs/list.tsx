@@ -29,7 +29,11 @@ export function useGetStudyProgramTableList(): Column<StudyProgramLiteModel>[] {
               id={row.id}
               type="icon"
             />
-            <DeleteButton type="icon" onClick={() => {}} />
+            <DeleteButton
+              type="icon"
+              deleteType="/study-programs"
+              id={row.id}
+            />
           </Flex>
         );
       },

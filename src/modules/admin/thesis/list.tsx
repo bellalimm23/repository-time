@@ -49,7 +49,7 @@ export function useGetThesisTableList(): Column<ThesisLiteModel>[] {
               id={row.id}
               type="icon"
             />
-            <DeleteButton type="icon" onClick={() => {}} />
+            <DeleteButton type="icon" deleteType="/thesis" id={row.id} />
           </Flex>
         );
       },

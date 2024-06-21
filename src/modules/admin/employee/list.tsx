@@ -70,7 +70,11 @@ export function useGetEmployeeTableList(): Column<AdminModel>[] {
               id={row.nomorIdentitas}
               type="icon"
             />
-            <DeleteButton type="icon" onClick={() => {}} />
+            <DeleteButton
+              type="icon"
+              deleteType="/admins"
+              id={row.nomorIdentitas}
+            />
           </Flex>
         );
       },

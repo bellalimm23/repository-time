@@ -1,6 +1,6 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Plus, Trash } from '@phosphor-icons/react';
+import { Plus } from '@phosphor-icons/react';
 import { MeModel } from 'api-hooks/auth/model';
 import { OrganizationLiteModel } from 'api-hooks/organization/model';
 import {
@@ -18,6 +18,7 @@ import colors from 'common/styles/colors';
 import ActionButton from 'components/action-button';
 import Text from 'components/elements/text';
 import LoaderView from 'components/loader-view';
+import DeleteButton from 'modules/components/delete-button';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -51,21 +52,6 @@ export default function OrganizationList(props: OrganizationListProps) {
       onClick={() => {
         setOrganization(undefined);
         open();
-      }}
-    />
-  );
-
-  const deleteComponent = (isEditable || isAdmin) && (
-    <ActionButton
-      pos="absolute"
-      top={16}
-      right={0}
-      type="icon"
-      color="red"
-      variant="outline"
-      children={<Trash size={16} />}
-      onClick={(e) => {
-        e.stopPropagation();
       }}
     />
   );
@@ -108,7 +94,13 @@ export default function OrganizationList(props: OrganizationListProps) {
                       cursor: 'pointer',
                     }}
                   >
-                    {deleteComponent}
+                    {(isAdmin || isEditable) && (
+                      <DeleteButton
+                        type="icon"
+                        deleteType="/organizations"
+                        id={organization.id}
+                      />
+                    )}
                     <OrganizationCard key={organization.id} {...organization} />
                   </div>
                 );

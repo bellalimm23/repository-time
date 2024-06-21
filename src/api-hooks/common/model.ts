@@ -31,3 +31,6 @@ export class ApiError {
   message: string;
   errors?: object[];
 }
+export type DeleteType = {
+  id: string;
+};

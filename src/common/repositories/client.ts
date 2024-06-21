@@ -22,6 +22,9 @@ export const API_LIST = {
   studyPrograms: '/study-programs',
 } as const;
 
+export type ApiListType = keyof typeof API_LIST;
+export type ApiListValueType = (typeof API_LIST)[ApiListType];
+
 const client = axios.create({
   baseURL: BASE_URL,
 });
