@@ -108,7 +108,7 @@ export default function Header() {
         onClick: () => push(NavigationRoute.StudentList),
         children: 'Mahasiswa',
       },
-      ...(isAdmin
+      ...(isAdmin || !me
         ? ([] as any)
         : [
             {
@@ -125,7 +125,7 @@ export default function Header() {
             },
           ]),
     ];
-  }, [isAdmin, isCurrent, push]);
+  }, [isAdmin, isCurrent, me, push]);
 
   return (
     <>

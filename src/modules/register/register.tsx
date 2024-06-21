@@ -21,7 +21,7 @@ import { useForm } from 'react-hook-form';
 import { RegisterFormSchema, RegisterFormType } from './register-form-type';
 
 export default function Register() {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const defaultValues = React.useMemo<RegisterFormType>(() => {
     return {
       nama_belakang: '',
@@ -47,6 +47,7 @@ export default function Register() {
       try {
         const result = await mutateAsync(values);
         setToken(result.data.token);
+        replace(NavigationRoute.Home);
         notification.success({
           message: result.message,
         });
@@ -56,7 +57,7 @@ export default function Register() {
         });
       }
     },
-    [mutateAsync],
+    [mutateAsync, replace],
   );
   return (
     <Form methods={methods} onSubmit={onSubmit}>
@@ -141,7 +142,7 @@ export default function Register() {
               variant={{
                 variant: 'secondary',
               }}
-              onClick={() => push(NavigationRoute.Login)}
+              onClick={() => replace(NavigationRoute.Login)}
             >
               Login
             </Button>
