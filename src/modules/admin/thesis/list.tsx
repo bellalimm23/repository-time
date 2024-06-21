@@ -10,6 +10,7 @@ import LoaderView from 'components/loader-view';
 import NavigationButton from 'modules/components/create-button';
 import DeleteButton from 'modules/components/delete-button';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 import { ThesisStatusEnum } from './components/thesis-form-type';
 import FormLabel from '../components/form-label';
@@ -60,6 +61,9 @@ export default function ThesisList() {
   const columns = useGetThesisTableList();
   const { push } = useRouter();
   const queryThesis = useGetThesisList();
+  const [search, setSearch] = React.useState('');
+  const [status, setStatus] = React.useState<string | null>(null);
+
   return (
     <>
       <Flex direction="row" justify="space-between" mb={16}>
@@ -71,12 +75,19 @@ export default function ThesisList() {
       </Flex>
       <SimpleGrid cols={4} mb={16}>
         <TextInput
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
           label="Filter"
           placeholder="Cari identitas mahasiswa, atau judul"
         />
         <Select
           label="Status"
           searchable
+          clearable
+          value={status}
+          onChange={setStatus}
           defaultValue={ThesisStatusEnum.pending}
           placeholder="Filter Status"
           data={[
@@ -88,7 +99,24 @@ export default function ThesisList() {
       </SimpleGrid>
       <LoaderView query={queryThesis}>
         {({ data }) => {
-          const thesis = data;
+          const thesis = data
+            .filter((item) => {
+              const student = item.mahasiswa;
+              const content = [
+                student.nomorIdentitas,
+                student.namaDepan,
+                student.namaTengah,
+                student.namaBelakang,
+                item.judulTugasAkhir,
+              ]
+                .join(' ')
+                .toLowerCase();
+              return content.includes(search.toLowerCase());
+            })
+            .filter((item) => {
+              if (status === null) return true;
+              return item.status === status;
+            });
           return (
             <TableComponent
               columns={columns}

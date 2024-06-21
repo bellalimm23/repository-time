@@ -11,6 +11,7 @@ import NavigationButton from 'modules/components/create-button';
 import DeleteButton from 'modules/components/delete-button';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 import { EmployeeStatusEnum } from './components/employee-form-type';
 import FormLabel from '../components/form-label';
@@ -81,6 +82,8 @@ export default function EmployeeList() {
   const columns = useGetEmployeeTableList();
   const { push } = useRouter();
   const queryAdmins = useGetAdmins();
+  const [search, setSearch] = React.useState('');
+  const [status, setStatus] = React.useState<string | null>(null);
   return (
     <>
       <Flex direction="row" justify="space-between" mb={16}>
@@ -92,13 +95,19 @@ export default function EmployeeList() {
       </Flex>
       <SimpleGrid cols={4} mb={16}>
         <TextInput
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
           label="Filter"
           placeholder="Cari nomor identitas atau nama "
         />
         <Select
           label="Status"
           searchable
-          defaultValue={EmployeeStatusEnum.active}
+          clearable
+          value={status}
+          onChange={setStatus}
           placeholder="Filter Status"
           data={[
             { value: EmployeeStatusEnum.active, label: 'Aktif' },
@@ -108,7 +117,22 @@ export default function EmployeeList() {
       </SimpleGrid>
       <LoaderView query={queryAdmins}>
         {({ data }) => {
-          const employees = data;
+          const employees = data
+            .filter((item) => {
+              const content = [
+                item.nomorIdentitas,
+                item.namaDepan,
+                item.namaTengah,
+                item.namaBelakang,
+              ]
+                .join(' ')
+                .toLowerCase();
+              return content.includes(search.toLowerCase());
+            })
+            .filter((item) => {
+              if (status === null) return true;
+              return item.status === status;
+            });
           return (
             <TableComponent
               columns={columns}
