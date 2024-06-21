@@ -165,3 +165,5 @@ export function generateIEEEReference(data: IEEEReferenceModel) {
   // Combine everything into the IEEE citation format
   return `${authorsStr}, "${title}," ${publisher}, ${publishYear}.`;
 }
+
+export const isWindowUndefined = typeof window === 'undefined';

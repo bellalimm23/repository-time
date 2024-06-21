@@ -1,5 +1,9 @@
 import { Flex, Tabs } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
+import { uploadPhotoProfile } from 'api/storage';
+import { MeModel } from 'api-hooks/auth/model';
+import { StudentModel } from 'api-hooks/student/model';
+import notification from 'common/helpers/notification';
 import Form from 'components/elements/form';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
 import FormAction from 'modules/admin/components/form-action';
@@ -11,30 +15,26 @@ import OrganizationList from 'modules/organization/organization-list';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  StudentFormSchema,
-  StudentFormType,
-  StudentModel,
-} from './student-form-type';
+import { StudentFormSchema, StudentFormType } from './student-form-type';
 import StudentInformationForm from './student-information-form';
 
 interface AdminStudentFormProps {
-  student?: StudentModel;
+  student?: StudentModel | MeModel;
   onSubmit: (values: StudentFormType) => Promise<StudentModel | undefined>;
 }
 
 export default function AdminStudentForm(props: AdminStudentFormProps) {
-  const { student, onSubmit } = props;
+  const { student } = props;
   const [files, setFiles] = React.useState<FileWithPath[]>([]);
 
   const defaultValues = React.useMemo<StudentFormType>(() => {
     return {
+      nomor_identitas: student.nomorIdentitas || '',
       deskripsi: student?.deskripsi ?? '',
-      nama_belakang: student?.nama_belakang ?? '',
-      nama_depan: student?.nama_depan ?? '',
-      nama_tengah: student?.nama_tengah ?? '',
-      program_studi_id: student?.program_studi?.id ?? '',
-      password: student?.password ?? '',
+      nama_belakang: student?.namaBelakang ?? '',
+      nama_depan: student?.namaDepan ?? '',
+      nama_tengah: student?.namaTengah ?? '',
+      program_studi_id: student?.programStudi?.id ?? '',
       data: student,
     };
   }, [student]);
@@ -45,6 +45,21 @@ export default function AdminStudentForm(props: AdminStudentFormProps) {
   });
 
   const [tab, setTab] = React.useState('information');
+
+  const onSubmit = React.useCallback(
+    async (values: StudentFormType) => {
+      try {
+        const result = await props.onSubmit(values);
+        const file = files[0];
+        file && (await uploadPhotoProfile(result.nomorIdentitas, file));
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [files, props],
+  );
 
   return (
     <Form methods={methods} onSubmit={onSubmit} defaultEditable={!student}>

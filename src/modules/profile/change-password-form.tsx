@@ -1,3 +1,7 @@
+import { useChangePassword } from 'api-hooks/auth/mutation';
+import { meKey } from 'api-hooks/auth/query';
+import notification from 'common/helpers/notification';
+import { queryClient } from 'common/repositories/query-client';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
@@ -25,11 +29,26 @@ export default function ChangePasswordForm(props: ChangePasswordFormProps) {
 
   const methods = useForm({ defaultValues, resolver });
 
+  const { mutateAsync } = useChangePassword();
+
   const onSubmit = React.useCallback(
-    async (values) => {
-      props.onClose();
+    async (values: ChangePasswordFormType) => {
+      try {
+        const result = await mutateAsync(values);
+        notification.success({
+          message: result.message,
+        });
+        queryClient.refetchQueries({
+          queryKey: meKey.me,
+        });
+        props.onClose();
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
     },
-    [props],
+    [mutateAsync, props],
   );
 
   return (

@@ -1,24 +1,23 @@
 import { Anchor, Badge, Flex } from '@mantine/core';
+import { OrganizationLiteModel } from 'api-hooks/organization/model';
 import { formatDate } from 'common/utils/date';
 import Text from 'components/elements/text';
 
-import { OrganizationModel } from './organization-form-type';
-
-export function OrganizationCard(props: OrganizationModel) {
+export function OrganizationCard(props: OrganizationLiteModel) {
   const dateLabel = [
-    formatDate(props.waktu_mulai),
-    props.waktu_selesai ? formatDate(props.waktu_selesai) : 'Sekarang',
+    formatDate(props.tanggalMulai),
+    props.tanggalSelesai ? formatDate(props.tanggalSelesai) : 'Sekarang',
   ].join(' - ');
 
-  const files = props.items.map((item) => {
-    const file = item.file_url.split('/');
+  const files = props.lampiranOrganisasi.map((item) => {
+    const file = item.fileUrl.split('/');
     return (
       <Anchor
         fz={11}
         c="blue"
-        href={item.file_url}
+        href={item.fileUrl}
         target="_blank"
-        key={item.file_url}
+        key={item.fileUrl}
       >
         {file[file.length - 1]}
       </Anchor>
@@ -41,13 +40,13 @@ export function OrganizationCard(props: OrganizationModel) {
   const experienceComponent = experience && (
     <Text textColor="foregroundSecondary" textVariant="body2Regular">
       Berhubungan dengan:&nbsp;
-      {[experience.posisi, experience.nama_perusahaan].join(', ')}
+      {[experience.posisi, experience.namaPerusahaan].join(', ')}
     </Text>
   );
 
   return (
     <Flex direction="column" w="100%" gap={4}>
-      <Text textVariant="body1Semibold">{props.nama_organisasi}</Text>
+      <Text textVariant="body1Semibold">{props.nama}</Text>
       {labelComponent}
       {experienceComponent}
       <Text textColor="foregroundSecondary" textVariant="body2Regular">

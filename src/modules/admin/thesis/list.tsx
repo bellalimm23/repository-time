@@ -1,39 +1,38 @@
 import { Flex, SimpleGrid } from '@mantine/core';
+import { ThesisLiteModel } from 'api-hooks/thesis/model';
+import { useGetThesisList } from 'api-hooks/thesis/query';
 import { NavigationRoute } from 'common/routes/routes';
 import TableComponent from 'components/common/table/table';
 import { Column } from 'components/common/table/types';
 import Select from 'components/elements/select';
 import TextInput from 'components/elements/text-input';
+import LoaderView from 'components/loader-view';
 import NavigationButton from 'modules/components/create-button';
 import DeleteButton from 'modules/components/delete-button';
 import { useRouter } from 'next/router';
 
-import {
-  thesis,
-  ThesisModel,
-  ThesisStatusEnum,
-} from './components/thesis-form-type';
+import { ThesisStatusEnum } from './components/thesis-form-type';
 import FormLabel from '../components/form-label';
 
-export function useGetThesisTableList(): Column<ThesisModel>[] {
+export function useGetThesisTableList(): Column<ThesisLiteModel>[] {
   return [
     {
       label: 'Mahasiswa',
       data: (row) => {
         const mahasiswa = row.mahasiswa;
         const labelMahasiswa = [
-          mahasiswa.nama_depan,
-          mahasiswa.nama_tengah,
-          mahasiswa.nama_belakang,
+          mahasiswa.namaDepan,
+          mahasiswa.namaTengah,
+          mahasiswa.namaBelakang,
         ]
           .filter(Boolean)
           .join(' ');
-        return [mahasiswa.nomor_identitas, labelMahasiswa].join(' - ');
+        return [mahasiswa.nomorIdentitas, labelMahasiswa].join(' - ');
       },
     },
     {
       label: 'Judul Tugas Akhir',
-      data: (row) => row.judul_tugas_akhir,
+      data: (row) => row.judulTugasAkhir,
     },
     {
       label: 'Status',
@@ -60,6 +59,7 @@ export function useGetThesisTableList(): Column<ThesisModel>[] {
 export default function ThesisList() {
   const columns = useGetThesisTableList();
   const { push } = useRouter();
+  const queryThesis = useGetThesisList();
   return (
     <>
       <Flex direction="row" justify="space-between" mb={16}>
@@ -86,17 +86,24 @@ export default function ThesisList() {
           ]}
         />
       </SimpleGrid>
-      <TableComponent
-        columns={columns}
-        data={thesis}
-        rowKey={(row) => row.id}
-        onClickRow={(row) =>
-          push({
-            pathname: NavigationRoute.AdminThesisView,
-            query: { id: row.id },
-          })
-        }
-      />
+      <LoaderView query={queryThesis}>
+        {({ data }) => {
+          const thesis = data;
+          return (
+            <TableComponent
+              columns={columns}
+              data={thesis}
+              rowKey={(row) => row.id}
+              onClickRow={(row) =>
+                push({
+                  pathname: NavigationRoute.AdminThesisView,
+                  query: { id: row.id },
+                })
+              }
+            />
+          );
+        }}
+      </LoaderView>
     </>
   );
 }

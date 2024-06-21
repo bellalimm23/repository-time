@@ -25,3 +25,46 @@ export async function deleteFiles(path: string[]) {
 export function generateFilePath(thesisId: string, fileType: FileType) {
   return `${thesisId}/${fileType}.pdf` as const;
 }
+
+export async function uploadAttachmentFiles(
+  attachmentType:
+    | 'lampiran_sertifikasi'
+    | 'lampiran_pendidikan'
+    | 'lampiran_pengalaman'
+    | 'lampiran_organisasi'
+    | 'lampiran_thesis',
+  nomorIdentitas: string,
+  files: File[],
+  oldData: string[] = [],
+) {
+  const results = await Promise.all(
+    files.map(async (file, index) => {
+      const result = await uploadFile(
+        `${attachmentType}/${nomorIdentitas}/${attachmentType}_${index.toString().padStart(4, '0')}.pdf`,
+        file,
+      );
+
+      return result;
+    }),
+  );
+
+  const necessaryFiles = results
+    .map(({ data }) => {
+      return data?.path;
+    })
+    .filter(Boolean);
+
+  const unusedFiles = oldData.filter((file) => {
+    const isNecessary = necessaryFiles.includes(file);
+    return !isNecessary;
+  });
+
+  const onDeleteFiles = () => deleteFiles(unusedFiles);
+
+  return { results: necessaryFiles, onDeleteFiles };
+}
+
+export async function uploadPhotoProfile(nomorIdentitas: string, file: File) {
+  const result = await uploadFile(`/photo-profile/${nomorIdentitas}.png`, file);
+  return result;
+}

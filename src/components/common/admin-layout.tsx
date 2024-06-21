@@ -1,4 +1,4 @@
-import { AppShell, AppShellMainProps, Burger } from '@mantine/core';
+import { AppShell, AppShellMainProps, Burger, Center } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   Bank,
@@ -7,10 +7,12 @@ import {
   SignOut,
   User,
 } from '@phosphor-icons/react';
+import { useGetMe } from 'api-hooks/auth/query';
 import { Brand } from 'common/constants/brand';
 import { NavigationRoute } from 'common/routes/routes';
 import Button, { ButtonProps } from 'components/elements/button';
 import Text from 'components/elements/text';
+import LoaderView from 'components/loader-view';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -73,48 +75,71 @@ export default function AdminLayout(props: AdminLayoutProps) {
     ];
   }, [isCurrent, push]);
 
+  const queryMe = useGetMe();
+
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-        collapsed: { mobile: !opened },
-      }}
-      padding="md"
-    >
-      <AppShell.Header
-        className={structuralStyles.flexbox({
-          direction: 'row',
-          gap: 'xs',
-        })}
-      >
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-        <BrandIconDirectHome isAdmin />
-        <Text textVariant="body1Semibold">{Brand.name}</Text>
-      </AppShell.Header>
+    <LoaderView query={queryMe} isFullScreen>
+      {({ data }) => {
+        const isUser = data.type === 'user';
 
-      <AppShell.Navbar p="md">
-        <AppShell.Section grow>
-          {actions.map((action) => {
-            return <Button {...action} fullWidth />;
-          })}
-        </AppShell.Section>
-        <AppShell.Section>
-          <Button
-            variant={{
-              variant: 'tertiaryError',
+        if (isUser) {
+          return (
+            <Center pos="fixed" top={0} right={0} bottom={0} left={0}>
+              <Text textVariant="display">404 Page Not Found</Text>
+            </Center>
+          );
+        }
+
+        return (
+          <AppShell
+            header={{ height: 60 }}
+            navbar={{
+              width: 300,
+              breakpoint: 'sm',
+              collapsed: { mobile: !opened },
             }}
-            fullWidth
-            onClick={() => push(NavigationRoute.AdminLogin)}
-            leftSection={<SignOut size={16} />}
+            padding="md"
           >
-            Logout
-          </Button>
-        </AppShell.Section>
-      </AppShell.Navbar>
+            <AppShell.Header
+              className={structuralStyles.flexbox({
+                direction: 'row',
+                gap: 'xs',
+              })}
+            >
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                hiddenFrom="sm"
+                size="sm"
+              />
+              <BrandIconDirectHome isAdmin />
+              <Text textVariant="body1Semibold">{Brand.name}</Text>
+            </AppShell.Header>
 
-      <AppShell.Main {...props} />
-    </AppShell>
+            <AppShell.Navbar p="md">
+              <AppShell.Section grow>
+                {actions.map((action) => {
+                  return <Button {...action} fullWidth />;
+                })}
+              </AppShell.Section>
+              <AppShell.Section>
+                <Button
+                  variant={{
+                    variant: 'tertiaryError',
+                  }}
+                  fullWidth
+                  onClick={() => push(NavigationRoute.AdminLogin)}
+                  leftSection={<SignOut size={16} />}
+                >
+                  Logout
+                </Button>
+              </AppShell.Section>
+            </AppShell.Navbar>
+
+            <AppShell.Main {...props} />
+          </AppShell>
+        );
+      }}
+    </LoaderView>
   );
 }

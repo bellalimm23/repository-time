@@ -1,6 +1,8 @@
 import { BackgroundImage, Card, Center } from '@mantine/core';
+import { useRegister } from 'api-hooks/auth/mutation';
 import assets from 'assets/image';
 import notification from 'common/helpers/notification';
+import { setToken } from 'common/repositories/token';
 import { NavigationRoute } from 'common/routes/routes';
 import colors from 'common/styles/colors';
 import Separator from 'components/common/separator';
@@ -11,6 +13,7 @@ import Text from 'components/elements/text';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
 import Container from 'modules/components/container';
+import StudyProgramSelect from 'modules/components/selects/study-program-select';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,12 +24,11 @@ export default function Register() {
   const { push } = useRouter();
   const defaultValues = React.useMemo<RegisterFormType>(() => {
     return {
-      jurusan: '',
       nama_belakang: '',
-      nama_depan: '',
+      nama_depan: 'Bella',
       nama_tengah: '',
-      password: '',
-      nomor_identitas: '',
+      password: 'secret123',
+      nomor_identitas: '2044009',
       deskripsi: '',
       program_studi_id: '',
     };
@@ -38,14 +40,24 @@ export default function Register() {
     resolver,
   });
 
-  const onSubmit = React.useCallback(async (values: RegisterFormType) => {
-    try {
-    } catch (e) {
-      notification.error({
-        message: e.message,
-      });
-    }
-  }, []);
+  const { mutateAsync } = useRegister();
+
+  const onSubmit = React.useCallback(
+    async (values: RegisterFormType) => {
+      try {
+        const result = await mutateAsync(values);
+        setToken(result.data.token);
+        notification.success({
+          message: result.message,
+        });
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [mutateAsync],
+  );
   return (
     <Form methods={methods} onSubmit={onSubmit}>
       <Container>
@@ -109,8 +121,7 @@ export default function Register() {
               label="Nama Belakang"
               placeholder="Nama Belakang"
             />
-            <Input
-              type="select"
+            <StudyProgramSelect
               name="program_studi_id"
               label="Program Studi"
               placeholder="Program Studi"

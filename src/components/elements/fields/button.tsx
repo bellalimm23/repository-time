@@ -15,7 +15,7 @@ export default function ButtonField(props: ButtonFieldProps) {
   const { t } = useTranslation();
   const {
     disabled: _disabled,
-    text = t('common:save'),
+    text = 'Simpan',
 
     ...rest
   } = props;
@@ -32,7 +32,7 @@ export default function ButtonField(props: ButtonFieldProps) {
   const disabled = _disabled || !isValid || isSubmitting;
 
   return (
-    <Button {...rest} disabled={disabled}>
+    <Button {...rest} disabled={disabled} loading={isSubmitting}>
       {text ?? t('common:submit')}
     </Button>
   );

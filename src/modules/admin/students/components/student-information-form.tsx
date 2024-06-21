@@ -21,11 +21,19 @@ export default function StudentInformationForm(
     <>
       <PhotoProfileInput
         label="Foto Profil"
-        defaultImage={student?.photo_url}
+        defaultImage={student?.photoUrl}
         files={files}
         onDrop={setFiles}
       />
       <Separator gap={16} />
+      <Input
+        type="text"
+        name="nomor_identitas"
+        label="Nomor Identitas"
+        placeholder="Masukkan Nomor Identitas"
+        required={!student}
+        disabled={!!student}
+      />
       <Input
         type="text"
         name="nama_depan"
@@ -44,20 +52,13 @@ export default function StudentInformationForm(
         label="Nama Belakang"
         placeholder="Masukkan Nama Belakang"
       />
-      {!student && (
-        <Input
-          type="password"
-          name="password"
-          label="Password"
-          placeholder="Masukkan Password"
-        />
-      )}
       <Input
         type="textarea"
         name="deskripsi"
         label="Deskripsi"
         placeholder="Masukkan Deskripsi"
       />
+      <Input type="submit" />
     </>
   );
 }

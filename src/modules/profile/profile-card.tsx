@@ -2,10 +2,10 @@ import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 import { Lock, Pen } from '@phosphor-icons/react';
+import { MeModel } from 'api-hooks/auth/model';
 import colors from 'common/styles/colors';
 import Button from 'components/elements/button';
 import Text from 'components/elements/text';
-import { StudentModel } from 'modules/admin/students/components/student-form-type';
 import Image from 'next/image';
 import React from 'react';
 
@@ -13,7 +13,7 @@ import ChangePasswordForm from './change-password-form';
 import ProfileForm from './profile-form';
 
 interface ProfileCardProps {
-  student: StudentModel;
+  student: MeModel;
 }
 
 export default function ProfileCard(props: ProfileCardProps) {
@@ -38,29 +38,30 @@ export default function ProfileCard(props: ProfileCardProps) {
           <Image
             width={100}
             height={100}
-            alt={student.nomor_identitas}
-            src={student.photo_url || '/android-chrome-512x512.png'}
+            alt={student.nomorIdentitas}
+            src={student.photoUrl || '/android-chrome-512x512.png'}
             style={{
               border: `1px solid ${colors.borderOverlay}`,
               objectPosition: 'top',
               objectFit: 'cover',
             }}
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = '/android-chrome-512x512.png';
+            }}
           />
           <Text textVariant="body1Semibold">Nama Depan:</Text>
-          <Text>{student.nama_depan}</Text>
+          <Text>{student.namaDepan}</Text>
           <Text textVariant="body1Semibold">Nama Tengah:</Text>
-          <Text>{student.nama_tengah}</Text>
+          <Text>{student.namaTengah || '-'}</Text>
           <Text textVariant="body1Semibold">Nama Belakang:</Text>
-          <Text>{student.nama_belakang}</Text>
+          <Text>{student.namaBelakang || '-'}</Text>
           <Text textVariant="body1Semibold">Program Studi:</Text>
           <Text>
-            {[
-              student.program_studi.kode_program_studi,
-              student.program_studi.nama_program_studi,
-            ].join(' - ')}
+            {[student.programStudi.kode, student.programStudi.nama].join(' - ')}
           </Text>
           <Text textVariant="body1Semibold">Deskripsi:</Text>
-          <Text>{student.deskripsi}</Text>
+          <Text>{student.deskripsi || '-'}</Text>
           <Button mt={16} onClick={open} rightSection={<Pen size={16} />}>
             Ubah Profile
           </Button>

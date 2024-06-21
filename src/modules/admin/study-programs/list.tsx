@@ -1,24 +1,22 @@
 import { Flex, SimpleGrid } from '@mantine/core';
+import { StudyProgramLiteModel } from 'api-hooks/study-program/model';
+import { useGetStudyPrograms } from 'api-hooks/study-program/query';
 import { NavigationRoute } from 'common/routes/routes';
 import TableComponent from 'components/common/table/table';
 import { Column } from 'components/common/table/types';
 import TextInput from 'components/elements/text-input';
+import LoaderView from 'components/loader-view';
 import NavigationButton from 'modules/components/create-button';
 import DeleteButton from 'modules/components/delete-button';
 import { useRouter } from 'next/router';
 
-import {
-  StudyProgramModel,
-  studyPrograms,
-} from './components/study-program-form-type';
 import FormLabel from '../components/form-label';
 
-export function useGetStudyProgramTableList(): Column<StudyProgramModel>[] {
+export function useGetStudyProgramTableList(): Column<StudyProgramLiteModel>[] {
   return [
     {
       label: 'Kode Program Studi - Program Studi',
-      data: (row) =>
-        [row.kode_program_studi, row.nama_program_studi].join(' - '),
+      data: (row) => [row.kode, row.nama].join(' - '),
     },
     {
       label: 'Aksi',
@@ -41,6 +39,7 @@ export function useGetStudyProgramTableList(): Column<StudyProgramModel>[] {
 export default function StudyProgramList() {
   const columns = useGetStudyProgramTableList();
   const { push } = useRouter();
+  const queryStudyPrograms = useGetStudyPrograms();
   return (
     <>
       <Flex direction="row" justify="space-between" mb={16}>
@@ -56,17 +55,23 @@ export default function StudyProgramList() {
           placeholder="Cari kode atau nama program studi"
         />
       </SimpleGrid>
-      <TableComponent
-        columns={columns}
-        data={studyPrograms}
-        rowKey={(row) => row.id}
-        onClickRow={(row) =>
-          push({
-            pathname: NavigationRoute.AdminStudyProgramView,
-            query: { id: row.id },
-          })
-        }
-      />
+      <LoaderView query={queryStudyPrograms}>
+        {({ data }) => {
+          return (
+            <TableComponent
+              columns={columns}
+              data={data}
+              rowKey={(row) => row.id}
+              onClickRow={(row) =>
+                push({
+                  pathname: NavigationRoute.AdminStudyProgramView,
+                  query: { id: row.id },
+                })
+              }
+            />
+          );
+        }}
+      </LoaderView>
     </>
   );
 }

@@ -1,14 +1,17 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Plus, Trash } from '@phosphor-icons/react';
+import { MeModel } from 'api-hooks/auth/model';
+import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
+import { ThesisLiteModel } from 'api-hooks/thesis/model';
+import { useCreateThesis, useUpdateThesis } from 'api-hooks/thesis/mutation';
+import { thesisKey, useGetThesisList } from 'api-hooks/thesis/query';
+import notification from 'common/helpers/notification';
+import { queryClient } from 'common/repositories/query-client';
 import colors from 'common/styles/colors';
 import ActionButton from 'components/action-button';
 import Text from 'components/elements/text';
-import { StudentModel } from 'modules/admin/students/components/student-form-type';
-import {
-  thesis,
-  ThesisModel,
-} from 'modules/admin/thesis/components/thesis-form-type';
+import LoaderView from 'components/loader-view';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,13 +19,14 @@ import { ThesisCard } from './thesis-card';
 import ThesisForm from './thesis-form';
 
 interface ThesisListProps {
-  student: StudentModel;
+  student: StudentLiteModel | MeModel | StudentModel;
+
   isEditable?: boolean;
 }
 
 export default function ThesisList(props: ThesisListProps) {
   const { isEditable } = props;
-  const [_thesis, setThesis] = React.useState<ThesisModel | undefined>(
+  const [_thesis, setThesis] = React.useState<ThesisLiteModel | undefined>(
     undefined,
   );
   const { pathname } = useRouter();
@@ -58,36 +62,50 @@ export default function ThesisList(props: ThesisListProps) {
     />
   );
 
+  const updateMutation = useUpdateThesis();
+  const createMutation = useCreateThesis();
+  const queryThesisList = useGetThesisList({
+    params: { nomor_identitas: props.student.nomorIdentitas },
+  });
+
   return (
     <Card withBorder pos="relative">
       <Text textVariant="h1">Tugas Akhir</Text>
       {createComponent}
-      <Flex direction="column" gap={8}>
-        {thesis.map((_thesis, index) => {
+      <LoaderView query={queryThesisList}>
+        {({ data }) => {
+          const thesis = data;
           return (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                setThesis(_thesis);
-                open();
-              }}
-              style={{
-                position: 'relative',
-                paddingTop: 16,
-                paddingBottom: 16,
-                borderBottom:
-                  index === thesis.length - 1
-                    ? undefined
-                    : `1px solid ${colors.borderPrimary}`,
-                cursor: 'pointer',
-              }}
-            >
-              {isAdmin && deleteComponent}
-              <ThesisCard key={_thesis.id} {..._thesis} />
-            </div>
+            <Flex direction="column" gap={8}>
+              {thesis.length === 0 && <Text mt={16}>Tidak ada data</Text>}
+              {thesis.map((_thesis, index) => {
+                return (
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setThesis(_thesis);
+                      open();
+                    }}
+                    style={{
+                      position: 'relative',
+                      paddingTop: 16,
+                      paddingBottom: 16,
+                      borderBottom:
+                        index === thesis.length - 1
+                          ? undefined
+                          : `1px solid ${colors.borderPrimary}`,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {isAdmin && deleteComponent}
+                    <ThesisCard key={_thesis.id} {..._thesis} />
+                  </div>
+                );
+              })}
+            </Flex>
           );
-        })}
-      </Flex>
+        }}
+      </LoaderView>
       {(isAdmin || isEditable) && (
         <Drawer
           position="right"
@@ -102,9 +120,23 @@ export default function ThesisList(props: ThesisListProps) {
         >
           <ThesisForm
             thesis={_thesis}
-            onSubmit={async (values) => {
+            onSubmit={async (values, lampiran) => {
+              const result = _thesis
+                ? await updateMutation.mutateAsync({
+                    data: { ...values, lampiran },
+                    id: _thesis.id,
+                  })
+                : await createMutation.mutateAsync({ ...values, lampiran });
+              queryClient.refetchQueries({
+                queryKey: thesisKey.list({
+                  nomor_identitas: result.data.nomorIdentitasMahasiswa,
+                }),
+              });
+              notification.success({
+                message: result.message,
+              });
               close();
-              return undefined;
+              return result.data;
             }}
           />
         </Drawer>

@@ -6,12 +6,14 @@ import { Input } from 'components/elements/fields';
 import { useFormState } from 'components/elements/form/context';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface FormActionProps {}
 
 export default function FormAction(props: FormActionProps) {
   const { editable, setIsEditable } = useFormState();
   const { pathname } = useRouter();
+  const { formState } = useFormContext();
 
   const isEdit = React.useMemo(() => {
     switch (pathname as NavigationRoute) {
@@ -27,7 +29,7 @@ export default function FormAction(props: FormActionProps) {
     }
   }, [pathname]);
 
-  const buttonEdit = isEdit && !editable && (
+  const buttonEdit = isEdit && !editable && !formState.isSubmitting && (
     <Button
       rightSection={<Pencil size={16} />}
       variant={{ variant: 'secondary' }}
@@ -37,10 +39,11 @@ export default function FormAction(props: FormActionProps) {
     </Button>
   );
 
-  const buttonCreate = editable && (
+  const buttonCreate = (editable || formState.isSubmitting) && (
     <Input
       rightSection={<FloppyDisk size={16} />}
       type="submit"
+      loading={formState.isSubmitting}
       variant={{
         variant: 'primary',
       }}

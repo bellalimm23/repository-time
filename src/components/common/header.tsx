@@ -3,18 +3,17 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
   Books,
   GraduationCap,
-  MagnifyingGlass,
-  Pen,
   SignIn,
   SignOut,
-  // SignOut,
   User,
   UserPlus,
 } from '@phosphor-icons/react';
+import { useGetMe } from 'api-hooks/auth/query';
 import classNames from 'classnames';
 import { NavigationRoute } from 'common/routes/routes';
 import breakpoints from 'common/styles/breakpoint';
 import Button, { ButtonProps } from 'components/elements/button';
+import useLogout from 'hooks/use-logout';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -30,45 +29,58 @@ export default function Header() {
 
   const isMobile = useMediaQuery(breakpoints.screenMaxMd);
 
+  const { LogoutDialog, openLogoutDialog } = useLogout();
+
+  const { data } = useGetMe();
+  const me = data?.data;
+  const isAdmin = me?.type === 'admin';
+
   const authActions = React.useMemo<ButtonProps[]>(() => {
     const size = isMobile ? 'small' : undefined;
     const miw = isMobile ? undefined : 120;
-    return [
-      // {
-      //   key: 'login',
-      //   variant: {
-      //     size,
-      //     variant: 'primary',
-      //   },
-      //   miw,
-      //   leftSection: <SignIn size={14} />,
-      //   onClick: () => push(NavigationRoute.Login),
-      //   children: 'Login',
-      // },
-      // {
-      //   key: 'register',
-      //   variant: {
-      //     size,
-      //     variant: 'secondary',
-      //   },
-      //   miw,
-      //   leftSection: <UserPlus size={14} />,
-      //   onClick: () => push(NavigationRoute.Register),
-      //   children: 'Register',
-      // },
-      {
-        key: 'logout',
-        miw: 120,
-        variant: {
-          size,
-          variant: 'tertiaryError',
+    if (me) {
+      return [
+        {
+          key: 'logout',
+          miw: 120,
+          variant: {
+            size,
+            variant: 'tertiaryError',
+          },
+          leftSection: <SignOut size={14} />,
+          onClick: () => {
+            openLogoutDialog();
+          },
+          children: 'Logout',
         },
-        leftSection: <SignOut size={14} />,
-        onClick: () => push(NavigationRoute.Login),
-        children: 'Logout',
-      },
-    ];
-  }, [isMobile, push]);
+      ];
+    } else {
+      return [
+        {
+          key: 'login',
+          variant: {
+            size,
+            variant: 'primary',
+          },
+          miw,
+          leftSection: <SignIn size={14} />,
+          onClick: () => push(NavigationRoute.Login),
+          children: 'Login',
+        },
+        {
+          key: 'register',
+          variant: {
+            size,
+            variant: 'secondary',
+          },
+          miw,
+          leftSection: <UserPlus size={14} />,
+          onClick: () => push(NavigationRoute.Register),
+          children: 'Register',
+        },
+      ];
+    }
+  }, [isMobile, me, openLogoutDialog, push]);
 
   const actions = React.useMemo<ButtonProps[]>(() => {
     return [
@@ -96,18 +108,24 @@ export default function Header() {
         onClick: () => push(NavigationRoute.StudentList),
         children: 'Mahasiswa',
       },
-      {
-        key: 'profile',
-        miw: 120,
-        variant: {
-          variant: isCurrent(NavigationRoute.Profile) ? 'primary' : 'tertiary',
-        },
-        leftSection: <User size={14} />,
-        onClick: () => push(NavigationRoute.Profile),
-        children: 'Profil',
-      },
+      ...(isAdmin
+        ? ([] as any)
+        : [
+            {
+              key: 'profile',
+              miw: 120,
+              variant: {
+                variant: isCurrent(NavigationRoute.Profile)
+                  ? 'primary'
+                  : 'tertiary',
+              },
+              leftSection: <User size={14} />,
+              onClick: () => push(NavigationRoute.Profile),
+              children: 'Profil',
+            },
+          ]),
     ];
-  }, [isCurrent, push]);
+  }, [isAdmin, isCurrent, push]);
 
   return (
     <>
@@ -165,6 +183,7 @@ export default function Header() {
           ))}
         </div>
       </Modal>
+      {LogoutDialog}
     </>
   );
 }
