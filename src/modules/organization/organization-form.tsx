@@ -7,10 +7,12 @@ import {
   OrganizationModel,
 } from 'api-hooks/organization/model';
 import notification from 'common/helpers/notification';
+import Separator from 'components/common/separator';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
+import FormAction from 'modules/admin/components/form-action';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -119,6 +121,8 @@ export default function OrganizationForm(props: OrganizationFormProps) {
           (item) => item.fileUrl,
         )}
       />
+      <Separator gap={16} />
+      <FormAction isEdit={!!organization} />
     </Form>
   );
 }

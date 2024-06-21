@@ -3,8 +3,10 @@ import { uploadAttachmentFiles } from 'api/storage';
 import { ProfileModel } from 'api-hooks/common/model';
 import { ThesisLiteModel, ThesisModel } from 'api-hooks/thesis/model';
 import notification from 'common/helpers/notification';
+import Separator from 'components/common/separator';
 import Form from 'components/elements/form';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
+import FormAction from 'modules/admin/components/form-action';
 import ThesisFormInformation from 'modules/admin/thesis/components/thesis-form-information';
 import {
   ThesisFormSchema,
@@ -72,7 +74,13 @@ export default function ThesisForm(props: ThesisFormProps) {
 
   return (
     <Form methods={methods} onSubmit={onSubmit} defaultEditable={!thesis}>
-      <ThesisFormInformation files={files} setFiles={setFiles} />
+      <ThesisFormInformation
+        files={files}
+        setFiles={setFiles}
+        isUser={!!props.student}
+      />
+      <Separator gap={16} />
+      <FormAction isEdit={!!thesis} />
     </Form>
   );
 }

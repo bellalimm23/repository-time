@@ -49,9 +49,6 @@ export default async function handler(
           nama: currentOrganization.nama_organisasi,
           posisi: currentOrganization.posisi,
           skills: currentOrganization.skills.join('|'),
-          nomorIdentitasMahasiswa:
-            currentOrganization.nomor_identitas_mahasiswa,
-          pengalamanId: currentOrganization.pengalaman_id,
           tanggalMulai: currentOrganization.waktu_mulai,
           tanggalSelesai: currentOrganization.waktu_selesai,
           LampiranOrganisasi: {
@@ -61,9 +58,18 @@ export default async function handler(
                   fileUrl: file,
                   id: generateId(),
                   jenisFile: 'application/pdf',
-                  organisasiId: id,
                 };
               }),
+            },
+          },
+          mahasiswa: {
+            connect: {
+              nomorIdentitas: currentOrganization.nomor_identitas_mahasiswa,
+            },
+          },
+          pengalaman: {
+            connect: {
+              id: currentOrganization.pengalaman_id,
             },
           },
         },
