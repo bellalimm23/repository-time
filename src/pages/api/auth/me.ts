@@ -24,7 +24,7 @@ export default async function handler(
         });
 
         return res.status(200).json({
-          data: decamelizeKeys(mahasiswa),
+          data: decamelizeKeys({ ...mahasiswa, type: 'user' }),
         });
       } else if (user.type === 'admin') {
         const admin = await prisma.admin.findUnique({
@@ -33,7 +33,7 @@ export default async function handler(
         });
 
         return res.status(200).json({
-          data: decamelizeKeys(admin),
+          data: decamelizeKeys({ ...admin, type: 'admin' }),
         });
       }
     }

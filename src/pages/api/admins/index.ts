@@ -50,7 +50,7 @@ export default async function handler(
           nomorIdentitas: id,
           password: currentAdmin.password,
           status: currentAdmin.status,
-          photoUrl: '',
+          photoUrl: `https://srxjxwfnbpkiieeyxpux.supabase.co/storage/v1/object/public/repository/photo-profile/${id}.png`,
         },
         select: AdminResouceModel,
       });

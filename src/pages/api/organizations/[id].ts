@@ -1,4 +1,4 @@
-import { middleware } from 'common/server';
+import { generateId, middleware } from 'common/server';
 import { decamelizeKeys } from 'humps';
 import { JwtPayload } from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -16,6 +16,7 @@ export const OrganizationFormSchema = Yup.object({
   waktu_mulai: Yup.date().nullable().default(null),
   waktu_selesai: Yup.date().nullable().default(null),
   skills: Yup.array(Yup.string().default('')).default([]),
+  lampiran: Yup.array(Yup.string().default('')).default([]),
 });
 
 export default async function handler(
@@ -43,10 +44,11 @@ export default async function handler(
       });
     }
     const user = (await middleware(req, res)) as JwtPayload;
+    const isAdmin = user.type === 'admin';
 
     const nomor_identitas = user.nomor_identitas;
 
-    if (nomor_identitas !== organization.nomorIdentitasMahasiswa) {
+    if (nomor_identitas !== organization.nomorIdentitasMahasiswa && !isAdmin) {
       return res.status(403).json({
         message: 'Anda tidak di-izinkan mengakses fitur ini',
       });
@@ -55,9 +57,23 @@ export default async function handler(
     if (method === 'PUT') {
       const organization = await OrganizationFormSchema.validate(body);
 
-      await prisma.lampiranOrganisasi.deleteMany({
-        where: { organisasiId: id },
-      });
+      if (organization.lampiran.length) {
+        await prisma.$transaction([
+          prisma.lampiranOrganisasi.deleteMany({
+            where: { organisasiId: id },
+          }),
+          prisma.lampiranOrganisasi.createMany({
+            data: organization.lampiran.map((file) => {
+              return {
+                fileUrl: file,
+                id: generateId(),
+                jenisFile: 'application/pdf',
+                organisasiId: id,
+              };
+            }),
+          }),
+        ]);
+      }
 
       const currentOrganization = await prisma.organisasi.update({
         data: {

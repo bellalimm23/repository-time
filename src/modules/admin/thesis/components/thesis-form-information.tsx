@@ -1,7 +1,7 @@
 import { FileWithPath } from '@mantine/dropzone';
 import { Input } from 'components/elements/fields';
 import { FileInput } from 'components/files-input';
-import { students } from 'modules/admin/students/components/student-form-type';
+import StudentSelect from 'modules/components/selects/student-select';
 import { useFormContext } from 'react-hook-form';
 
 import { ThesisFormType, ThesisStatusEnum } from './thesis-form-type';
@@ -19,22 +19,10 @@ export default function ThesisFormInformation(
   const thesis = getValues('data');
   return (
     <>
-      <Input
-        type="select"
+      <StudentSelect
         name="nomor_identitas_mahasiswa"
         label="Mahasiswa"
         placeholder="Masukkan Mahasiswa"
-        data={students.map((student) => {
-          return {
-            value: student.nomor_identitas,
-            label: [
-              student.nomor_identitas,
-              [student.nama_depan, student.nama_tengah, student.nama_belakang]
-                .filter(Boolean)
-                .join(' '),
-            ].join(' - '),
-          };
-        })}
       />
       <Input
         type="text"
@@ -55,8 +43,8 @@ export default function ThesisFormInformation(
         placeholder="Masukkan Status"
         data={[
           { value: ThesisStatusEnum.pending, label: 'Pending' },
-          { value: ThesisStatusEnum.approve, label: 'Approve' },
-          { value: ThesisStatusEnum.reject, label: 'Reject' },
+          { value: ThesisStatusEnum.approve, label: 'Terima' },
+          { value: ThesisStatusEnum.reject, label: 'Tolak' },
         ]}
       />
       <Input
@@ -69,7 +57,7 @@ export default function ThesisFormInformation(
         files={files}
         onDrop={setFiles}
         label="Files"
-        defaultUrls={thesis?.items?.map((item) => item.file_url)}
+        defaultUrls={thesis?.lampiranTugasAkhir?.map((item) => item.fileUrl)}
       />
     </>
   );

@@ -1,10 +1,14 @@
+import 'reflect-metadata';
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
+import '@mantine/notifications/styles.css';
 import 'styles/globals.css';
 import '@mantine/dropzone/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from 'common/repositories/query-client';
 import { NavigationRoute } from 'common/routes/routes';
 import AdminLayout from 'components/common/admin-layout';
 import UserLayout from 'components/common/user-layout';
@@ -79,42 +83,44 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
+      <Head>
+        <title>Repository - Time</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+      </Head>
       <MantineProvider forceColorScheme="light" theme={theme}>
-        <Head>
-          <title>Repository - Time</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-          />
-        </Head>
         <Notifications
           limit={10}
           position="top-right"
           zIndex={9999999}
           autoClose={4000}
         />
-        <ModalsProvider
-          modalProps={{
-            centered: true,
-          }}
-        >
-          {getLayout(<Component {...pageProps} />)}
-        </ModalsProvider>
+        <QueryClientProvider client={queryClient}>
+          <ModalsProvider
+            modalProps={{
+              centered: true,
+            }}
+          >
+            {getLayout(<Component {...pageProps} />)}
+          </ModalsProvider>
+        </QueryClientProvider>
       </MantineProvider>
     </>
   );

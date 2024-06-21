@@ -1,5 +1,11 @@
 import { SimpleGrid } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
+import { uploadAttachmentFiles } from 'api/storage';
+import {
+  OrganizationLiteModel,
+  OrganizationModel,
+} from 'api-hooks/organization/model';
+import notification from 'common/helpers/notification';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
@@ -10,29 +16,29 @@ import { useForm } from 'react-hook-form';
 import {
   OrganizationFormSchema,
   OrganizationFormType,
-  OrganizationModel,
 } from './organization-form-type';
 
 interface OrganizationFormProps {
-  organization?: OrganizationModel;
+  organization?: OrganizationLiteModel;
   onSubmit: (
     value: OrganizationFormType,
+    files: string[],
   ) => Promise<OrganizationModel | undefined>;
 }
 
 export default function OrganizationForm(props: OrganizationFormProps) {
-  const { onSubmit, organization } = props;
+  const { organization } = props;
   const [files, setFiles] = React.useState<FileWithPath[]>([]);
 
   const defaultValues = React.useMemo<OrganizationFormType>(() => {
     return {
       deskripsi: organization?.deskripsi ?? '',
-      nama_organisasi: organization?.nama_organisasi ?? '',
-      nomor_identitas_mahasiswa: organization?.mahasiswa?.nomor_identitas ?? '',
-      pengalaman_id: '',
+      nama_organisasi: organization?.nama ?? '',
+      nomor_identitas_mahasiswa: organization?.nomorIdentitasMahasiswa ?? '',
+      pengalaman_id: organization?.pengalaman?.id || '',
       skills: organization?.skills?.split('|') ?? [],
-      waktu_mulai: organization?.waktu_mulai ?? null,
-      waktu_selesai: organization?.waktu_selesai ?? null,
+      waktu_mulai: organization?.tanggalMulai ?? null,
+      waktu_selesai: organization?.tanggalSelesai ?? null,
       posisi: organization?.posisi ?? '',
       data: organization,
     };
@@ -43,6 +49,29 @@ export default function OrganizationForm(props: OrganizationFormProps) {
     defaultValues,
     resolver,
   });
+
+  const oldAttachments = (organization?.lampiranOrganisasi || []).map(
+    (item) => item.fileUrl,
+  );
+  const onSubmit = React.useCallback(
+    async (values: OrganizationFormType) => {
+      try {
+        const { results, onDeleteFiles } = await uploadAttachmentFiles(
+          'lampiran_organisasi',
+          values.nomor_identitas_mahasiswa,
+          files,
+          oldAttachments,
+        );
+        await props.onSubmit(values, results);
+        await onDeleteFiles();
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [files, oldAttachments, props],
+  );
 
   return (
     <Form methods={methods} onSubmit={onSubmit} defaultEditable={!organization}>
@@ -83,7 +112,9 @@ export default function OrganizationForm(props: OrganizationFormProps) {
         files={files}
         onDrop={setFiles}
         label="Files"
-        defaultUrls={organization?.items?.map((item) => item.file_url)}
+        defaultUrls={organization?.lampiranOrganisasi?.map(
+          (item) => item.fileUrl,
+        )}
       />
     </Form>
   );

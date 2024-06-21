@@ -1,33 +1,30 @@
 import { Anchor, Badge, Flex } from '@mantine/core';
+import { ExperienceLiteModel } from 'api-hooks/experience/model';
 import { formatDate } from 'common/utils/date';
 import Text from 'components/elements/text';
 
-import { ExperienceModel } from './experience-form-type';
-
-export function ExperienceCard(props: ExperienceModel) {
+export function ExperienceCard(props: ExperienceLiteModel) {
   const dateLabel = [
-    formatDate(props.waktu_mulai),
-    props.waktu_selesai ? formatDate(props.waktu_selesai) : 'Sekarang',
+    formatDate(props.tanggalMulai),
+    props.tanggalSelesai ? formatDate(props.tanggalSelesai) : 'Sekarang',
   ].join(' - ');
 
-  const files = props.items.map((item) => {
-    const file = item.file_url.split('/');
+  const files = props.lampiranPengalaman.map((item) => {
+    const file = item.fileUrl.split('/');
     return (
       <Anchor
         fz={11}
         c="blue"
-        href={item.file_url}
+        href={item.fileUrl}
         target="_blank"
-        key={item.file_url}
+        key={item.fileUrl}
       >
         {file[file.length - 1]}
       </Anchor>
     );
   });
 
-  const label = [props.nama_perusahaan, props.lokasi]
-    .filter(Boolean)
-    .join(', ');
+  const label = [props.namaPerusahaan, props.lokasi].filter(Boolean).join(', ');
   const labelComponent = label && (
     <Text textColor="foregroundSecondary" textVariant="body2Regular">
       {label}

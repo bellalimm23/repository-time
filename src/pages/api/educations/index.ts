@@ -16,6 +16,7 @@ export const EducationFormSchema = Yup.object({
   waktu_mulai: Yup.date().nullable().default(null),
   waktu_selesai: Yup.date().nullable().default(null),
   skills: Yup.array(Yup.string().default('')).default([]),
+  lampiran: Yup.array(Yup.string().default('')).default([]),
 });
 
 export default async function handler(
@@ -41,9 +42,10 @@ export default async function handler(
     await middleware(req, res);
     if (method === 'POST') {
       const currentEducation = await EducationFormSchema.validate(body);
+      const id = generateId();
       const education = await prisma.pendidikan.create({
         data: {
-          id: generateId(),
+          id,
           deskripsi: currentEducation.deskripsi,
           bidangStudi: currentEducation.bidang_studi,
           gelar: currentEducation.gelar,
@@ -55,7 +57,14 @@ export default async function handler(
           tanggalSelesai: currentEducation.waktu_selesai,
           LampiranPendidikan: {
             createMany: {
-              data: [],
+              data: currentEducation.lampiran.map((file) => {
+                return {
+                  fileUrl: file,
+                  id: generateId(),
+                  jenisFile: 'application/pdf',
+                  pendidikanId: id,
+                };
+              }),
             },
           },
         },

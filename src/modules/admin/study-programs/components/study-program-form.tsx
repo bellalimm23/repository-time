@@ -1,3 +1,5 @@
+import { StudyProgramModel } from 'api-hooks/study-program/model';
+import notification from 'common/helpers/notification';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
@@ -9,7 +11,6 @@ import { useForm } from 'react-hook-form';
 import {
   StudyProgramFormSchema,
   StudyProgramFormType,
-  StudyProgramModel,
 } from './study-program-form-type';
 
 interface AdminStudyProgramFormProps {
@@ -22,11 +23,11 @@ interface AdminStudyProgramFormProps {
 export default function AdminStudyProgramForm(
   props: AdminStudyProgramFormProps,
 ) {
-  const { studyProgram, onSubmit } = props;
+  const { studyProgram } = props;
   const defaultValues = React.useMemo<StudyProgramFormType>(() => {
     return {
-      kode_program_studi: studyProgram?.kode_program_studi || '',
-      nama_program_studi: studyProgram?.nama_program_studi || '',
+      kode_program_studi: studyProgram?.kode || '',
+      nama_program_studi: studyProgram?.nama || '',
       data: studyProgram,
     };
   }, [studyProgram]);
@@ -35,6 +36,17 @@ export default function AdminStudyProgramForm(
     resolver,
     defaultValues,
   });
+
+  const onSubmit = React.useCallback(
+    async (values: StudyProgramFormType) => {
+      try {
+        await props.onSubmit(values);
+      } catch (e) {
+        notification.error({ message: e.message });
+      }
+    },
+    [props],
+  );
 
   return (
     <Form methods={methods} onSubmit={onSubmit} defaultEditable={!studyProgram}>

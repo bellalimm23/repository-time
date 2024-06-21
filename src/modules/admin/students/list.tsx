@@ -1,17 +1,19 @@
 import { Flex, SimpleGrid } from '@mantine/core';
+import { StudentLiteModel } from 'api-hooks/student/model';
+import { useGetStudents } from 'api-hooks/student/query';
 import { NavigationRoute } from 'common/routes/routes';
 import TableComponent from 'components/common/table/table';
 import { Column } from 'components/common/table/types';
 import TextInput from 'components/elements/text-input';
+import LoaderView from 'components/loader-view';
 import NavigationButton from 'modules/components/create-button';
 import DeleteButton from 'modules/components/delete-button';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { StudentModel, students } from './components/student-form-type';
 import FormLabel from '../components/form-label';
 
-export function useGetStudentTableList(): Column<StudentModel>[] {
+export function useGetStudentTableList(): Column<StudentLiteModel>[] {
   return [
     {
       label: '',
@@ -25,33 +27,33 @@ export function useGetStudentTableList(): Column<StudentModel>[] {
       },
       data: (row) => (
         <Image
-          alt={row.nomor_identitas}
+          alt={row.nomorIdentitas}
           style={{
             objectFit: 'cover',
             objectPosition: 'top',
           }}
           width={64}
           height={64}
-          src={row.photo_url || '/android-chrome-512x512.png'}
+          src={row.photoUrl || '/android-chrome-512x512.png'}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = '/android-chrome-512x512.png';
+          }}
         />
       ),
     },
     {
       label: 'Nomor Identitas - Nama',
       data: (row) => {
-        const name = [row.nama_depan, row.nama_tengah, row.nama_belakang]
+        const name = [row.namaDepan, row.namaTengah, row.namaBelakang]
           .filter(Boolean)
           .join(' ');
-        return [row.nomor_identitas, name].join(' - ');
+        return [row.nomorIdentitas, name].join(' - ');
       },
     },
     {
       label: 'Program Studi',
-      data: (row) =>
-        [
-          row.program_studi.kode_program_studi,
-          row.program_studi.nama_program_studi,
-        ].join(' - '),
+      data: (row) => [row.programStudi.kode, row.programStudi.nama].join(' - '),
     },
     {
       label: 'Aksi',
@@ -60,7 +62,7 @@ export function useGetStudentTableList(): Column<StudentModel>[] {
           <Flex direction="row" gap={8}>
             <NavigationButton
               route={NavigationRoute.AdminStudentView}
-              id={row.nomor_identitas}
+              id={row.nomorIdentitas}
               type="icon"
             />
             <DeleteButton type="icon" onClick={() => {}} />
@@ -74,6 +76,7 @@ export function useGetStudentTableList(): Column<StudentModel>[] {
 export default function StudentList() {
   const columns = useGetStudentTableList();
   const { push } = useRouter();
+  const queryStudents = useGetStudents();
   return (
     <>
       <Flex direction="row" justify="space-between" mb={16}>
@@ -89,17 +92,26 @@ export default function StudentList() {
           placeholder="Cari nomor identitas atau nama"
         />
       </SimpleGrid>
-      <TableComponent
-        columns={columns}
-        data={students}
-        rowKey={(row) => row.nomor_identitas}
-        onClickRow={(row) =>
-          push({
-            pathname: NavigationRoute.AdminStudentView,
-            query: { id: row.nomor_identitas },
-          })
-        }
-      />
+      <LoaderView query={queryStudents}>
+        {({ data }) => {
+          const students = data;
+          return (
+            <>
+              <TableComponent
+                columns={columns}
+                data={students}
+                rowKey={(row) => row.nomorIdentitas}
+                onClickRow={(row) =>
+                  push({
+                    pathname: NavigationRoute.AdminStudentView,
+                    query: { id: row.nomorIdentitas },
+                  })
+                }
+              />
+            </>
+          );
+        }}
+      </LoaderView>
     </>
   );
 }

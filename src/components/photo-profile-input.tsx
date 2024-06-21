@@ -28,6 +28,10 @@ export function PhotoProfile(props: { imageUrl: FileWithPath | string }) {
         objectPosition: 'top',
       }}
       onLoad={onLoad}
+      onError={({ currentTarget }) => {
+        currentTarget.onerror = null;
+        currentTarget.src = '/android-chrome-512x512.png';
+      }}
     />
   );
 }

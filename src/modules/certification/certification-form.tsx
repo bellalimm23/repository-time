@@ -1,5 +1,11 @@
 import { SimpleGrid } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
+import { uploadAttachmentFiles } from 'api/storage';
+import {
+  CertificationLiteModel,
+  CertificationModel,
+} from 'api-hooks/certification/model';
+import notification from 'common/helpers/notification';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
@@ -10,31 +16,30 @@ import { useForm } from 'react-hook-form';
 import {
   CertificationFormSchema,
   CertificationFormType,
-  CertificationModel,
 } from './certification-form-type';
 
 interface CertificationFormProps {
-  certification?: CertificationModel;
+  certification?: CertificationLiteModel;
   onSubmit: (
     value: CertificationFormType,
+    files: string[],
   ) => Promise<CertificationModel | undefined>;
 }
 
 export default function CertificationForm(props: CertificationFormProps) {
-  const { onSubmit, certification } = props;
+  const { certification } = props;
   const [files, setFiles] = React.useState<FileWithPath[]>([]);
 
   const defaultValues = React.useMemo<CertificationFormType>(() => {
     return {
-      nomor_identitas_mahasiswa:
-        certification?.mahasiswa?.nomor_identitas ?? '',
+      nomor_identitas_mahasiswa: certification?.nomorIdentitasMahasiswa ?? '',
       deskripsi: certification?.deskripsi ?? '',
-      nama_institusi: certification?.nama_institusi ?? '',
-      nama_sertifikasi: certification?.nama_sertifikasi ?? '',
-      nilai_akhir: certification?.nilai_akhir ?? '',
+      nama_institusi: certification?.namaInstitusi ?? '',
+      nama_sertifikasi: certification?.namaSertifikasi ?? '',
+      nilai_akhir: certification?.nilaiAkhir ?? '',
       skills: certification?.skills?.split('|') ?? [],
-      waktu_kadaluarsa: certification?.waktu_kadaluarsa ?? null,
-      waktu_terbit: certification?.waktu_terbit || new Date(),
+      waktu_kadaluarsa: certification?.tanggalKadaluarsa ?? null,
+      waktu_terbit: certification?.tanggalTerbit || new Date(),
       data: certification,
     };
   }, [certification]);
@@ -44,6 +49,30 @@ export default function CertificationForm(props: CertificationFormProps) {
     defaultValues,
     resolver,
   });
+
+  const oldAttachments = (certification?.lampiranSertifikasi || []).map(
+    (item) => item.fileUrl,
+  );
+
+  const onSubmit = React.useCallback(
+    async (values: CertificationFormType) => {
+      try {
+        const { results, onDeleteFiles } = await uploadAttachmentFiles(
+          'lampiran_sertifikasi',
+          values.nomor_identitas_mahasiswa,
+          files,
+          oldAttachments,
+        );
+        await props.onSubmit(values, results);
+        await onDeleteFiles;
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [files, oldAttachments, props],
+  );
 
   return (
     <Form
@@ -95,7 +124,9 @@ export default function CertificationForm(props: CertificationFormProps) {
         files={files}
         onDrop={setFiles}
         label="Files"
-        defaultUrls={certification?.items?.map((item) => item.file_url)}
+        defaultUrls={certification?.lampiranSertifikasi?.map(
+          (item) => item.fileUrl,
+        )}
       />
     </Form>
   );

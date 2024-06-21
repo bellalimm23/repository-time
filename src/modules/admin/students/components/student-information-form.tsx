@@ -21,7 +21,7 @@ export default function StudentInformationForm(
     <>
       <PhotoProfileInput
         label="Foto Profil"
-        defaultImage={student?.photo_url}
+        defaultImage={student?.photoUrl}
         files={files}
         onDrop={setFiles}
       />
@@ -58,6 +58,7 @@ export default function StudentInformationForm(
         label="Deskripsi"
         placeholder="Masukkan Deskripsi"
       />
+      <Input type="submit" />
     </>
   );
 }

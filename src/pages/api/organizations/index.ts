@@ -15,6 +15,7 @@ export const OrganizationFormSchema = Yup.object({
   waktu_mulai: Yup.date().nullable().default(null),
   waktu_selesai: Yup.date().nullable().default(null),
   skills: Yup.array(Yup.string().default('')).default([]),
+  lampiran: Yup.array(Yup.string().default('')).default([]),
 });
 
 export default async function handler(
@@ -55,7 +56,14 @@ export default async function handler(
           tanggalSelesai: currentOrganization.waktu_selesai,
           LampiranOrganisasi: {
             createMany: {
-              data: [],
+              data: currentOrganization.lampiran.map((file) => {
+                return {
+                  fileUrl: file,
+                  id: generateId(),
+                  jenisFile: 'application/pdf',
+                  organisasiId: id,
+                };
+              }),
             },
           },
         },

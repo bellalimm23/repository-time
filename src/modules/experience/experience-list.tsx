@@ -1,19 +1,28 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Plus, Trash } from '@phosphor-icons/react';
+import { MeModel } from 'api-hooks/auth/model';
+import { ExperienceLiteModel } from 'api-hooks/experience/model';
+import {
+  useCreateExperience,
+  useUpdateExperience,
+} from 'api-hooks/experience/mutation';
+import { experienceKey, useGetExperiences } from 'api-hooks/experience/query';
+import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
+import notification from 'common/helpers/notification';
+import { queryClient } from 'common/repositories/query-client';
 import colors from 'common/styles/colors';
 import ActionButton from 'components/action-button';
 import Text from 'components/elements/text';
-import { StudentModel } from 'modules/admin/students/components/student-form-type';
+import LoaderView from 'components/loader-view';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { ExperienceCard } from './experience-card';
 import ExperienceForm from './experience-form';
-import { ExperienceModel, experiences } from './experience-form-type';
 
 interface ExperienceListProps {
-  student: StudentModel;
+  student: StudentLiteModel | MeModel | StudentModel;
   isEditable?: boolean;
 }
 
@@ -23,7 +32,7 @@ export default function ExperienceList(props: ExperienceListProps) {
   const isAdmin = pathname.includes('admin');
 
   const [experience, setExperience] = React.useState<
-    ExperienceModel | undefined
+    ExperienceLiteModel | undefined
   >(undefined);
   const [isOpened, { open, close }] = useDisclosure();
 
@@ -56,36 +65,49 @@ export default function ExperienceList(props: ExperienceListProps) {
     />
   );
 
+  const updateMutation = useUpdateExperience();
+  const createMutation = useCreateExperience();
+  const queryExperiences = useGetExperiences({
+    params: { nomor_identitas: props.student.nomorIdentitas },
+  });
   return (
     <Card withBorder pos="relative">
       <Text textVariant="h1">Pengalaman</Text>
       {createComponent}
-      <Flex direction="column" gap={8}>
-        {experiences.map((experience, index) => {
+      <LoaderView query={queryExperiences}>
+        {({ data }) => {
+          const experiences = data;
           return (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                setExperience(experience);
-                open();
-              }}
-              style={{
-                position: 'relative',
-                paddingTop: 16,
-                paddingBottom: 16,
-                borderBottom:
-                  index === experiences.length - 1
-                    ? undefined
-                    : `1px solid ${colors.borderPrimary}`,
-                cursor: 'pointer',
-              }}
-            >
-              {deleteComponent}
-              <ExperienceCard key={experience.id} {...experience} />
-            </div>
+            <Flex direction="column" gap={8}>
+              {experiences.length === 0 && <Text mt={16}>Tidak ada data</Text>}
+              {experiences.map((experience, index) => {
+                return (
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setExperience(experience);
+                      open();
+                    }}
+                    style={{
+                      position: 'relative',
+                      paddingTop: 16,
+                      paddingBottom: 16,
+                      borderBottom:
+                        index === experiences.length - 1
+                          ? undefined
+                          : `1px solid ${colors.borderPrimary}`,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {deleteComponent}
+                    <ExperienceCard key={experience.id} {...experience} />
+                  </div>
+                );
+              })}
+            </Flex>
           );
-        })}
-      </Flex>
+        }}
+      </LoaderView>
       {(isAdmin || isEditable) && (
         <Drawer
           position="right"
@@ -100,9 +122,23 @@ export default function ExperienceList(props: ExperienceListProps) {
         >
           <ExperienceForm
             experience={experience}
-            onSubmit={async (values) => {
+            onSubmit={async (values, lampiran) => {
+              const result = experience
+                ? await updateMutation.mutateAsync({
+                    data: { ...values, lampiran },
+                    id: experience.id,
+                  })
+                : await createMutation.mutateAsync({ ...values, lampiran });
+              queryClient.refetchQueries({
+                queryKey: experienceKey.list({
+                  nomor_identitas: result.data.nomorIdentitasMahasiswa,
+                }),
+              });
+              notification.success({
+                message: result.message,
+              });
               close();
-              return undefined;
+              return result.data;
             }}
           />
         </Drawer>

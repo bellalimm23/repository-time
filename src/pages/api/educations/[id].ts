@@ -1,14 +1,11 @@
-import { middleware } from 'common/server';
+import { generateId, middleware } from 'common/server';
 import { decamelizeKeys } from 'humps';
 import { JwtPayload } from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as Yup from 'yup';
 
 import prisma from '../../../../prisma';
-import {
-  MahasiswaResouceLiteModel,
-  PendidikanResouceModel,
-} from '../../../../prisma/resource';
+import { PendidikanResouceModel } from '../../../../prisma/resource';
 
 export const EducationFormSchema = Yup.object({
   nomor_identitas_mahasiswa: Yup.string().default(''),
@@ -20,6 +17,7 @@ export const EducationFormSchema = Yup.object({
   waktu_mulai: Yup.date().nullable().default(null),
   waktu_selesai: Yup.date().nullable().default(null),
   skills: Yup.array(Yup.string().default('')).default([]),
+  lampiran: Yup.array(Yup.string().default('')).default([]),
 });
 
 export default async function handler(
@@ -35,31 +33,7 @@ export default async function handler(
       where: {
         id,
       },
-      // select: PendidikanResouceModel,
-      select: {
-        bidangStudi: true,
-        deskripsi: true,
-        gelar: true,
-        id: true,
-        LampiranPendidikan: {
-          select: {
-            fileUrl: true,
-            id: true,
-            jenisFile: true,
-          },
-        },
-        namaInstitusi: true,
-        nilaiAkhir: true,
-        nomorIdentitasMahasiswa: true,
-        skills: true,
-        tanggalDibuat: true,
-        tanggalDiubah: true,
-        tanggalMulai: true,
-        tanggalSelesai: true,
-        mahasiswa: {
-          select: MahasiswaResouceLiteModel,
-        },
-      },
+      select: PendidikanResouceModel,
     });
     if (!pendidikan) {
       return res.status(404).json({
@@ -72,10 +46,11 @@ export default async function handler(
       });
     }
     const user = (await middleware(req, res)) as JwtPayload;
+    const isAdmin = user.type === 'admin';
 
     const nomor_identitas = user.nomor_identitas;
 
-    if (nomor_identitas !== pendidikan.nomorIdentitasMahasiswa) {
+    if (nomor_identitas !== pendidikan.nomorIdentitasMahasiswa && !isAdmin) {
       return res.status(403).json({
         message: 'Anda tidak di-izinkan mengakses fitur ini',
       });
@@ -84,9 +59,23 @@ export default async function handler(
     if (method === 'PUT') {
       const pendidikan = await EducationFormSchema.validate(body);
 
-      await prisma.lampiranPendidikan.deleteMany({
-        where: { pendidikanId: id },
-      });
+      if (pendidikan.lampiran.length) {
+        await prisma.$transaction([
+          prisma.lampiranPendidikan.deleteMany({
+            where: { pendidikanId: id },
+          }),
+          prisma.lampiranPendidikan.createMany({
+            data: pendidikan.lampiran.map((file) => {
+              return {
+                fileUrl: file,
+                id: generateId(),
+                jenisFile: 'application/pdf',
+                pendidikanId: id,
+              };
+            }),
+          }),
+        ]);
+      }
 
       const currentEducation = await prisma.pendidikan.update({
         data: {
@@ -99,11 +88,6 @@ export default async function handler(
           skills: pendidikan.skills.join('|'),
           tanggalMulai: pendidikan.waktu_mulai,
           tanggalSelesai: pendidikan.waktu_selesai,
-          LampiranPendidikan: {
-            createMany: {
-              data: [],
-            },
-          },
         },
         where: { id },
         select: PendidikanResouceModel,

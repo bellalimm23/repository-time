@@ -1,5 +1,8 @@
 import { BackgroundImage, Card, Center } from '@mantine/core';
+import { useLogin } from 'api-hooks/auth/mutation';
 import assets from 'assets/image';
+import notification from 'common/helpers/notification';
+import { setToken } from 'common/repositories/token';
 import { NavigationRoute } from 'common/routes/routes';
 import colors from 'common/styles/colors';
 import Separator from 'components/common/separator';
@@ -22,18 +25,35 @@ export default function Login(props: LoginProps) {
   const { push } = useRouter();
   const defaultValues = React.useMemo<LoginFormType>(() => {
     return {
-      password: '',
-      nomor_identitas: '',
+      password: 'secret123',
+      nomor_identitas: '2044009',
     };
   }, []);
   const resolver = useYupValidationResolver(LoginFormSchema());
-
   const methods = useForm({
     defaultValues,
     resolver,
   });
 
-  const onSubmit = React.useCallback(async (values: LoginFormType) => {}, []);
+  const { mutateAsync } = useLogin();
+
+  const onSubmit = React.useCallback(
+    async (values: LoginFormType) => {
+      try {
+        const result = await mutateAsync(values);
+        setToken(result.data.token);
+        notification.success({
+          message: result.message,
+        });
+        push(NavigationRoute.Home);
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [mutateAsync, push],
+  );
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>

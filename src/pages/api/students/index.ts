@@ -4,7 +4,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import * as Yup from 'yup';
 
 import prisma from '../../../../prisma';
-import { MahasiswaResouceModel } from '../../../../prisma/resource';
+import {
+  MahasiswaResouceLiteModel,
+  MahasiswaResouceModel,
+} from '../../../../prisma/resource';
 
 export const StudentFormSchema = Yup.object({
   nomor_identitas: Yup.string().default(''),
@@ -24,7 +27,9 @@ export default async function handler(
 
   try {
     if (method === 'GET') {
-      const mahasiswa = await prisma.mahasiswa.findMany({});
+      const mahasiswa = await prisma.mahasiswa.findMany({
+        select: MahasiswaResouceLiteModel,
+      });
       return res.status(200).json({
         data: decamelizeKeys(mahasiswa),
       });
@@ -41,7 +46,7 @@ export default async function handler(
           programStudiId: currentMahasiswa.program_studi_id,
           nomorIdentitas: currentMahasiswa.nomor_identitas,
           password: '123456',
-          photoUrl: '',
+          photoUrl: `https://srxjxwfnbpkiieeyxpux.supabase.co/storage/v1/object/public/repository/photo-profile/${currentMahasiswa.nomor_identitas}.png`,
         },
         select: MahasiswaResouceModel,
       });

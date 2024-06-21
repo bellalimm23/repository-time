@@ -19,6 +19,7 @@ export const ThesisFormSchema = Yup.object({
     .default(ThesisStatusEnum.pending),
   waktu_terbit: Yup.date().nullable(),
   nomor_identitas_pic: Yup.string().nullable(),
+  lampiran: Yup.array(Yup.string().default('')).default([]),
 });
 
 export default async function handler(
@@ -46,6 +47,7 @@ export default async function handler(
     if (method === 'POST') {
       const id = generateId();
       const currentThesis = await ThesisFormSchema.validate(body);
+
       const thesis = await prisma.tugasAkhir.create({
         data: {
           abstrak: currentThesis.abstrak,
@@ -56,7 +58,14 @@ export default async function handler(
           status: currentThesis.status,
           LampiranTugasAkhir: {
             createMany: {
-              data: [],
+              data: currentThesis.lampiran.map((file) => {
+                return {
+                  id: generateId(),
+                  fileUrl: file,
+                  jenisFile: 'application/pdf',
+                  tugasAkhirId: id,
+                };
+              }),
             },
           },
         },

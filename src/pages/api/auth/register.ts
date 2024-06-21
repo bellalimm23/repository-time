@@ -31,13 +31,13 @@ export default async function handler(
           namaDepan: register.nama_depan,
           namaTengah: register.nama_tengah,
           password: register.password,
-          photoUrl: '',
+          photoUrl: `https://srxjxwfnbpkiieeyxpux.supabase.co/storage/v1/object/public/repository/photo-profile/${register.nomor_identitas}.png`,
           programStudiId: register.program_studi_id,
         },
       });
 
       return res.status(200).json({
-        data: { token: generateAccessToken(mahasiswa) },
+        data: { token: generateAccessToken({ ...mahasiswa, type: 'user' }) },
         message: 'Mahasiswa telah berhasil terdaftar',
       });
     }

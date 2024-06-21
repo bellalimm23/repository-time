@@ -85,7 +85,7 @@ export async function middleware(
         });
       }
 
-      if (user.jenis === 'user' && isAdmin) {
+      if (user.type === 'user' && isAdmin) {
         return response.status(401).json({
           message: 'Anda tidak diizinkan memakai fitur ini',
         });

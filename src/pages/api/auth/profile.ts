@@ -30,12 +30,12 @@ export default async function handler(
           deskripsi: student.deskripsi,
           namaBelakang: student.nama_belakang,
           namaDepan: student.nama_depan,
-          namaTengah: student.nama_belakang,
+          namaTengah: student.nama_tengah,
           programStudiId: student.program_studi_id,
         },
       });
 
-      return res.status(404).json({
+      return res.status(200).json({
         data: decamelizeKeys(mahasiswa),
         message: 'Profil Berhasil diubah',
       });

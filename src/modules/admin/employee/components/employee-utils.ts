@@ -1,7 +1,7 @@
-import { EmployeeModel } from './employee-form-type';
+import { AdminModel } from 'api-hooks/admin/model';
 
-export function employeeNameGenerator(employee: EmployeeModel) {
-  return [employee.nama_depan, employee.nama_tengah, employee.nama_belakang]
+export function employeeNameGenerator(employee: AdminModel) {
+  return [employee.namaDepan, employee.namaTengah, employee.namaBelakang]
     .filter(Boolean)
     .join(' ');
 }

@@ -1,5 +1,11 @@
 import { SimpleGrid } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
+import { uploadAttachmentFiles } from 'api/storage';
+import {
+  ExperienceLiteModel,
+  ExperienceModel,
+} from 'api-hooks/experience/model';
+import notification from 'common/helpers/notification';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
@@ -10,28 +16,30 @@ import { useForm } from 'react-hook-form';
 import {
   ExperienceFormSchema,
   ExperienceFormType,
-  ExperienceModel,
 } from './experience-form-type';
 
 interface ExperienceFormProps {
-  experience?: ExperienceModel;
-  onSubmit: (value: ExperienceFormType) => Promise<ExperienceModel | undefined>;
+  experience?: ExperienceLiteModel;
+  onSubmit: (
+    value: ExperienceFormType,
+    files: string[],
+  ) => Promise<ExperienceModel | undefined>;
 }
 
 export default function ExperienceForm(props: ExperienceFormProps) {
-  const { onSubmit, experience } = props;
+  const { experience } = props;
   const [files, setFiles] = React.useState<FileWithPath[]>([]);
 
   const defaultValues = React.useMemo<ExperienceFormType>(() => {
     return {
       deskripsi: experience?.deskripsi ?? '',
       lokasi: experience?.lokasi ?? '',
-      nama_perusahaan: experience?.nama_perusahaan ?? '',
-      nomor_identitas_mahasiswa: experience?.mahasiswa?.nomor_identitas ?? '',
+      nama_perusahaan: experience?.namaPerusahaan ?? '',
+      nomor_identitas_mahasiswa: experience?.nomorIdentitasMahasiswa ?? '',
       posisi: experience?.posisi ?? '',
       skills: experience?.skills?.split('|') ?? [],
-      waktu_mulai: experience?.waktu_mulai ?? null,
-      waktu_selesai: experience?.waktu_selesai ?? null,
+      waktu_mulai: experience?.tanggalMulai ?? null,
+      waktu_selesai: experience?.tanggalSelesai ?? null,
       data: experience,
     };
   }, [experience]);
@@ -40,6 +48,30 @@ export default function ExperienceForm(props: ExperienceFormProps) {
     defaultValues,
     resolver,
   });
+
+  const oldAttachments = (experience?.lampiranPengalaman || []).map(
+    (item) => item.fileUrl,
+  );
+
+  const onSubmit = React.useCallback(
+    async (values: ExperienceFormType) => {
+      try {
+        const { results, onDeleteFiles } = await uploadAttachmentFiles(
+          'lampiran_pengalaman',
+          values.nomor_identitas_mahasiswa,
+          files,
+          oldAttachments,
+        );
+        await props.onSubmit(values, results);
+        await onDeleteFiles();
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [files, oldAttachments, props],
+  );
 
   return (
     <Form methods={methods} onSubmit={onSubmit} defaultEditable={!experience}>
@@ -86,7 +118,9 @@ export default function ExperienceForm(props: ExperienceFormProps) {
         files={files}
         onDrop={setFiles}
         label="Files"
-        defaultUrls={experience?.items?.map((item) => item.file_url)}
+        defaultUrls={experience?.lampiranPengalaman?.map(
+          (item) => item.fileUrl,
+        )}
       />
     </Form>
   );

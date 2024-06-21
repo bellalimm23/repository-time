@@ -1,4 +1,7 @@
 import { FileWithPath } from '@mantine/dropzone';
+import { uploadPhotoProfile } from 'api/storage';
+import { AdminModel } from 'api-hooks/admin/model';
+import notification from 'common/helpers/notification';
 import Separator from 'components/common/separator';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
@@ -12,26 +15,25 @@ import { useForm } from 'react-hook-form';
 import {
   EmployeeFormSchema,
   EmployeeFormType,
-  EmployeeModel,
   EmployeeStatusEnum,
 } from './employee-form-type';
 
 interface EmployeeFormProps {
-  employee?: EmployeeModel;
-  onSubmit: (values: EmployeeFormType) => Promise<EmployeeModel | undefined>;
+  employee?: AdminModel;
+  onSubmit: (values: EmployeeFormType) => Promise<AdminModel | undefined>;
 }
 
 export default function EmployeeForm(props: EmployeeFormProps) {
-  const { onSubmit, employee } = props;
+  const { employee } = props;
   const [files, setFiles] = React.useState<FileWithPath[]>([]);
 
   const defaultValues = React.useMemo<EmployeeFormType>(() => {
     return {
-      nama_depan: employee?.nama_depan || '',
-      nama_tengah: employee?.nama_tengah || '',
-      nama_belakang: employee?.nama_belakang || '',
+      nama_depan: employee?.namaDepan || '',
+      nama_tengah: employee?.namaTengah || '',
+      nama_belakang: employee?.namaBelakang || '',
       deskripsi: employee?.deskripsi || '',
-      password: employee?.password || '',
+      password: '',
       status: employee?.status || EmployeeStatusEnum.active,
       data: employee,
     };
@@ -44,12 +46,27 @@ export default function EmployeeForm(props: EmployeeFormProps) {
     resolver,
   });
 
+  const onSubmit = React.useCallback(
+    async (values: EmployeeFormType) => {
+      try {
+        const result = await props.onSubmit(values);
+        const file = files[0];
+        file && (await uploadPhotoProfile(result.nomorIdentitas, file));
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [files, props],
+  );
+
   return (
     <Form methods={methods} onSubmit={onSubmit} defaultEditable={!employee}>
       <FormLabel />
       <PhotoProfileInput
         label="Foto Profil"
-        defaultImage={employee?.photo_url}
+        defaultImage={employee?.photoUrl}
         files={files}
         onDrop={setFiles}
       />
@@ -78,6 +95,8 @@ export default function EmployeeForm(props: EmployeeFormProps) {
           name="password"
           label="Password"
           placeholder="Masukkan Password"
+          required
+          withAsterisk={false}
         />
       )}
       <Input

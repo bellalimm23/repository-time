@@ -24,6 +24,7 @@ export default async function handler(
       where: { id },
       select: ProgramStudiResouceModel,
     });
+
     if (!studyProgram) {
       return res.status(404).json({
         message: 'Program studi tidak dapat ditemukan',

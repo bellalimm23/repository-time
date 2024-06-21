@@ -1,4 +1,4 @@
-import { middleware } from 'common/server';
+import { generateId, middleware } from 'common/server';
 import { decamelizeKeys } from 'humps';
 import { JwtPayload } from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -16,6 +16,7 @@ export const CertificationFormSchema = Yup.object({
   waktu_terbit: Yup.date().nullable().default(null),
   waktu_kadaluarsa: Yup.date().nullable().default(null),
   skills: Yup.array(Yup.string().default('')).default([]),
+  lampiran: Yup.array(Yup.string().default('')).default([]),
 });
 
 export default async function handler(
@@ -43,10 +44,10 @@ export default async function handler(
     }
 
     const user = (await middleware(req, res)) as JwtPayload;
-
+    const isAdmin = user.type === 'admin';
     const nomor_identitas = user.nomor_identitas;
 
-    if (nomor_identitas !== certification.nomorIdentitasMahasiswa) {
+    if (nomor_identitas !== certification.nomorIdentitasMahasiswa && !isAdmin) {
       return res.status(403).json({
         message: 'Anda tidak di-izinkan mengakses fitur ini',
       });
@@ -55,12 +56,27 @@ export default async function handler(
     if (method === 'PUT') {
       const certification = await CertificationFormSchema.validate(body);
 
-      await prisma.lampiranSertifikasi.deleteMany({
-        where: { sertifikasiId: id },
-      });
+      if (certification.lampiran.length) {
+        await prisma.$transaction([
+          prisma.lampiranSertifikasi.deleteMany({
+            where: { sertifikasiId: id },
+          }),
+          prisma.lampiranSertifikasi.createMany({
+            data: certification.lampiran.map((file) => {
+              return {
+                fileUrl: file,
+                id: generateId(),
+                jenisFile: 'application/pdf',
+                sertifikasiId: id,
+              };
+            }),
+          }),
+        ]);
+      }
 
       const currentCertification = await prisma.sertifikasi.update({
         data: {
+          namaInstitusi: certification.nama_institusi,
           deskripsi: certification.deskripsi,
           namaSertifikasi: certification.nama_sertifikasi,
           nilaiAkhir: certification.nilai_akhir,
@@ -68,11 +84,6 @@ export default async function handler(
           skills: certification.skills.join('|'),
           tanggalKadaluarsa: certification.waktu_kadaluarsa,
           tanggalTerbit: certification.waktu_terbit,
-          LampiranSertifikasi: {
-            createMany: {
-              data: [],
-            },
-          },
         },
         where: { id },
         select: SertifikasiResouceModel,

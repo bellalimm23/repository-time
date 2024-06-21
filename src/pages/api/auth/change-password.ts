@@ -6,11 +6,11 @@ import * as Yup from 'yup';
 import prisma from '../../../../prisma';
 
 export const ChangePasswordFormSchema = Yup.object({
-  oldPassword: Yup.string().required(),
-  currentPassword: Yup.string().required(),
-  currentPasswordConfirmation: Yup.string()
+  old_password: Yup.string().required(),
+  current_password: Yup.string().required(),
+  current_password_confirmation: Yup.string()
     .required()
-    .oneOf([Yup.ref('currentPassword'), null], 'Password tidak cocok'),
+    .oneOf([Yup.ref('current_password'), null], 'Password tidak cocok'),
 });
 
 export default async function handler(
@@ -28,10 +28,10 @@ export default async function handler(
       });
 
       if (mahasiswa) {
-        if (mahasiswa.password === changePassword.oldPassword) {
+        if (mahasiswa.password === changePassword.old_password) {
           await prisma.mahasiswa.update({
             where: { nomorIdentitas: user.nomor_identitas },
-            data: { password: changePassword.currentPassword },
+            data: { password: changePassword.current_password },
           });
           return res.status(200).json({
             message: 'Password Berhasil diubah',
@@ -39,7 +39,7 @@ export default async function handler(
         }
 
         return res.status(400).json({
-          message: 'Nomor Identitas atau Password Salah',
+          message: 'Password Salah',
         });
       }
 
@@ -47,10 +47,10 @@ export default async function handler(
         where: { nomorIdentitas: user.nomor_identitas },
       });
       if (admin) {
-        if (admin.password === changePassword.oldPassword) {
+        if (admin.password === changePassword.old_password) {
           await prisma.admin.update({
             where: { nomorIdentitas: user.nomor_identitas },
-            data: { password: changePassword.currentPassword },
+            data: { password: changePassword.current_password },
           });
           return res.status(200).json({
             message: 'Password Berhasil diubah',

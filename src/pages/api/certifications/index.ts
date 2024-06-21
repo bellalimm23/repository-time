@@ -15,6 +15,7 @@ export const CertificationFormSchema = Yup.object({
   waktu_terbit: Yup.date().nullable().default(null),
   waktu_kadaluarsa: Yup.date().nullable().default(null),
   skills: Yup.array(Yup.string().default('')).default([]),
+  lampiran: Yup.array(Yup.string().default('')).default([]),
 });
 
 export default async function handler(
@@ -40,9 +41,11 @@ export default async function handler(
     await middleware(req, res);
     if (method === 'POST') {
       const currentCertification = await CertificationFormSchema.validate(body);
+      const id = generateId();
       const certification = await prisma.sertifikasi.create({
         data: {
-          id: generateId(),
+          id,
+          namaInstitusi: currentCertification.nama_institusi,
           deskripsi: currentCertification.deskripsi,
           namaSertifikasi: currentCertification.nama_sertifikasi,
           nilaiAkhir: currentCertification.nilai_akhir,
@@ -53,7 +56,14 @@ export default async function handler(
           tanggalTerbit: currentCertification.waktu_terbit,
           LampiranSertifikasi: {
             createMany: {
-              data: [],
+              data: currentCertification.lampiran.map((file) => {
+                return {
+                  fileUrl: file,
+                  id: generateId(),
+                  jenisFile: 'application/pdf',
+                  sertifikasiId: id,
+                };
+              }),
             },
           },
         },

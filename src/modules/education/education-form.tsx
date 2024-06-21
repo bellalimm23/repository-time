@@ -1,5 +1,8 @@
 import { SimpleGrid } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
+import { uploadAttachmentFiles } from 'api/storage';
+import { EducationLiteModel, EducationModel } from 'api-hooks/education/model';
+import notification from 'common/helpers/notification';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
@@ -7,32 +10,31 @@ import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  EducationFormSchema,
-  EducationFormType,
-  EducationModel,
-} from './education-form-type';
+import { EducationFormSchema, EducationFormType } from './education-form-type';
 
 interface EducationFormProps {
-  education?: EducationModel;
-  onSubmit: (value: EducationFormType) => Promise<EducationModel | undefined>;
+  education?: EducationLiteModel;
+  onSubmit: (
+    value: EducationFormType,
+    files: string[],
+  ) => Promise<EducationModel | undefined>;
 }
 
 export default function EducationForm(props: EducationFormProps) {
-  const { onSubmit, education } = props;
+  const { education } = props;
   const [files, setFiles] = React.useState<FileWithPath[]>([]);
 
   const defaultValues = React.useMemo<EducationFormType>(() => {
     return {
       deskripsi: education?.deskripsi ?? '',
-      nama_institusi: education?.nama_institusi ?? '',
-      nomor_identitas_mahasiswa: education?.mahasiswa?.nomor_identitas ?? '',
+      nama_institusi: education?.namaInstitusi ?? '',
+      nomor_identitas_mahasiswa: education?.nomorIdentitasMahasiswa ?? '',
       skills: education?.skills?.split('|') ?? [],
       waktu_mulai: null,
       waktu_selesai: null,
-      bidang_studi: education?.bidang_studi ?? '',
+      bidang_studi: education?.bidangStudi ?? '',
       gelar: education?.gelar ?? '',
-      nilai_akhir: education?.nilai_akhir ?? '',
+      nilai_akhir: education?.nilaiAkhir ?? '',
       data: education,
     };
   }, [education]);
@@ -42,6 +44,29 @@ export default function EducationForm(props: EducationFormProps) {
     defaultValues,
     resolver,
   });
+
+  const oldAttachments = (education?.lampiranPendidikan || []).map(
+    (item) => item.fileUrl,
+  );
+  const onSubmit = React.useCallback(
+    async (values: EducationFormType) => {
+      try {
+        const { results, onDeleteFiles } = await uploadAttachmentFiles(
+          'lampiran_pendidikan',
+          values.nomor_identitas_mahasiswa,
+          files,
+          oldAttachments,
+        );
+        await props.onSubmit(values, results);
+        await onDeleteFiles();
+      } catch (e) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [files, oldAttachments, props],
+  );
 
   return (
     <Form methods={methods} onSubmit={onSubmit} defaultEditable={!education}>
@@ -94,7 +119,7 @@ export default function EducationForm(props: EducationFormProps) {
         files={files}
         onDrop={setFiles}
         label="Files"
-        defaultUrls={education?.items?.map((item) => item.file_url)}
+        defaultUrls={education?.lampiranPendidikan?.map((item) => item.fileUrl)}
       />
     </Form>
   );

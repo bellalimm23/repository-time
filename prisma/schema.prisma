@@ -118,6 +118,7 @@ model Sertifikasi {
   tanggalTerbit           DateTime              @default(now()) @map("tanggal_terbit") @db.Timestamptz(6)
   tanggalKadaluarsa       DateTime?             @updatedAt @map("tanggal_kadaluarsa") @db.Timestamptz(6)
   namaSertifikasi         String                @map("nama_sertifikasi")
+  namaInstitusi           String                @map("nama_institusi")
   deskripsi               String
   nilaiAkhir              String                @map("nilai_akhir")
   skills                  String
