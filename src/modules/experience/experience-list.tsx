@@ -1,14 +1,13 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Plus } from '@phosphor-icons/react';
-import { MeModel } from 'api-hooks/auth/model';
+import { ProfileModel } from 'api-hooks/common/model';
 import { ExperienceLiteModel } from 'api-hooks/experience/model';
 import {
   useCreateExperience,
   useUpdateExperience,
 } from 'api-hooks/experience/mutation';
 import { experienceKey, useGetExperiences } from 'api-hooks/experience/query';
-import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
 import notification from 'common/helpers/notification';
 import { queryClient } from 'common/repositories/query-client';
 import colors from 'common/styles/colors';
@@ -23,7 +22,7 @@ import { ExperienceCard } from './experience-card';
 import ExperienceForm from './experience-form';
 
 interface ExperienceListProps {
-  student: StudentLiteModel | MeModel | StudentModel;
+  student: ProfileModel;
   isEditable?: boolean;
 }
 
@@ -88,8 +87,10 @@ export default function ExperienceList(props: ExperienceListProps) {
                     {(isAdmin || isEditable) && (
                       <DeleteButton
                         type="icon"
-                        deleteType="/experiences"
-                        id={experience.id}
+                        deleteable={{
+                          dataType: '/experiences',
+                          data: experience,
+                        }}
                       />
                     )}
                     <ExperienceCard key={experience.id} {...experience} />
@@ -113,6 +114,7 @@ export default function ExperienceList(props: ExperienceListProps) {
           }
         >
           <ExperienceForm
+            student={props.student}
             experience={experience}
             onSubmit={async (values, lampiran) => {
               const result = experience

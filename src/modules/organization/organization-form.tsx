@@ -1,6 +1,7 @@
 import { SimpleGrid } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
 import { uploadAttachmentFiles } from 'api/storage';
+import { ProfileModel } from 'api-hooks/common/model';
 import {
   OrganizationLiteModel,
   OrganizationModel,
@@ -19,6 +20,7 @@ import {
 } from './organization-form-type';
 
 interface OrganizationFormProps {
+  student: ProfileModel;
   organization?: OrganizationLiteModel;
   onSubmit: (
     value: OrganizationFormType,
@@ -34,7 +36,8 @@ export default function OrganizationForm(props: OrganizationFormProps) {
     return {
       deskripsi: organization?.deskripsi ?? '',
       nama_organisasi: organization?.nama ?? '',
-      nomor_identitas_mahasiswa: organization?.nomorIdentitasMahasiswa ?? '',
+      nomor_identitas_mahasiswa:
+        organization?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       pengalaman_id: organization?.pengalaman?.id || '',
       skills: organization?.skills?.split('|') ?? [],
       waktu_mulai: organization?.tanggalMulai ?? null,
@@ -42,7 +45,7 @@ export default function OrganizationForm(props: OrganizationFormProps) {
       posisi: organization?.posisi ?? '',
       data: organization,
     };
-  }, [organization]);
+  }, [organization, props.student.nomorIdentitas]);
 
   const resolver = useYupValidationResolver(OrganizationFormSchema());
   const methods = useForm({

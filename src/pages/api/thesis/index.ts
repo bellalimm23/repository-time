@@ -53,7 +53,6 @@ export default async function handler(
           abstrak: currentThesis.abstrak,
           id,
           judulTugasAkhir: currentThesis.judul_tugas_akhir,
-          nomorIdentitasMahasiswa: currentThesis.nomor_identitas_mahasiswa,
           tanggalTerbit: currentThesis.waktu_terbit,
           status: currentThesis.status,
           LampiranTugasAkhir: {
@@ -63,12 +62,17 @@ export default async function handler(
                   id: generateId(),
                   fileUrl: file,
                   jenisFile: 'application/pdf',
-                  tugasAkhirId: id,
                 };
               }),
             },
           },
+          mahasiswa: {
+            connect: {
+              nomorIdentitas: currentThesis.nomor_identitas_mahasiswa,
+            },
+          },
         },
+
         select: TugasAkhirResouceModel,
       });
 

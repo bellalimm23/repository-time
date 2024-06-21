@@ -105,7 +105,7 @@ export default function EmployeeForm(props: EmployeeFormProps) {
         label="Deskripsi"
         placeholder="Masukkan Deskripsi"
       />
-      <FormAction />
+      <FormAction isEdit={!!employee} />
     </Form>
   );
 }

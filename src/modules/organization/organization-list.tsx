@@ -1,7 +1,7 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Plus } from '@phosphor-icons/react';
-import { MeModel } from 'api-hooks/auth/model';
+import { ProfileModel } from 'api-hooks/common/model';
 import { OrganizationLiteModel } from 'api-hooks/organization/model';
 import {
   useCreateOrganization,
@@ -11,7 +11,6 @@ import {
   organizationKey,
   useGetOrganizations,
 } from 'api-hooks/organization/query';
-import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
 import notification from 'common/helpers/notification';
 import { queryClient } from 'common/repositories/query-client';
 import colors from 'common/styles/colors';
@@ -26,7 +25,7 @@ import { OrganizationCard } from './organization-card';
 import OrganizationForm from './organization-form';
 
 interface OrganizationListProps {
-  student: StudentLiteModel | MeModel | StudentModel;
+  student: ProfileModel;
 
   isEditable?: boolean;
 }
@@ -97,8 +96,10 @@ export default function OrganizationList(props: OrganizationListProps) {
                     {(isAdmin || isEditable) && (
                       <DeleteButton
                         type="icon"
-                        deleteType="/organizations"
-                        id={organization.id}
+                        deleteable={{
+                          dataType: '/organizations',
+                          data: organization,
+                        }}
                       />
                     )}
                     <OrganizationCard key={organization.id} {...organization} />
@@ -122,6 +123,7 @@ export default function OrganizationList(props: OrganizationListProps) {
           }
         >
           <OrganizationForm
+            student={props.student}
             organization={organization}
             onSubmit={async (values, lampiran) => {
               const result = organization

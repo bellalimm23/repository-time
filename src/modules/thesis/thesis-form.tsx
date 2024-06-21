@@ -1,5 +1,6 @@
 import { FileWithPath } from '@mantine/dropzone';
 import { uploadAttachmentFiles } from 'api/storage';
+import { ProfileModel } from 'api-hooks/common/model';
 import { ThesisLiteModel, ThesisModel } from 'api-hooks/thesis/model';
 import notification from 'common/helpers/notification';
 import Form from 'components/elements/form';
@@ -14,6 +15,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 interface ThesisFormProps {
+  student: ProfileModel;
   thesis?: ThesisLiteModel;
   onSubmit: (
     value: ThesisFormType,
@@ -29,13 +31,14 @@ export default function ThesisForm(props: ThesisFormProps) {
     return {
       abstrak: thesis?.abstrak ?? '',
       judul_tugas_akhir: thesis?.judulTugasAkhir ?? '',
-      nomor_identitas_mahasiswa: thesis?.nomorIdentitasMahasiswa ?? '',
+      nomor_identitas_mahasiswa:
+        thesis?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       nomor_identitas_pic: '',
       status: thesis?.status ?? ThesisStatusEnum.pending,
       waktu_terbit: thesis?.tanggalTerbit ?? null,
       data: thesis,
     };
-  }, [thesis]);
+  }, [props.student.nomorIdentitas, thesis]);
 
   const resolver = useYupValidationResolver(ThesisFormSchema());
   const methods = useForm({

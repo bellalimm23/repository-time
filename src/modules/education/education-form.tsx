@@ -1,18 +1,21 @@
 import { SimpleGrid } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
 import { uploadAttachmentFiles } from 'api/storage';
+import { ProfileModel } from 'api-hooks/common/model';
 import { EducationLiteModel, EducationModel } from 'api-hooks/education/model';
 import notification from 'common/helpers/notification';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
+import FormAction from 'modules/admin/components/form-action';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { EducationFormSchema, EducationFormType } from './education-form-type';
 
 interface EducationFormProps {
+  student: ProfileModel;
   education?: EducationLiteModel;
   onSubmit: (
     value: EducationFormType,
@@ -28,7 +31,8 @@ export default function EducationForm(props: EducationFormProps) {
     return {
       deskripsi: education?.deskripsi ?? '',
       nama_institusi: education?.namaInstitusi ?? '',
-      nomor_identitas_mahasiswa: education?.nomorIdentitasMahasiswa ?? '',
+      nomor_identitas_mahasiswa:
+        education?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       skills: education?.skills?.split('|') ?? [],
       waktu_mulai: null,
       waktu_selesai: null,
@@ -37,7 +41,7 @@ export default function EducationForm(props: EducationFormProps) {
       nilai_akhir: education?.nilaiAkhir ?? '',
       data: education,
     };
-  }, [education]);
+  }, [education, props.student.nomorIdentitas]);
 
   const resolver = useYupValidationResolver(EducationFormSchema());
   const methods = useForm({
@@ -121,6 +125,7 @@ export default function EducationForm(props: EducationFormProps) {
         label="Files"
         defaultUrls={education?.lampiranPendidikan?.map((item) => item.fileUrl)}
       />
+      <FormAction isEdit={!!education} />
     </Form>
   );
 }

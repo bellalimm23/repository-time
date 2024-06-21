@@ -104,14 +104,16 @@ export default async function handler(
         message: 'Tugas Akhir berhasil diubah',
       });
     } else if (method === 'DELETE') {
-      await prisma.tugasAkhir.delete({
-        where: {
-          id,
-          LampiranTugasAkhir: {
-            every: { tugasAkhirId: id },
+      await prisma.$transaction([
+        prisma.lampiranTugasAkhir.deleteMany({
+          where: { tugasAkhirId: id },
+        }),
+        prisma.tugasAkhir.delete({
+          where: {
+            id,
           },
-        },
-      });
+        }),
+      ]);
       return res.status(200).json({
         message: 'Tugas Akhir berhasil dihapus',
       });

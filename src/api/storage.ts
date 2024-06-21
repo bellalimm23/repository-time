@@ -4,6 +4,9 @@ import supabase from './supabase';
 
 const BUCKET_NAME = 'repository';
 
+const ENDPOINT =
+  'https://srxjxwfnbpkiieeyxpux.supabase.co/storage/v1/object/public/repository/' as const;
+
 export async function uploadFile(path: string, file: File) {
   const result = await supabase.storage.from(BUCKET_NAME).upload(path, file, {
     upsert: true, //overwrite when if file exist
@@ -18,7 +21,9 @@ export async function downloadFile(path: string) {
 }
 
 export async function deleteFiles(path: string[]) {
-  const result = await supabase.storage.from(BUCKET_NAME).remove(path);
+  const result = await supabase.storage
+    .from(BUCKET_NAME)
+    .remove(path.map((file) => file.replace(ENDPOINT, '')));
   return result;
 }
 
@@ -52,7 +57,8 @@ export async function uploadAttachmentFiles(
     .map(({ data }) => {
       return data?.path;
     })
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((file) => ENDPOINT + file);
 
   const unusedFiles = oldData.filter((file) => {
     const isNecessary = necessaryFiles.includes(file);
@@ -66,5 +72,5 @@ export async function uploadAttachmentFiles(
 
 export async function uploadPhotoProfile(nomorIdentitas: string, file: File) {
   const result = await uploadFile(`/photo-profile/${nomorIdentitas}.png`, file);
-  return result;
+  return ENDPOINT + result;
 }

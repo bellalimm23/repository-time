@@ -93,7 +93,10 @@ export default function Header() {
             : 'tertiary',
         },
         leftSection: <Books size={14} />,
-        onClick: () => push(NavigationRoute.ThesisList),
+        onClick: () => {
+          push(NavigationRoute.ThesisList);
+          close();
+        },
         children: 'Tugas Akhir',
       },
       {
@@ -105,7 +108,10 @@ export default function Header() {
             : 'tertiary',
         },
         leftSection: <GraduationCap size={14} />,
-        onClick: () => push(NavigationRoute.StudentList),
+        onClick: () => {
+          push(NavigationRoute.StudentList);
+          close();
+        },
         children: 'Mahasiswa',
       },
       ...(isAdmin || !me
@@ -120,12 +126,15 @@ export default function Header() {
                   : 'tertiary',
               },
               leftSection: <User size={14} />,
-              onClick: () => push(NavigationRoute.Profile),
+              onClick: () => {
+                push(NavigationRoute.Profile);
+                close();
+              },
               children: 'Profil',
             },
           ]),
     ];
-  }, [isAdmin, isCurrent, me, push]);
+  }, [close, isAdmin, isCurrent, me, push]);
 
   return (
     <>

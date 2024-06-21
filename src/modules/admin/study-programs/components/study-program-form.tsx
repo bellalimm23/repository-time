@@ -63,7 +63,7 @@ export default function AdminStudyProgramForm(
         label="Nama Program Studi"
         placeholder="Masukkan Nama Program Studi"
       />
-      <FormAction />
+      <FormAction isEdit={!!studyProgram} />
     </Form>
   );
 }

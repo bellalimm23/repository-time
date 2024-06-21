@@ -1,6 +1,7 @@
 import { SimpleGrid } from '@mantine/core';
 import { FileWithPath } from '@mantine/dropzone';
 import { uploadAttachmentFiles } from 'api/storage';
+import { ProfileModel } from 'api-hooks/common/model';
 import {
   ExperienceLiteModel,
   ExperienceModel,
@@ -10,6 +11,7 @@ import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
+import FormAction from 'modules/admin/components/form-action';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -19,6 +21,7 @@ import {
 } from './experience-form-type';
 
 interface ExperienceFormProps {
+  student: ProfileModel;
   experience?: ExperienceLiteModel;
   onSubmit: (
     value: ExperienceFormType,
@@ -29,20 +32,20 @@ interface ExperienceFormProps {
 export default function ExperienceForm(props: ExperienceFormProps) {
   const { experience } = props;
   const [files, setFiles] = React.useState<FileWithPath[]>([]);
-
   const defaultValues = React.useMemo<ExperienceFormType>(() => {
     return {
       deskripsi: experience?.deskripsi ?? '',
       lokasi: experience?.lokasi ?? '',
       nama_perusahaan: experience?.namaPerusahaan ?? '',
-      nomor_identitas_mahasiswa: experience?.nomorIdentitasMahasiswa ?? '',
+      nomor_identitas_mahasiswa:
+        experience?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       posisi: experience?.posisi ?? '',
       skills: experience?.skills?.split('|') ?? [],
       waktu_mulai: experience?.tanggalMulai ?? null,
       waktu_selesai: experience?.tanggalSelesai ?? null,
       data: experience,
     };
-  }, [experience]);
+  }, [experience, props.student.nomorIdentitas]);
   const resolver = useYupValidationResolver(ExperienceFormSchema());
   const methods = useForm({
     defaultValues,
@@ -122,6 +125,7 @@ export default function ExperienceForm(props: ExperienceFormProps) {
           (item) => item.fileUrl,
         )}
       />
+      <FormAction isEdit={!!experience} />
     </Form>
   );
 }

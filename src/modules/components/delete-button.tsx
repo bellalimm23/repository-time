@@ -1,20 +1,19 @@
 import { Trash } from '@phosphor-icons/react';
-import { ApiListValueType } from 'common/repositories/client';
+import { DeleteableType } from 'api-hooks/common/model';
 import ActionButton from 'components/action-button';
 import { useDelete } from 'hooks/use-delete';
 import React from 'react';
 
 interface DeleteButtonProps {
   type: 'button' | 'icon';
-  deleteType: ApiListValueType;
-  id: string;
+  deleteable: DeleteableType;
 }
 
 export default function DeleteButton(props: DeleteButtonProps) {
-  const { deleteType, id } = props;
+  const { deleteable } = props;
 
   const icon = <Trash size={16} />;
-  const mutation = useDelete(deleteType, id);
+  const mutation = useDelete(deleteable);
   const { DeleteDialog, openDeleteDialog } = mutation;
 
   if (props.type === 'button') {

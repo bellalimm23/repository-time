@@ -72,8 +72,10 @@ export function useGetEmployeeTableList(): Column<AdminModel>[] {
             />
             <DeleteButton
               type="icon"
-              deleteType="/admins"
-              id={row.nomorIdentitas}
+              deleteable={{
+                data: row,
+                dataType: '/admins',
+              }}
             />
           </Flex>
         );

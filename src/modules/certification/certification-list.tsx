@@ -1,7 +1,6 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Plus } from '@phosphor-icons/react';
-import { MeModel } from 'api-hooks/auth/model';
 import { CertificationLiteModel } from 'api-hooks/certification/model';
 import {
   useCreateCertification,
@@ -11,7 +10,7 @@ import {
   certificationKey,
   useGetCertifications,
 } from 'api-hooks/certification/query';
-import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
+import { ProfileModel } from 'api-hooks/common/model';
 import notification from 'common/helpers/notification';
 import { queryClient } from 'common/repositories/query-client';
 import colors from 'common/styles/colors';
@@ -26,7 +25,7 @@ import { CertificationCard } from './certification-card';
 import CertificationForm from './certification-form';
 
 interface CertificationListProps {
-  student: StudentLiteModel | MeModel | StudentModel;
+  student: ProfileModel;
 
   isEditable?: boolean;
 }
@@ -96,8 +95,10 @@ export default function CertificationList(props: CertificationListProps) {
                     {(isAdmin || isEditable) && (
                       <DeleteButton
                         type="icon"
-                        deleteType="/thesis"
-                        id={certification.id}
+                        deleteable={{
+                          data: certification,
+                          dataType: '/certifications',
+                        }}
                       />
                     )}
                     <CertificationCard
@@ -124,6 +125,7 @@ export default function CertificationList(props: CertificationListProps) {
           }
         >
           <CertificationForm
+            student={props.student}
             certification={certification}
             onSubmit={async (values, lampiran) => {
               const result = certification

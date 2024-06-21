@@ -75,7 +75,7 @@ export default function AdminStudentForm(props: AdminStudentFormProps) {
       {tab === 'information' && (
         <>
           <StudentInformationForm files={files} setFiles={setFiles} />
-          <FormAction />
+          <FormAction isEdit={!!student} />
         </>
       )}
       {tab === 'details' && (

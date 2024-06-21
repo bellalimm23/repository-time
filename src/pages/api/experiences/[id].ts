@@ -94,14 +94,19 @@ export default async function handler(
         message: 'Pengalaman berhasil diubah',
       });
     } else if (method === 'DELETE') {
-      await prisma.pengalaman.delete({
-        where: {
-          id,
-          LampiranPengalaman: {
-            every: { pengalamanId: id },
+      await prisma.$transaction([
+        prisma.lampiranPengalaman.deleteMany({
+          where: {
+            pengalamanId: id,
           },
-        },
-      });
+        }),
+        prisma.pengalaman.delete({
+          where: {
+            id,
+          },
+        }),
+      ]);
+
       return res.status(200).json({
         message: 'Pengalaman berhasil dihapus',
       });

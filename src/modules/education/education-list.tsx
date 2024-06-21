@@ -1,14 +1,13 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Plus } from '@phosphor-icons/react';
-import { MeModel } from 'api-hooks/auth/model';
+import { ProfileModel } from 'api-hooks/common/model';
 import { EducationLiteModel } from 'api-hooks/education/model';
 import {
   useCreateEducation,
   useUpdateEducation,
 } from 'api-hooks/education/mutation';
 import { educationKey, useGetEducations } from 'api-hooks/education/query';
-import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
 import notification from 'common/helpers/notification';
 import { queryClient } from 'common/repositories/query-client';
 import colors from 'common/styles/colors';
@@ -23,7 +22,7 @@ import { EducationCard } from './education-card';
 import EducationForm from './education-form';
 
 interface EducationListProps {
-  student: StudentLiteModel | MeModel | StudentModel;
+  student: ProfileModel;
   isEditable?: boolean;
 }
 
@@ -90,8 +89,10 @@ export default function EducationList(props: EducationListProps) {
                     {(isAdmin || isEditable) && (
                       <DeleteButton
                         type="icon"
-                        deleteType="/educations"
-                        id={education.id}
+                        deleteable={{
+                          dataType: '/educations',
+                          data: education,
+                        }}
                       />
                     )}
                     <EducationCard key={education.id} {...education} />
@@ -115,6 +116,7 @@ export default function EducationList(props: EducationListProps) {
           }
         >
           <EducationForm
+            student={props.student}
             education={education}
             onSubmit={async (values, lampiran) => {
               const result = education

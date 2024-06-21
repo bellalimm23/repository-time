@@ -50,7 +50,6 @@ export default async function handler(
           namaPerusahaan: currentExperience.nama_perusahaan,
           posisi: currentExperience.posisi,
           skills: currentExperience.skills.join('|'),
-          nomorIdentitasMahasiswa: currentExperience.nomor_identitas_mahasiswa,
           tanggalMulai: currentExperience.waktu_mulai,
           tanggalSelesai: currentExperience.waktu_selesai,
           LampiranPengalaman: {
@@ -60,9 +59,13 @@ export default async function handler(
                   fileUrl: file,
                   id: generateId(),
                   jenisFile: 'application/pdf',
-                  pengalamanId: id,
                 };
               }),
+            },
+          },
+          mahasiswa: {
+            connect: {
+              nomorIdentitas: currentExperience.nomor_identitas_mahasiswa,
             },
           },
         },

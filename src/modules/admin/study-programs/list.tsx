@@ -31,8 +31,10 @@ export function useGetStudyProgramTableList(): Column<StudyProgramLiteModel>[] {
             />
             <DeleteButton
               type="icon"
-              deleteType="/study-programs"
-              id={row.id}
+              deleteable={{
+                dataType: '/study-programs',
+                data: row,
+              }}
             />
           </Flex>
         );

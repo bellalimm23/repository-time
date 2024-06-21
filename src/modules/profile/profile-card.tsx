@@ -1,15 +1,14 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { modals } from '@mantine/modals';
 import { Lock, Pen } from '@phosphor-icons/react';
 import { MeModel } from 'api-hooks/auth/model';
 import colors from 'common/styles/colors';
 import Button from 'components/elements/button';
 import Text from 'components/elements/text';
+import useChangePasswordDialog from 'hooks/use-change-password-dialog';
 import Image from 'next/image';
 import React from 'react';
 
-import ChangePasswordForm from './change-password-form';
 import ProfileForm from './profile-form';
 
 interface ProfileCardProps {
@@ -20,14 +19,7 @@ export default function ProfileCard(props: ProfileCardProps) {
   const { student } = props;
 
   const [isOpened, { close, open }] = useDisclosure();
-  const onChangePasswordClick = () =>
-    modals.open({
-      modalId: 'change-password',
-      title: <Text textVariant="h1">Ganti Password</Text>,
-      children: (
-        <ChangePasswordForm onClose={() => modals.close('change-password')} />
-      ),
-    });
+  const onChangePasswordClick = useChangePasswordDialog();
 
   return (
     <>

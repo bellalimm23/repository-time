@@ -4,6 +4,7 @@ import {
   Bank,
   Book,
   GraduationCap,
+  LockSimple,
   SignOut,
   User,
 } from '@phosphor-icons/react';
@@ -13,6 +14,7 @@ import { NavigationRoute } from 'common/routes/routes';
 import Button, { ButtonProps } from 'components/elements/button';
 import Text from 'components/elements/text';
 import LoaderView from 'components/loader-view';
+import useChangePasswordDialog from 'hooks/use-change-password-dialog';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -21,7 +23,7 @@ import structuralStyles from 'styles/layout.css';
 export interface AdminLayoutProps extends AppShellMainProps {}
 
 export default function AdminLayout(props: AdminLayoutProps) {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure();
   const { pathname, push } = useRouter();
   const isCurrent = React.useCallback(
     (link: NavigationRoute) => {
@@ -30,11 +32,16 @@ export default function AdminLayout(props: AdminLayoutProps) {
     [pathname],
   );
 
+  const onChangePasswordClick = useChangePasswordDialog();
+
   const actions = React.useMemo<ButtonProps[]>(() => {
     return [
       {
         children: 'Tugas Akhir',
-        onClick: () => push(NavigationRoute.AdminThesisList),
+        onClick: () => {
+          push(NavigationRoute.AdminThesisList);
+          close();
+        },
         variant: {
           variant: isCurrent(NavigationRoute.AdminThesisList)
             ? 'primary'
@@ -44,7 +51,10 @@ export default function AdminLayout(props: AdminLayoutProps) {
       },
       {
         children: 'Mahasiswa',
-        onClick: () => push(NavigationRoute.AdminStudentList),
+        onClick: () => {
+          push(NavigationRoute.AdminStudentList);
+          close();
+        },
         variant: {
           variant: isCurrent(NavigationRoute.AdminStudentList)
             ? 'primary'
@@ -54,7 +64,10 @@ export default function AdminLayout(props: AdminLayoutProps) {
       },
       {
         children: 'Program Studi',
-        onClick: () => push(NavigationRoute.AdminStudyProgramList),
+        onClick: () => {
+          push(NavigationRoute.AdminStudyProgramList);
+          close();
+        },
         variant: {
           variant: isCurrent(NavigationRoute.AdminStudyProgramList)
             ? 'primary'
@@ -64,7 +77,10 @@ export default function AdminLayout(props: AdminLayoutProps) {
       },
       {
         children: 'Admin',
-        onClick: () => push(NavigationRoute.AdminEmployeeList),
+        onClick: () => {
+          push(NavigationRoute.AdminEmployeeList);
+          close();
+        },
         variant: {
           variant: isCurrent(NavigationRoute.AdminEmployeeList)
             ? 'primary'
@@ -73,7 +89,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
         leftSection: <User size={16} />,
       },
     ];
-  }, [isCurrent, push]);
+  }, [close, isCurrent, push]);
 
   const queryMe = useGetMe();
 
@@ -123,6 +139,18 @@ export default function AdminLayout(props: AdminLayoutProps) {
                 })}
               </AppShell.Section>
               <AppShell.Section>
+                <Button
+                  variant={{
+                    variant: 'tertiary',
+                  }}
+                  fullWidth
+                  onClick={() => {
+                    onChangePasswordClick();
+                  }}
+                  leftSection={<LockSimple size={16} />}
+                >
+                  Ganti Password
+                </Button>
                 <Button
                   variant={{
                     variant: 'tertiaryError',

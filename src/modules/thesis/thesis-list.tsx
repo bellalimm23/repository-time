@@ -1,8 +1,7 @@
 import { Card, Drawer, Flex } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Plus } from '@phosphor-icons/react';
-import { MeModel } from 'api-hooks/auth/model';
-import { StudentLiteModel, StudentModel } from 'api-hooks/student/model';
+import { ProfileModel } from 'api-hooks/common/model';
 import { ThesisLiteModel } from 'api-hooks/thesis/model';
 import { useCreateThesis, useUpdateThesis } from 'api-hooks/thesis/mutation';
 import { thesisKey, useGetThesisList } from 'api-hooks/thesis/query';
@@ -20,7 +19,7 @@ import { ThesisCard } from './thesis-card';
 import ThesisForm from './thesis-form';
 
 interface ThesisListProps {
-  student: StudentLiteModel | MeModel | StudentModel;
+  student: ProfileModel;
 
   isEditable?: boolean;
 }
@@ -86,8 +85,10 @@ export default function ThesisList(props: ThesisListProps) {
                     {(isAdmin || isEditable) && (
                       <DeleteButton
                         type="icon"
-                        deleteType="/thesis"
-                        id={_thesis.id}
+                        deleteable={{
+                          data: _thesis,
+                          dataType: '/thesis',
+                        }}
                       />
                     )}
                     <ThesisCard key={_thesis.id} {..._thesis} />
@@ -111,6 +112,7 @@ export default function ThesisList(props: ThesisListProps) {
           }
         >
           <ThesisForm
+            student={props.student}
             thesis={_thesis}
             onSubmit={async (values, lampiran) => {
               const result = _thesis

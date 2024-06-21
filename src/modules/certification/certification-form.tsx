@@ -5,11 +5,13 @@ import {
   CertificationLiteModel,
   CertificationModel,
 } from 'api-hooks/certification/model';
+import { ProfileModel } from 'api-hooks/common/model';
 import notification from 'common/helpers/notification';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
+import FormAction from 'modules/admin/components/form-action';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -19,6 +21,7 @@ import {
 } from './certification-form-type';
 
 interface CertificationFormProps {
+  student: ProfileModel;
   certification?: CertificationLiteModel;
   onSubmit: (
     value: CertificationFormType,
@@ -32,7 +35,8 @@ export default function CertificationForm(props: CertificationFormProps) {
 
   const defaultValues = React.useMemo<CertificationFormType>(() => {
     return {
-      nomor_identitas_mahasiswa: certification?.nomorIdentitasMahasiswa ?? '',
+      nomor_identitas_mahasiswa:
+        certification?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       deskripsi: certification?.deskripsi ?? '',
       nama_institusi: certification?.namaInstitusi ?? '',
       nama_sertifikasi: certification?.namaSertifikasi ?? '',
@@ -42,7 +46,7 @@ export default function CertificationForm(props: CertificationFormProps) {
       waktu_terbit: certification?.tanggalTerbit || new Date(),
       data: certification,
     };
-  }, [certification]);
+  }, [certification, props.student.nomorIdentitas]);
 
   const resolver = useYupValidationResolver(CertificationFormSchema());
   const methods = useForm({
@@ -128,6 +132,7 @@ export default function CertificationForm(props: CertificationFormProps) {
           (item) => item.fileUrl,
         )}
       />
+      <FormAction isEdit={!!certification} />
     </Form>
   );
 }

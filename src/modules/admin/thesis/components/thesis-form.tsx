@@ -75,7 +75,7 @@ export default function ThesisForm(props: ThesisFormProps) {
       <FormLabel />
       <ThesisFormInformation files={files} setFiles={setFiles} />
       <Separator gap={16} />
-      <FormAction />
+      <FormAction isEdit={!!thesis} />
     </Form>
   );
 }

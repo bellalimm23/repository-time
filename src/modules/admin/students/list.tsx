@@ -71,8 +71,10 @@ export function useGetStudentTableList(): Column<StudentLiteModel>[] {
             />
             <DeleteButton
               type="icon"
-              deleteType="/students"
-              id={row.nomorIdentitas}
+              deleteable={{
+                data: row,
+                dataType: '/students',
+              }}
             />
           </Flex>
         );
