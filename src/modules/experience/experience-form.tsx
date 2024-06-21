@@ -7,6 +7,7 @@ import {
   ExperienceModel,
 } from 'api-hooks/experience/model';
 import notification from 'common/helpers/notification';
+import Separator from 'components/common/separator';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
@@ -40,7 +41,7 @@ export default function ExperienceForm(props: ExperienceFormProps) {
       nomor_identitas_mahasiswa:
         experience?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       posisi: experience?.posisi ?? '',
-      skills: experience?.skills?.split('|') ?? [],
+      skills: experience?.skills?.split('|').filter(Boolean) ?? [],
       waktu_mulai: experience?.tanggalMulai ?? null,
       waktu_selesai: experience?.tanggalSelesai ?? null,
       data: experience,
@@ -125,6 +126,7 @@ export default function ExperienceForm(props: ExperienceFormProps) {
           (item) => item.fileUrl,
         )}
       />
+      <Separator gap={16} />
       <FormAction isEdit={!!experience} />
     </Form>
   );

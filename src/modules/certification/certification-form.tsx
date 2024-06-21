@@ -7,6 +7,7 @@ import {
 } from 'api-hooks/certification/model';
 import { ProfileModel } from 'api-hooks/common/model';
 import notification from 'common/helpers/notification';
+import Separator from 'components/common/separator';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
@@ -41,7 +42,7 @@ export default function CertificationForm(props: CertificationFormProps) {
       nama_institusi: certification?.namaInstitusi ?? '',
       nama_sertifikasi: certification?.namaSertifikasi ?? '',
       nilai_akhir: certification?.nilaiAkhir ?? '',
-      skills: certification?.skills?.split('|') ?? [],
+      skills: certification?.skills?.split('|').filter(Boolean) ?? [],
       waktu_kadaluarsa: certification?.tanggalKadaluarsa ?? null,
       waktu_terbit: certification?.tanggalTerbit || new Date(),
       data: certification,
@@ -132,6 +133,7 @@ export default function CertificationForm(props: CertificationFormProps) {
           (item) => item.fileUrl,
         )}
       />
+      <Separator gap={16} />
       <FormAction isEdit={!!certification} />
     </Form>
   );

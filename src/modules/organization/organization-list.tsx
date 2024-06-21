@@ -95,6 +95,7 @@ export default function OrganizationList(props: OrganizationListProps) {
                   >
                     {(isAdmin || isEditable) && (
                       <DeleteButton
+                        isUser
                         type="icon"
                         deleteable={{
                           dataType: '/organizations',

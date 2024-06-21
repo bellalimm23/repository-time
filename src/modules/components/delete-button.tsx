@@ -7,10 +7,11 @@ import React from 'react';
 interface DeleteButtonProps {
   type: 'button' | 'icon';
   deleteable: DeleteableType;
+  isUser?: boolean;
 }
 
 export default function DeleteButton(props: DeleteButtonProps) {
-  const { deleteable } = props;
+  const { deleteable, isUser } = props;
 
   const icon = <Trash size={16} />;
   const mutation = useDelete(deleteable);
@@ -31,6 +32,9 @@ export default function DeleteButton(props: DeleteButtonProps) {
           rightSection={icon}
           loading={mutation?.isLoading}
           error
+          pos={isUser ? 'absolute' : undefined}
+          top={isUser ? 16 : undefined}
+          right={isUser ? 0 : undefined}
         >
           Hapus
         </ActionButton>
@@ -50,6 +54,9 @@ export default function DeleteButton(props: DeleteButtonProps) {
           loading={mutation?.isLoading}
           color="red"
           variant="outline"
+          pos={isUser ? 'absolute' : undefined}
+          top={isUser ? 16 : undefined}
+          right={isUser ? 0 : undefined}
         />
         {DeleteDialog}
       </>

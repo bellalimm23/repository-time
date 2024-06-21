@@ -1,4 +1,5 @@
 import { FileType } from 'common/constants/file';
+import { generateId } from 'common/server';
 
 import supabase from './supabase';
 
@@ -45,7 +46,7 @@ export async function uploadAttachmentFiles(
   const results = await Promise.all(
     files.map(async (file, index) => {
       const result = await uploadFile(
-        `${attachmentType}/${nomorIdentitas}/${attachmentType}_${index.toString().padStart(4, '0')}.pdf`,
+        `${attachmentType}/${nomorIdentitas}/${attachmentType}_${(index + 1).toString().padStart(4, '0')}_${generateId()}.pdf`,
         file,
       );
 
@@ -60,12 +61,7 @@ export async function uploadAttachmentFiles(
     .filter(Boolean)
     .map((file) => ENDPOINT + file);
 
-  const unusedFiles = oldData.filter((file) => {
-    const isNecessary = necessaryFiles.includes(file);
-    return !isNecessary;
-  });
-
-  const onDeleteFiles = () => deleteFiles(unusedFiles);
+  const onDeleteFiles = () => deleteFiles(oldData);
 
   return { results: necessaryFiles, onDeleteFiles };
 }

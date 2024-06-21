@@ -31,9 +31,18 @@ export function OrganizationCard(props: OrganizationLiteModel) {
     </Text>
   );
 
-  const skills = props.skills.split('|').map((skill) => {
-    return <Badge>{skill}</Badge>;
-  });
+  const skills = props.skills
+    .split('|')
+    .filter(Boolean)
+    .map((skill) => {
+      return <Badge>{skill}</Badge>;
+    });
+
+  const deskripsiComponent = props.deskripsi && (
+    <Text textColor="foregroundSecondary" textVariant="body2Regular">
+      {props.deskripsi}
+    </Text>
+  );
 
   const experience = props.pengalaman;
 
@@ -49,12 +58,12 @@ export function OrganizationCard(props: OrganizationLiteModel) {
       <Text textVariant="body1Semibold">{props.nama}</Text>
       {labelComponent}
       {experienceComponent}
-      <Text textColor="foregroundSecondary" textVariant="body2Regular">
-        {props.deskripsi}
-      </Text>
-      <Flex direction="row" wrap="wrap" gap={4}>
-        {skills}
-      </Flex>
+      {deskripsiComponent}
+      {!!skills.length && (
+        <Flex direction="row" wrap="wrap" gap={4}>
+          {skills}
+        </Flex>
+      )}
       <Flex direction="column" gap={4} w="fit-content">
         {files}
       </Flex>

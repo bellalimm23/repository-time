@@ -4,6 +4,7 @@ import { uploadAttachmentFiles } from 'api/storage';
 import { ProfileModel } from 'api-hooks/common/model';
 import { EducationLiteModel, EducationModel } from 'api-hooks/education/model';
 import notification from 'common/helpers/notification';
+import Separator from 'components/common/separator';
 import { Input } from 'components/elements/fields';
 import Form from 'components/elements/form';
 import { FileInput } from 'components/files-input';
@@ -33,7 +34,7 @@ export default function EducationForm(props: EducationFormProps) {
       nama_institusi: education?.namaInstitusi ?? '',
       nomor_identitas_mahasiswa:
         education?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
-      skills: education?.skills?.split('|') ?? [],
+      skills: education?.skills?.split('|').filter(Boolean) ?? [],
       waktu_mulai: null,
       waktu_selesai: null,
       bidang_studi: education?.bidangStudi ?? '',
@@ -125,6 +126,7 @@ export default function EducationForm(props: EducationFormProps) {
         label="Files"
         defaultUrls={education?.lampiranPendidikan?.map((item) => item.fileUrl)}
       />
+      <Separator gap={16} />
       <FormAction isEdit={!!education} />
     </Form>
   );

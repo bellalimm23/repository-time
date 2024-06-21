@@ -43,7 +43,7 @@ export function FileInput(props: FileInputProps) {
         </Dropzone>
       )}
       <Flex direction="column" gap={4} w="fit-content">
-        {defaultPreviews ?? previews}
+        {previews.length ? previews : defaultPreviews}
       </Flex>
     </>
   );

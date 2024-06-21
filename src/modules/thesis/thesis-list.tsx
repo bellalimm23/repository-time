@@ -84,6 +84,7 @@ export default function ThesisList(props: ThesisListProps) {
                   >
                     {(isAdmin || isEditable) && (
                       <DeleteButton
+                        isUser
                         type="icon"
                         deleteable={{
                           data: _thesis,

@@ -39,7 +39,7 @@ export default function OrganizationForm(props: OrganizationFormProps) {
       nomor_identitas_mahasiswa:
         organization?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       pengalaman_id: organization?.pengalaman?.id || '',
-      skills: organization?.skills?.split('|') ?? [],
+      skills: organization?.skills?.split('|').filter(Boolean) ?? [],
       waktu_mulai: organization?.tanggalMulai ?? null,
       waktu_selesai: organization?.tanggalSelesai ?? null,
       posisi: organization?.posisi ?? '',

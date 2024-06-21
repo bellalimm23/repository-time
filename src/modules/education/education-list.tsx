@@ -88,6 +88,7 @@ export default function EducationList(props: EducationListProps) {
                   >
                     {(isAdmin || isEditable) && (
                       <DeleteButton
+                        isUser
                         type="icon"
                         deleteable={{
                           dataType: '/educations',

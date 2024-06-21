@@ -24,9 +24,18 @@ export function CertificationCard(props: CertificationLiteModel) {
     );
   });
 
-  const skills = props.skills.split('|').map((skill) => {
-    return <Badge>{skill}</Badge>;
-  });
+  const skills = props.skills
+    .split('|')
+    .filter(Boolean)
+    .map((skill) => {
+      return <Badge>{skill}</Badge>;
+    });
+
+  const deskripsiComponent = props.deskripsi && (
+    <Text textColor="foregroundSecondary" textVariant="body2Regular">
+      {props.deskripsi}
+    </Text>
+  );
 
   return (
     <Flex direction="column" w="100%" gap={4}>
@@ -34,12 +43,12 @@ export function CertificationCard(props: CertificationLiteModel) {
       <Text textColor="foregroundSecondary" textVariant="body2Regular">
         {[props.namaInstitusi, dateLabel].join(', ')}
       </Text>
-      <Text textColor="foregroundSecondary" textVariant="body2Regular">
-        {props.deskripsi}
-      </Text>
-      <Flex direction="row" wrap="wrap" gap={4}>
-        {skills}
-      </Flex>
+      {deskripsiComponent}
+      {!!skills.length && (
+        <Flex direction="row" wrap="wrap" gap={4}>
+          {skills}
+        </Flex>
+      )}
       <Flex direction="column" gap={4} w="fit-content">
         {files}
       </Flex>

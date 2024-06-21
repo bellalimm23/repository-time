@@ -86,6 +86,7 @@ export default function ExperienceList(props: ExperienceListProps) {
                   >
                     {(isAdmin || isEditable) && (
                       <DeleteButton
+                        isUser
                         type="icon"
                         deleteable={{
                           dataType: '/experiences',

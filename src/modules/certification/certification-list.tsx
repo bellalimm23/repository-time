@@ -95,6 +95,7 @@ export default function CertificationList(props: CertificationListProps) {
                     {(isAdmin || isEditable) && (
                       <DeleteButton
                         type="icon"
+                        isUser
                         deleteable={{
                           data: certification,
                           dataType: '/certifications',
