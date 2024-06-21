@@ -102,15 +102,15 @@ export function useDelete(props: DeleteableType) {
       case '/students':
         return studentKey.list();
       case '/certifications':
-        return certificationKey.list();
+        return [certificationKey.list()[0]];
       case '/educations':
-        return educationKey.list();
+        return [educationKey.list()[0]];
       case '/experiences':
-        return experienceKey.list();
+        return [experienceKey.list()[0]];
       case '/organizations':
-        return organizationKey.list();
+        return [organizationKey.list()[0]];
       case '/thesis':
-        return thesisKey.list();
+        return [thesisKey.list()[0]];
       case '/study-programs':
         return studyProgramKey.list();
     }
