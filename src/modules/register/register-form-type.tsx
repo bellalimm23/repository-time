@@ -1,15 +1,14 @@
-import { userType } from 'common/constants/user';
 import * as Yup from 'yup';
 
 export const RegisterFormSchema = () =>
   Yup.object({
-    nomor_identitas: Yup.string().required(),
-    password: Yup.string().required(),
     nama_depan: Yup.string().required(),
     nama_tengah: Yup.string().default(''),
     nama_belakang: Yup.string().default(''),
-    tipe_user: Yup.string().default(userType.user),
-    jurusan: Yup.string().default('').required(),
+    deskripsi: Yup.string().default(''),
+    program_studi_id: Yup.string().required(),
+    password: Yup.string().required(),
+    nomor_identitas: Yup.string().required(),
   });
 
 export type RegisterFormType = Yup.InferType<

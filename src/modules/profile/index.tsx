@@ -1,55 +1,27 @@
-import { Card, Drawer, Grid } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import breakpoints from 'common/styles/breakpoint';
-import Separator from 'components/common/separator';
-import Button from 'components/elements/button';
-import Text from 'components/elements/text';
-import { thesis } from 'modules/admin/admin-thesis/components/form-type';
-import AdminThesisCreate from 'modules/admin/admin-thesis/create';
-import Container from 'modules/components/container';
-import ThesisTableList from 'modules/thesis/components/table.desktop';
-import structuralStyles from 'styles/layout.css';
+import { Flex } from '@mantine/core';
+import { students } from 'modules/admin/students/components/student-form-type';
+import CertificationList from 'modules/certification/certification-list';
+import EducationList from 'modules/education/education-list';
+import ExperienceList from 'modules/experience/experience-list';
+import OrganizationList from 'modules/organization/organization-list';
+import ThesisList from 'modules/thesis/thesis-list';
+import React from 'react';
 
-import Profile from './profile';
-import ProfileDocumentList from './profile-document-list';
+import ProfileCard from './profile-card';
 
-export default function ProfileIndex() {
-  const isMobile = useMediaQuery(breakpoints.screenMaxLg);
-  const span = isMobile ? 12 : 6;
+export default function Profile() {
+  const student = students[0];
 
-  const [isOpenend, { open, close }] = useDisclosure();
   return (
-    <Container
-      style={{
-        padding: 16,
-      }}
-    >
-      <Grid className={structuralStyles.fill({ width: true })}>
-        <Grid.Col span={span}>
-          <Profile />
-        </Grid.Col>
-        <Grid.Col span={span} order={{ base: 3, md: 2 }}>
-          <Card withBorder radius="md" shadow="xs">
-            <Text textVariant="h1">Daftar Tugas Akhir</Text>
-            <Separator gap={16} />
-            <ThesisTableList thesis={thesis} />
-            <Separator gap={16} />
-            <Button onClick={open}>Ajukan Tugas Akhir</Button>
-          </Card>
-        </Grid.Col>
-        <Grid.Col span={span} order={{ base: 2, md: 3 }}>
-          <ProfileDocumentList />
-        </Grid.Col>
-      </Grid>
-      <Drawer
-        position="right"
-        withCloseButton={false}
-        size={800}
-        opened={isOpenend}
-        onClose={close}
-      >
-        <AdminThesisCreate />
-      </Drawer>
-    </Container>
+    <>
+      <Flex mih="100vh" w="100%" maw={768} direction="column" gap={16} p={16}>
+        <ProfileCard student={student} />
+        <ExperienceList student={student} isEditable />
+        <EducationList student={student} isEditable />
+        <CertificationList student={student} isEditable />
+        <OrganizationList student={student} isEditable />
+        <ThesisList student={student} isEditable />
+      </Flex>
+    </>
   );
 }

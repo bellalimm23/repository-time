@@ -1,8 +1,7 @@
 import { BackgroundImage, Card, Center } from '@mantine/core';
 import assets from 'assets/image';
-import { userType } from 'common/constants/user';
 import notification from 'common/helpers/notification';
-import { StaticRoutes } from 'common/routes/routes';
+import { NavigationRoute } from 'common/routes/routes';
 import colors from 'common/styles/colors';
 import Separator from 'components/common/separator';
 import Button from 'components/elements/button';
@@ -27,8 +26,9 @@ export default function Register() {
       nama_depan: '',
       nama_tengah: '',
       password: '',
-      tipe_user: userType.user,
       nomor_identitas: '',
+      deskripsi: '',
+      program_studi_id: '',
     };
   }, []);
 
@@ -111,9 +111,9 @@ export default function Register() {
             />
             <Input
               type="select"
-              name="jurusan_id"
-              label="Jurusan"
-              placeholder="Jurusan"
+              name="program_studi_id"
+              label="Program Studi"
+              placeholder="Program Studi"
               required
             />
             <Input
@@ -130,7 +130,7 @@ export default function Register() {
               variant={{
                 variant: 'secondary',
               }}
-              onClick={() => push(StaticRoutes.login)}
+              onClick={() => push(NavigationRoute.Login)}
             >
               Login
             </Button>

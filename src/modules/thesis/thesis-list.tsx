@@ -1,82 +1,114 @@
-import { Center, Grid, Pagination } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
-import { ArrowsDownUp, MagnifyingGlass } from '@phosphor-icons/react';
-import breakpoints from 'common/styles/breakpoint';
-import Separator from 'components/common/separator';
-import Button from 'components/elements/button';
-import Select from 'components/elements/select';
+import { Card, Drawer, Flex } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { Plus, Trash } from '@phosphor-icons/react';
+import colors from 'common/styles/colors';
+import ActionButton from 'components/action-button';
 import Text from 'components/elements/text';
-import TextInput from 'components/elements/text-input';
-import { thesis } from 'modules/admin/admin-thesis/components/form-type';
-import Container from 'modules/components/container';
-import structuralStyles from 'styles/layout.css';
+import { StudentModel } from 'modules/admin/students/components/student-form-type';
+import {
+  thesis,
+  ThesisModel,
+} from 'modules/admin/thesis/components/thesis-form-type';
+import { useRouter } from 'next/router';
+import React from 'react';
 
-import ThesisTableList from './components/table.desktop';
+import { ThesisCard } from './thesis-card';
+import ThesisForm from './thesis-form';
 
-export default function ThesisList() {
-  const isMobile = useMediaQuery(breakpoints.screenMaxMd);
+interface ThesisListProps {
+  student: StudentModel;
+  isEditable?: boolean;
+}
 
-  const size = isMobile ? 'sm' : 'lg';
+export default function ThesisList(props: ThesisListProps) {
+  const { isEditable } = props;
+  const [_thesis, setThesis] = React.useState<ThesisModel | undefined>(
+    undefined,
+  );
+  const { pathname } = useRouter();
+  const isAdmin = pathname.includes('admin');
+  const [isOpened, { open, close }] = useDisclosure();
+
+  const createComponent = (isAdmin || isEditable) && (
+    <ActionButton
+      pos="absolute"
+      top={16}
+      right={16}
+      type="icon"
+      children={<Plus size={16} />}
+      onClick={() => {
+        setThesis(undefined);
+        open();
+      }}
+    />
+  );
+
+  const deleteComponent = (isAdmin || isEditable) && (
+    <ActionButton
+      pos="absolute"
+      top={16}
+      right={0}
+      type="icon"
+      color="red"
+      variant="outline"
+      children={<Trash size={16} />}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    />
+  );
 
   return (
-    <Container style={{ padding: 16 }}>
-      <div
-        className={structuralStyles.fill({
-          width: true,
+    <Card withBorder pos="relative">
+      <Text textVariant="h1">Tugas Akhir</Text>
+      {createComponent}
+      <Flex direction="column" gap={8}>
+        {thesis.map((_thesis, index) => {
+          return (
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                setThesis(_thesis);
+                open();
+              }}
+              style={{
+                position: 'relative',
+                paddingTop: 16,
+                paddingBottom: 16,
+                borderBottom:
+                  index === thesis.length - 1
+                    ? undefined
+                    : `1px solid ${colors.borderPrimary}`,
+                cursor: 'pointer',
+              }}
+            >
+              {isAdmin && deleteComponent}
+              <ThesisCard key={_thesis.id} {..._thesis} />
+            </div>
+          );
         })}
-      >
-        <Text textVariant="h1">Daftar Tugas Akhir</Text>
-        <Separator gap={16} />
-        <Grid>
-          <Grid.Col span={isMobile ? 12 : 4}>
-            <TextInput
-              placeholder="Cari Penulis, Judul"
-              leftSection={<MagnifyingGlass size={16} />}
-              noMargin
-              size={size}
-            />
-          </Grid.Col>
-          <Grid.Col span={isMobile ? 12 : 3}>
-            <Select
-              size={size}
-              noMargin
-              leftSection={<ArrowsDownUp size={16} />}
-              defaultValue="desc-year"
-              data={[
-                {
-                  label: 'Descending Year',
-                  value: 'desc-year',
-                },
-                {
-                  label: 'Ascending Year',
-                  value: 'asc-year',
-                },
-                {
-                  label: 'Descending Title',
-                  value: 'desc-title',
-                },
-                {
-                  label: 'Ascending Title',
-                  value: 'asc-title',
-                },
-              ]}
-            />
-          </Grid.Col>
-          <Grid.Col span={isMobile ? 12 : 1.5}>
-            <Button fullWidth>Cari</Button>
-          </Grid.Col>
-        </Grid>
-        <Separator gap={16} />
-        <ThesisTableList thesis={thesis} />
-        <Separator gap={16} />
-        <Text ta="center" textVariant="body2Medium">
-          15/100
-        </Text>
-        <Separator gap={16} />
-        <Center>
-          <Pagination total={8} />
-        </Center>
-      </div>
-    </Container>
+      </Flex>
+      {(isAdmin || isEditable) && (
+        <Drawer
+          position="right"
+          size="lg"
+          onClose={close}
+          opened={isOpened}
+          title={
+            <Text textVariant="h2">
+              {_thesis ? 'Detail Tugas Akhir' : 'Buat Tugas Akhir'}
+            </Text>
+          }
+        >
+          <ThesisForm
+            thesis={_thesis}
+            onSubmit={async (values) => {
+              close();
+              return undefined;
+            }}
+          />
+        </Drawer>
+      )}
+    </Card>
   );
 }

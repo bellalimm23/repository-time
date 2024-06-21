@@ -1,8 +1,14 @@
 import { AppShell, AppShellMainProps, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Bank, Book, Chair, SignOut, User } from '@phosphor-icons/react';
+import {
+  Bank,
+  Book,
+  GraduationCap,
+  SignOut,
+  User,
+} from '@phosphor-icons/react';
 import { Brand } from 'common/constants/brand';
-import { StaticRoutes, StaticRoutesType } from 'common/routes/routes';
+import { NavigationRoute } from 'common/routes/routes';
 import Button, { ButtonProps } from 'components/elements/button';
 import Text from 'components/elements/text';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
@@ -16,7 +22,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
   const [opened, { toggle }] = useDisclosure();
   const { pathname, push } = useRouter();
   const isCurrent = React.useCallback(
-    (link: StaticRoutesType) => {
+    (link: NavigationRoute) => {
       return pathname.includes(link);
     },
     [pathname],
@@ -26,39 +32,43 @@ export default function AdminLayout(props: AdminLayoutProps) {
     return [
       {
         children: 'Tugas Akhir',
-        onClick: () => push(StaticRoutes.adminThesis),
+        onClick: () => push(NavigationRoute.AdminThesisList),
         variant: {
-          variant: isCurrent(StaticRoutes.adminThesis) ? 'primary' : 'tertiary',
+          variant: isCurrent(NavigationRoute.AdminThesisList)
+            ? 'primary'
+            : 'tertiary',
         },
         leftSection: <Book size={16} />,
       },
       {
-        children: 'Users',
-        onClick: () => push(StaticRoutes.adminUser),
+        children: 'Mahasiswa',
+        onClick: () => push(NavigationRoute.AdminStudentList),
         variant: {
-          variant: isCurrent(StaticRoutes.adminUser) ? 'primary' : 'tertiary',
+          variant: isCurrent(NavigationRoute.AdminStudentList)
+            ? 'primary'
+            : 'tertiary',
         },
-        leftSection: <User size={16} />,
+        leftSection: <GraduationCap size={16} />,
       },
       {
-        children: 'Fakultas',
-        onClick: () => push(StaticRoutes.adminDivision),
+        children: 'Program Studi',
+        onClick: () => push(NavigationRoute.AdminStudyProgramList),
         variant: {
-          variant: isCurrent(StaticRoutes.adminDivision)
+          variant: isCurrent(NavigationRoute.AdminStudyProgramList)
             ? 'primary'
             : 'tertiary',
         },
         leftSection: <Bank size={16} />,
       },
       {
-        children: 'Jurusan',
-        onClick: () => push(StaticRoutes.adminSubject),
+        children: 'Admin',
+        onClick: () => push(NavigationRoute.AdminEmployeeList),
         variant: {
-          variant: isCurrent(StaticRoutes.adminSubject)
+          variant: isCurrent(NavigationRoute.AdminEmployeeList)
             ? 'primary'
             : 'tertiary',
         },
-        leftSection: <Chair size={16} />,
+        leftSection: <User size={16} />,
       },
     ];
   }, [isCurrent, push]);
@@ -96,7 +106,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
               variant: 'tertiaryError',
             }}
             fullWidth
-            onClick={() => push(StaticRoutes.adminLogin)}
+            onClick={() => push(NavigationRoute.AdminLogin)}
             leftSection={<SignOut size={16} />}
           >
             Logout

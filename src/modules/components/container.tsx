@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import React from 'react';
 import structuralStyles, { FlexBoxType } from 'styles/layout.css';
 
 import { commonStyles } from './styles.css';

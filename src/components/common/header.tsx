@@ -1,6 +1,8 @@
 import { Burger, Card, Modal } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import {
+  Books,
+  GraduationCap,
   MagnifyingGlass,
   Pen,
   SignIn,
@@ -10,7 +12,7 @@ import {
   UserPlus,
 } from '@phosphor-icons/react';
 import classNames from 'classnames';
-import { StaticRoutes, StaticRoutesType } from 'common/routes/routes';
+import { NavigationRoute } from 'common/routes/routes';
 import breakpoints from 'common/styles/breakpoint';
 import Button, { ButtonProps } from 'components/elements/button';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
@@ -22,7 +24,7 @@ export default function Header() {
   const { pathname, push } = useRouter();
   const [isOpened, { open, close }] = useDisclosure();
   const isCurrent = React.useCallback(
-    (link: StaticRoutesType) => pathname.includes(link),
+    (link: NavigationRoute) => pathname.includes(link),
     [pathname],
   );
 
@@ -33,33 +35,36 @@ export default function Header() {
     const miw = isMobile ? undefined : 120;
     return [
       // {
+      //   key: 'login',
       //   variant: {
       //     size,
       //     variant: 'primary',
       //   },
       //   miw,
       //   leftSection: <SignIn size={14} />,
-      //   onClick: () => push(StaticRoutes.login),
+      //   onClick: () => push(NavigationRoute.Login),
       //   children: 'Login',
       // },
       // {
+      //   key: 'register',
       //   variant: {
       //     size,
       //     variant: 'secondary',
       //   },
       //   miw,
       //   leftSection: <UserPlus size={14} />,
-      //   onClick: () => push(StaticRoutes.register),
+      //   onClick: () => push(NavigationRoute.Register),
       //   children: 'Register',
       // },
       {
+        key: 'logout',
         miw: 120,
         variant: {
           size,
           variant: 'tertiaryError',
         },
         leftSection: <SignOut size={14} />,
-        onClick: () => push(StaticRoutes.login),
+        onClick: () => push(NavigationRoute.Login),
         children: 'Logout',
       },
     ];
@@ -68,30 +73,37 @@ export default function Header() {
   const actions = React.useMemo<ButtonProps[]>(() => {
     return [
       {
+        key: 'tugas-akhir',
         miw: 120,
         variant: {
-          variant: isCurrent(StaticRoutes.thesis) ? 'primary' : 'tertiary',
+          variant: isCurrent(NavigationRoute.ThesisList)
+            ? 'primary'
+            : 'tertiary',
         },
-        leftSection: <MagnifyingGlass size={14} />,
-        onClick: () => push(StaticRoutes.thesis),
-        children: 'Cari Tugas Akhir',
+        leftSection: <Books size={14} />,
+        onClick: () => push(NavigationRoute.ThesisList),
+        children: 'Tugas Akhir',
       },
       {
+        key: 'user',
         miw: 120,
         variant: {
-          variant: isCurrent(StaticRoutes.users) ? 'primary' : 'tertiary',
+          variant: isCurrent(NavigationRoute.StudentList)
+            ? 'primary'
+            : 'tertiary',
         },
-        leftSection: <Pen size={14} />,
-        onClick: () => push(StaticRoutes.users),
-        children: 'Cari User',
+        leftSection: <GraduationCap size={14} />,
+        onClick: () => push(NavigationRoute.StudentList),
+        children: 'Mahasiswa',
       },
       {
+        key: 'profile',
         miw: 120,
         variant: {
-          variant: isCurrent(StaticRoutes.profile) ? 'primary' : 'tertiary',
+          variant: isCurrent(NavigationRoute.Profile) ? 'primary' : 'tertiary',
         },
         leftSection: <User size={14} />,
-        onClick: () => push(StaticRoutes.profile),
+        onClick: () => push(NavigationRoute.Profile),
         children: 'Profil',
       },
     ];
@@ -131,13 +143,13 @@ export default function Header() {
         >
           {!isMobile && (
             <>
-              {actions.map((action) => (
-                <Button {...action} />
+              {actions.map((action: any) => (
+                <Button key={action.key} {...action} />
               ))}
             </>
           )}
-          {authActions.map((action) => (
-            <Button {...action} />
+          {authActions.map((action: any) => (
+            <Button key={action.key} {...action} />
           ))}
         </div>
       </Card>

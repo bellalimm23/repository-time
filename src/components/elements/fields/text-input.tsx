@@ -39,8 +39,7 @@ export default function TextInputField(props: TextInputFieldProps) {
       error={error}
       disabled={disabled}
       onChange={(e) => {
-        onChange(e?.target?.value);
-        onAfterChange?.(e?.target?.value);
+        onChange(e.target.value);
       }}
     />
   );

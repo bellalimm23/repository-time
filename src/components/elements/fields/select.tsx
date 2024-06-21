@@ -19,6 +19,7 @@ export default function SelectField(props: SelectFieldProps) {
     readOnly,
     onAfterChange,
     onChange,
+    searchable = true,
     ...rest
   } = props;
 
@@ -36,6 +37,7 @@ export default function SelectField(props: SelectFieldProps) {
       {...(!disabled && { required })}
       error={error}
       disabled={disabled}
+      searchable={searchable}
       onChange={(value, option) => {
         onChange?.(value, option);
         if (!onChange) {

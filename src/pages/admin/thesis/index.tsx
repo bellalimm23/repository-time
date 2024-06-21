@@ -1,5 +1,3 @@
-import AdminThesisList from 'modules/admin/admin-thesis/list';
+import AdminThesisList from 'modules/admin/thesis/list';
 
-export default function AdminThesisListPage() {
-  return <AdminThesisList />;
-}
+export default AdminThesisList;

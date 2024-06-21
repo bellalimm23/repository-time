@@ -1,5 +1,3 @@
-import AdminThesisCreate from 'modules/admin/admin-thesis/create';
+import AdminThesisCreate from 'modules/admin/thesis/create';
 
-export default function AdminThesisCreatePage() {
-  return <AdminThesisCreate />;
-}
+export default AdminThesisCreate;

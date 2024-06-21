@@ -1,5 +1,3 @@
-import AdminHome from 'modules/admin/admin-home/admin-home';
+import AdminHome from 'modules/admin';
 
-export default function AdminHomePage() {
-  return <AdminHome />;
-}
+export default AdminHome;

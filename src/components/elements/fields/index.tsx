@@ -13,6 +13,7 @@ import PinInputField, { PinInputFieldProps } from './pin-input';
 import RadioGroupField, { RadioGroupFieldProps } from './radio-group';
 import SelectField, { SelectFieldProps } from './select';
 import SwitchField, { SwitchFieldProps } from './switch';
+import TagsInputField, { TagsInputFieldProps } from './tags-input';
 import TextInputField, { TextInputFieldProps } from './text-input';
 import TextareaField, { TextareaFieldProps } from './textarea';
 import TimeInputField, { TimeInputFieldProps } from './time-input';
@@ -32,6 +33,7 @@ export function Input(
     | SwitchFieldProps
     | ButtonFieldProps
     | PinInputFieldProps
+    | TagsInputFieldProps
     | PasswordInputFieldProps,
 ) {
   switch (props.type) {
@@ -61,6 +63,8 @@ export function Input(
       return <PinInputField {...props} />;
     case 'password':
       return <PasswordInputField {...props} />;
+    case 'tags':
+      return <TagsInputField {...props} />;
     default:
       return <TextInputField {...props} />;
   }

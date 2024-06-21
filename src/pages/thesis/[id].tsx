@@ -1,5 +1,3 @@
-import ThesisView from 'modules/thesis/thesis-view';
+import ThesisView from 'modules/thesis/view';
 
-export default function ThesisViewPage() {
-  return <ThesisView />;
-}
+export default ThesisView;

@@ -1,5 +1,3 @@
-import AdminThesisView from 'modules/admin/admin-thesis/view';
+import AdminThesisView from 'modules/admin/thesis/view';
 
-export default function AdminThesisViewPage() {
-  return <AdminThesisView />;
-}
+export default AdminThesisView;

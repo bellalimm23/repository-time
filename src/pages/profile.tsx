@@ -1,3 +1,3 @@
-import ProfileIndex from 'modules/profile';
+import Profile from 'modules/profile';
 
-export default ProfileIndex;
+export default Profile;

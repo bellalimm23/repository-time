@@ -1,5 +1,3 @@
-import ThesisList from 'modules/thesis/thesis-list';
+import ThesisList from 'modules/thesis/list';
 
-export default function ThesisListPage() {
-  return <ThesisList />;
-}
+export default ThesisList;

@@ -43,3 +43,7 @@ export const formatTime = function (date, time) {
 export const formatDateTime = function (date: Date) {
   return format(date, 'dd MMMM yyyy, HH:mm');
 };
+
+export const formatDate = function (date: Date) {
+  return format(date, 'dd MMMM yyyy');
+};

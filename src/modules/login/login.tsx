@@ -1,6 +1,6 @@
 import { BackgroundImage, Card, Center } from '@mantine/core';
 import assets from 'assets/image';
-import { StaticRoutes } from 'common/routes/routes';
+import { NavigationRoute } from 'common/routes/routes';
 import colors from 'common/styles/colors';
 import Separator from 'components/common/separator';
 import Button from 'components/elements/button';
@@ -92,7 +92,7 @@ export default function Login(props: LoginProps) {
             variant={{
               variant: 'secondary',
             }}
-            onClick={() => push(StaticRoutes.register)}
+            onClick={() => push(NavigationRoute.Register)}
           >
             Register
           </Button>

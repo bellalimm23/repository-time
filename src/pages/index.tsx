@@ -1,10 +1,10 @@
 import UserLayout from 'components/common/user-layout';
-import Home from 'modules/home/home';
+import Home from 'modules/home';
 
-export default function HomePage() {
-  return <Home />;
-}
+import { NextPageWithLayout } from './_app';
 
-HomePage.getLayout = function (page) {
+export default Home;
+
+(Home as NextPageWithLayout).getLayout = function (page) {
   return <UserLayout isShowBackground>{page}</UserLayout>;
 };
