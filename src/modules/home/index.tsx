@@ -1,5 +1,6 @@
 import { Card, Center, SimpleGrid } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { useGetMe } from 'api-hooks/auth/query';
 import { BookSVG, CertificateSVG } from 'assets/svg';
 import { Brand } from 'common/constants/brand';
 import breakpoints from 'common/styles/breakpoint';
@@ -9,7 +10,11 @@ import structuralStyles from 'styles/layout.css';
 
 export default function Home() {
   const isMobile = useMediaQuery(breakpoints.screenMaxMd);
-
+  const { data } = useGetMe();
+  const me = data?.data;
+  const label = [me.namaDepan, me.namaTengah, me.namaBelakang]
+    .filter(Boolean)
+    .join(' ');
   return (
     <>
       <Separator gap={64} />
@@ -19,7 +24,7 @@ export default function Home() {
         ta="center"
         className={structuralStyles.fill({ width: true })}
       >
-        Hello Bella, Welcome to {Brand.name}
+        Hello {label}, Welcome to {Brand.name}
       </Text>
       <Separator gap={24} />
       <Text
