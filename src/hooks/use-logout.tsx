@@ -16,6 +16,7 @@ export default function useLogout() {
     clearToken();
     replace(NavigationRoute.Login);
     queryClient.invalidateQueries();
+    queryClient.clear();
   }, [replace]);
 
   const { Dialog, open, close } = useDialog({

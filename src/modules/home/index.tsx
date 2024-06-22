@@ -12,7 +12,7 @@ export default function Home() {
   const isMobile = useMediaQuery(breakpoints.screenMaxMd);
   const { data } = useGetMe();
   const me = data?.data;
-  const label = [me.namaDepan, me.namaTengah, me.namaBelakang]
+  const label = ['Hello', me?.namaDepan, me?.namaTengah, me?.namaBelakang]
     .filter(Boolean)
     .join(' ');
   return (
@@ -24,7 +24,7 @@ export default function Home() {
         ta="center"
         className={structuralStyles.fill({ width: true })}
       >
-        Hello {label}, Welcome to {Brand.name}
+        {label}, Welcome to {Brand.name}
       </Text>
       <Separator gap={24} />
       <Text
