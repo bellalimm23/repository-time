@@ -50,8 +50,6 @@ export default async function handler(
           namaSertifikasi: currentCertification.nama_sertifikasi,
           nilaiAkhir: currentCertification.nilai_akhir,
           skills: currentCertification.skills.join('|'),
-          nomorIdentitasMahasiswa:
-            currentCertification.nomor_identitas_mahasiswa,
           tanggalKadaluarsa: currentCertification.waktu_kadaluarsa,
           tanggalTerbit: currentCertification.waktu_terbit,
           LampiranSertifikasi: {
@@ -61,9 +59,13 @@ export default async function handler(
                   fileUrl: file,
                   id: generateId(),
                   jenisFile: 'application/pdf',
-                  sertifikasiId: id,
                 };
               }),
+            },
+          },
+          mahasiswa: {
+            connect: {
+              nomorIdentitas: currentCertification.nomor_identitas_mahasiswa,
             },
           },
         },

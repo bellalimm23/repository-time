@@ -52,7 +52,6 @@ export default async function handler(
           namaInstitusi: currentEducation.nama_institusi,
           nilaiAkhir: currentEducation.nilai_akhir,
           skills: currentEducation.skills.join('|'),
-          nomorIdentitasMahasiswa: currentEducation.nomor_identitas_mahasiswa,
           tanggalMulai: currentEducation.waktu_mulai,
           tanggalSelesai: currentEducation.waktu_selesai,
           LampiranPendidikan: {
@@ -62,9 +61,13 @@ export default async function handler(
                   fileUrl: file,
                   id: generateId(),
                   jenisFile: 'application/pdf',
-                  pendidikanId: id,
                 };
               }),
+            },
+          },
+          mahasiswa: {
+            connect: {
+              nomorIdentitas: currentEducation.nomor_identitas_mahasiswa,
             },
           },
         },

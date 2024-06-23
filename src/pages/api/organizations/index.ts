@@ -67,11 +67,6 @@ export default async function handler(
               nomorIdentitas: currentOrganization.nomor_identitas_mahasiswa,
             },
           },
-          pengalaman: {
-            connect: {
-              id: currentOrganization.pengalaman_id,
-            },
-          },
         },
         select: OrganisasiResouceModel,
       });

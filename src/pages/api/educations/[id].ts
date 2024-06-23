@@ -84,7 +84,6 @@ export default async function handler(
           gelar: pendidikan.gelar,
           namaInstitusi: pendidikan.nama_institusi,
           nilaiAkhir: pendidikan.nilai_akhir,
-          nomorIdentitasMahasiswa: pendidikan.nomor_identitas_mahasiswa,
           skills: pendidikan.skills.join('|'),
           tanggalMulai: pendidikan.waktu_mulai,
           tanggalSelesai: pendidikan.waktu_selesai,

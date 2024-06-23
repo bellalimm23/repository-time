@@ -80,7 +80,6 @@ export default async function handler(
           deskripsi: certification.deskripsi,
           namaSertifikasi: certification.nama_sertifikasi,
           nilaiAkhir: certification.nilai_akhir,
-          nomorIdentitasMahasiswa: certification.nomor_identitas_mahasiswa,
           skills: certification.skills.join('|'),
           tanggalKadaluarsa: certification.waktu_kadaluarsa,
           tanggalTerbit: certification.waktu_terbit,

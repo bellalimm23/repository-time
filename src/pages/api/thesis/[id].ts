@@ -91,7 +91,6 @@ export default async function handler(
         data: {
           abstrak: thesis.abstrak,
           judulTugasAkhir: thesis.judul_tugas_akhir,
-          nomorIdentitasMahasiswa: thesis.nomor_identitas_mahasiswa,
           status: thesis.status,
           tanggalTerbit: thesis.waktu_terbit,
         },

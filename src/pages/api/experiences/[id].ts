@@ -81,7 +81,6 @@ export default async function handler(
           posisi: pengalaman.posisi,
           lokasi: pengalaman.lokasi,
           deskripsi: pengalaman.deskripsi,
-          nomorIdentitasMahasiswa: pengalaman.nomor_identitas_mahasiswa,
           skills: pengalaman.skills.join('|'),
           tanggalMulai: pengalaman.waktu_mulai,
           tanggalSelesai: pengalaman.waktu_selesai,

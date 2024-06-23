@@ -79,8 +79,6 @@ export default async function handler(
         data: {
           deskripsi: organization.deskripsi,
           nama: organization.nama_organisasi,
-          nomorIdentitasMahasiswa: organization.nomor_identitas_mahasiswa,
-          pengalamanId: organization.pengalaman_id,
           posisi: organization.posisi,
           skills: organization.skills.join('|'),
           tanggalMulai: organization.waktu_mulai,
