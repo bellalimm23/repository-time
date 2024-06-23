@@ -112,6 +112,8 @@ export function DialogConfirmation(
             })}
             {...cancelButtonProps}
             onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               cancelButtonProps?.onClick?.({ event: e, onClose });
             }}
           />
@@ -124,6 +126,8 @@ export function DialogConfirmation(
             })}
             {...confirmationButtonProps}
             onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               confirmationButtonProps?.onClick?.({ event: e, onClose });
             }}
           />

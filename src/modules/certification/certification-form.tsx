@@ -44,7 +44,7 @@ export default function CertificationForm(props: CertificationFormProps) {
       nilai_akhir: certification?.nilaiAkhir ?? '',
       skills: certification?.skills?.split('|').filter(Boolean) ?? [],
       waktu_kadaluarsa: certification?.tanggalKadaluarsa ?? null,
-      waktu_terbit: certification?.tanggalTerbit || new Date(),
+      waktu_terbit: certification?.tanggalTerbit || null,
       data: certification,
     };
   }, [certification, props.student.nomorIdentitas]);

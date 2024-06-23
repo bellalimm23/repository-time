@@ -96,14 +96,17 @@ export default async function handler(
         message: 'Pendidikan berhasil diubah',
       });
     } else if (method === 'DELETE') {
-      await prisma.pendidikan.delete({
-        where: {
-          id,
-          LampiranPendidikan: {
-            every: { pendidikanId: id },
+      await prisma.$transaction([
+        prisma.lampiranPendidikan.deleteMany({
+          where: { pendidikanId: id },
+        }),
+        prisma.pendidikan.delete({
+          where: {
+            id,
           },
-        },
-      });
+        }),
+      ]);
+
       return res.status(200).json({
         message: 'Pendidikan berhasil dihapus',
       });

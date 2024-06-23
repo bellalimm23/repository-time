@@ -15,7 +15,7 @@ export const ThesisFormSchema = () =>
     status: Yup.mixed<ThesisStatusEnum>()
       .oneOf(Object.values(ThesisStatusEnum))
       .default(ThesisStatusEnum.pending),
-    waktu_terbit: Yup.date().nullable(),
+    waktu_terbit: Yup.date().nullable().required(),
     nomor_identitas_pic: Yup.string().nullable(),
   });
 

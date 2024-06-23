@@ -92,14 +92,17 @@ export default async function handler(
         message: 'Organisasi berhasil diubah',
       });
     } else if (method === 'DELETE') {
-      await prisma.organisasi.delete({
-        where: {
-          id,
-          LampiranOrganisasi: {
-            every: { organisasiId: id },
+      await prisma.$transaction([
+        prisma.lampiranOrganisasi.deleteMany({
+          where: { organisasiId: id },
+        }),
+        prisma.organisasi.delete({
+          where: {
+            id,
           },
-        },
-      });
+        }),
+      ]);
+
       return res.status(200).json({
         message: 'Organisasi berhasil dihapus',
       });

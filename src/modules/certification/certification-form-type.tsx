@@ -8,7 +8,7 @@ export const CertificationFormSchema = () =>
     nama_institusi: Yup.string().required(),
     deskripsi: Yup.string().default(''),
     nilai_akhir: Yup.string().default(''),
-    waktu_terbit: Yup.date().nullable().default(null),
+    waktu_terbit: Yup.date().nullable().required(),
     waktu_kadaluarsa: Yup.date().nullable().default(null),
     skills: Yup.array(Yup.string().default('')).default([]),
   });

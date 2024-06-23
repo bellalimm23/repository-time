@@ -15,6 +15,7 @@ import Button, { ButtonProps } from 'components/elements/button';
 import Text from 'components/elements/text';
 import LoaderView from 'components/loader-view';
 import useChangePasswordDialog from 'hooks/use-change-password-dialog';
+import useLogout from 'hooks/use-logout';
 import BrandIconDirectHome from 'modules/components/brand-icon-home';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -93,6 +94,8 @@ export default function AdminLayout(props: AdminLayoutProps) {
 
   const queryMe = useGetMe();
 
+  const { LogoutDialog, openLogoutDialog } = useLogout();
+
   return (
     <LoaderView query={queryMe} isFullScreen>
       {({ data }) => {
@@ -156,7 +159,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
                     variant: 'tertiaryError',
                   }}
                   fullWidth
-                  onClick={() => push(NavigationRoute.AdminLogin)}
+                  onClick={() => openLogoutDialog()}
                   leftSection={<SignOut size={16} />}
                 >
                   Logout
@@ -165,6 +168,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
             </AppShell.Navbar>
 
             <AppShell.Main {...props} />
+            {LogoutDialog}
           </AppShell>
         );
       }}

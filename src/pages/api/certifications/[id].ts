@@ -92,14 +92,19 @@ export default async function handler(
         message: 'Sertifikasi berhasil diubah',
       });
     } else if (method === 'DELETE') {
-      await prisma.sertifikasi.delete({
-        where: {
-          id,
-          LampiranSertifikasi: {
-            every: { sertifikasiId: id },
+      await prisma.$transaction([
+        prisma.lampiranSertifikasi.deleteMany({
+          where: {
+            sertifikasiId: id,
           },
-        },
-      });
+        }),
+        prisma.sertifikasi.delete({
+          where: {
+            id,
+          },
+        }),
+      ]);
+
       return res.status(200).json({
         message: 'Sertifikasi berhasil dihapus',
       });

@@ -57,6 +57,42 @@ export default async function handler(
         message: 'Mahasiswa Berhasil diubah',
       });
     } else if (method === 'DELETE') {
+      const deleteData = { nomorIdentitasMahasiswa: id };
+      await prisma.$transaction([
+        prisma.lampiranOrganisasi.deleteMany({
+          where: { organisasi: deleteData },
+        }),
+        prisma.lampiranPendidikan.deleteMany({
+          where: { pendidikan: deleteData },
+        }),
+        prisma.lampiranPengalaman.deleteMany({
+          where: { pengalaman: deleteData },
+        }),
+        prisma.lampiranSertifikasi.deleteMany({
+          where: { sertifikasi: deleteData },
+        }),
+        prisma.lampiranTugasAkhir.deleteMany({
+          where: { tugasAkhir: deleteData },
+        }),
+        prisma.organisasi.deleteMany({
+          where: deleteData,
+        }),
+        prisma.pendidikan.deleteMany({
+          where: deleteData,
+        }),
+        prisma.pengalaman.deleteMany({
+          where: deleteData,
+        }),
+        prisma.sertifikasi.deleteMany({
+          where: deleteData,
+        }),
+        prisma.tugasAkhir.deleteMany({
+          where: deleteData,
+        }),
+        prisma.mahasiswa.delete({
+          where: { nomorIdentitas: id },
+        }),
+      ]);
       return res.status(200).json({
         message: 'Mahasiswa Berhasil dihapus',
       });

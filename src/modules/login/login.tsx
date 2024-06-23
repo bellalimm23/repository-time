@@ -25,8 +25,8 @@ export default function Login(props: LoginProps) {
   const { push } = useRouter();
   const defaultValues = React.useMemo<LoginFormType>(() => {
     return {
-      password: 'secret123',
-      nomor_identitas: '2044009',
+      password: '',
+      nomor_identitas: '',
     };
   }, []);
   const resolver = useYupValidationResolver(LoginFormSchema());

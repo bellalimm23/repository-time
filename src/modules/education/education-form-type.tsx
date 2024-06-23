@@ -9,7 +9,7 @@ export const EducationFormSchema = () =>
     bidang_studi: Yup.string().default(''),
     deskripsi: Yup.string().default(''),
     nilai_akhir: Yup.string().default(''),
-    waktu_mulai: Yup.date().nullable().default(null),
+    waktu_mulai: Yup.date().nullable().required(),
     waktu_selesai: Yup.date().nullable().default(null),
     skills: Yup.array(Yup.string().default('')).default([]),
   });

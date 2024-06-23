@@ -22,6 +22,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>((props, ref) => {
     size = 'md',
     radius = 'md',
     allowDeselect = false,
+    clearable = true,
     ...rest
   } = props;
 
@@ -29,6 +30,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>((props, ref) => {
     <RawSelect
       {...rest}
       size={size}
+      clearable={clearable}
       radius={radius}
       ref={combinedRef}
       allowDeselect={allowDeselect}
