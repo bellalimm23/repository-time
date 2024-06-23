@@ -1,4 +1,4 @@
-import { deleteFiles } from 'api/storage';
+import { deleteFiles, SUPABASE_STORAGE_ENDPOINT } from 'api/storage';
 import { adminKey } from 'api-hooks/admin/query';
 import { certificationKey } from 'api-hooks/certification/query';
 import { DeleteableType } from 'api-hooks/common/model';
@@ -79,7 +79,10 @@ export function useDelete(props: DeleteableType) {
       case '/admins':
         return [props.data.photoUrl];
       case '/students':
-        return [props.data.photoUrl];
+        return [
+          props.data.photoUrl,
+          `${SUPABASE_STORAGE_ENDPOINT}${props.data.nomorIdentitas}/*`,
+        ];
       case '/certifications':
         return props.data.lampiranSertifikasi.map((item) => item.fileUrl);
       case '/educations':

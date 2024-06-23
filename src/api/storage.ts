@@ -5,7 +5,7 @@ import supabase from './supabase';
 
 const BUCKET_NAME = 'repository';
 
-const ENDPOINT =
+export const SUPABASE_STORAGE_ENDPOINT =
   'https://srxjxwfnbpkiieeyxpux.supabase.co/storage/v1/object/public/repository/' as const;
 
 export async function uploadFile(path: string, file: File) {
@@ -24,7 +24,7 @@ export async function downloadFile(path: string) {
 export async function deleteFiles(path: string[]) {
   const result = await supabase.storage
     .from(BUCKET_NAME)
-    .remove(path.map((file) => file.replace(ENDPOINT, '')));
+    .remove(path.map((file) => file.replace(SUPABASE_STORAGE_ENDPOINT, '')));
   return result;
 }
 
@@ -46,7 +46,7 @@ export async function uploadAttachmentFiles(
   const results = await Promise.all(
     files.map(async (file, index) => {
       const result = await uploadFile(
-        `${attachmentType}/${nomorIdentitas}/${attachmentType}_${(index + 1).toString().padStart(4, '0')}_${generateId()}.pdf`,
+        `${nomorIdentitas}/${attachmentType}/${attachmentType}_${(index + 1).toString().padStart(4, '0')}_${generateId()}.pdf`,
         file,
       );
 
@@ -59,7 +59,7 @@ export async function uploadAttachmentFiles(
       return data?.path;
     })
     .filter(Boolean)
-    .map((file) => ENDPOINT + file);
+    .map((file) => SUPABASE_STORAGE_ENDPOINT + file);
 
   const onDeleteFiles = () => deleteFiles(oldData);
 
@@ -68,5 +68,5 @@ export async function uploadAttachmentFiles(
 
 export async function uploadPhotoProfile(nomorIdentitas: string, file: File) {
   const result = await uploadFile(`/photo-profile/${nomorIdentitas}.png`, file);
-  return ENDPOINT + result;
+  return SUPABASE_STORAGE_ENDPOINT + result;
 }

@@ -25,10 +25,10 @@ export default function Register() {
   const defaultValues = React.useMemo<RegisterFormType>(() => {
     return {
       nama_belakang: '',
-      nama_depan: 'Bella',
+      nama_depan: '',
       nama_tengah: '',
-      password: 'secret123',
-      nomor_identitas: '2044009',
+      password: '',
+      nomor_identitas: '',
       deskripsi: '',
       program_studi_id: '',
     };
