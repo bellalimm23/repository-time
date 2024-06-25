@@ -45,7 +45,7 @@ export function useGetThesisTableList(): Column<ThesisLiteModel>[] {
         return (
           <Flex direction="row" gap={8}>
             <NavigationButton
-              route={NavigationRoute.ThesisView}
+              route={NavigationRoute.AdminThesisView}
               id={row.id}
               type="icon"
             />

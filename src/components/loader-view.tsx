@@ -30,7 +30,7 @@ interface LoaderViewProps<T> {
 export default function LoaderView<T>(props: LoaderViewProps<T>) {
   const { query, children, isFullScreen = false } = props;
   const { error, data, isFetching } = query;
-
+  console.log(error);
   React.useEffect(() => {
     const message = error?.message;
     message &&
@@ -52,11 +52,11 @@ export default function LoaderView<T>(props: LoaderViewProps<T>) {
     );
   }
 
-  if (error?.message)
+  if (error)
     return (
       <Container>
         <X size={48} color={colors.sentimentNegative} />
-        <Text fw={600} fz={24}>
+        <Text fw={600} fz={24} color={colors.sentimentNegative}>
           Error
         </Text>
         <Text ta="center" fw={400} fz={16}>

@@ -58,7 +58,6 @@ export default function StudentInformationForm(
         label="Deskripsi"
         placeholder="Masukkan Deskripsi"
       />
-      <Input type="submit" />
     </>
   );
 }
