@@ -19,7 +19,7 @@ import { IBM_Plex_Sans } from 'next/font/google';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import appWithI18n from 'next-translate/appWithI18n';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { theme } from 'styles/theme';
 import { setLocale } from 'yup';
 
@@ -42,7 +42,7 @@ type AppPropsWithLayout = AppProps & {
 };
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
-  const { locale, pathname } = useRouter();
+  const { locale, pathname, prefetch } = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -80,6 +80,13 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
 
       return <UserLayout>{page}</UserLayout>;
     });
+
+  React.useEffect(() => {
+    Object.keys(NavigationRoute).map((key) => {
+      prefetch(NavigationRoute[key]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
