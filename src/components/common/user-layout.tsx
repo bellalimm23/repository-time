@@ -2,6 +2,7 @@ import { BackgroundImage } from '@mantine/core';
 import assets from 'assets/image';
 import colors from 'common/styles/colors';
 import Container, { ContainerProps } from 'modules/components/container';
+import React from 'react';
 
 import Footer from './footer';
 import Header from './header';
@@ -12,7 +13,15 @@ interface UserLayoutProps extends ContainerProps {
 
 export default function UserLayout(props: UserLayoutProps) {
   const { isShowBackground = false } = props;
+  const [isClient, setIsClient] = React.useState(false);
 
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
   return (
     <Container>
       {isShowBackground && (

@@ -96,6 +96,16 @@ export default function AdminLayout(props: AdminLayoutProps) {
 
   const { LogoutDialog, openLogoutDialog } = useLogout();
 
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <LoaderView query={queryMe} isFullScreen>
       {({ data }) => {

@@ -35,8 +35,8 @@ export default function EducationForm(props: EducationFormProps) {
       nomor_identitas_mahasiswa:
         education?.nomorIdentitasMahasiswa ?? props.student.nomorIdentitas,
       skills: education?.skills?.split('|').filter(Boolean) ?? [],
-      waktu_mulai: null,
-      waktu_selesai: null,
+      waktu_mulai: education?.tanggalMulai ?? null,
+      waktu_selesai: education?.tanggalSelesai ?? null,
       bidang_studi: education?.bidangStudi ?? '',
       gelar: education?.gelar ?? '',
       nilai_akhir: education?.nilaiAkhir ?? '',
