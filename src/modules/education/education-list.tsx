@@ -55,6 +55,7 @@ export default function EducationList(props: EducationListProps) {
   const createMutation = useCreateEducation();
   const queryEducations = useGetEducations({
     params: { nomor_identitas: props.student.nomorIdentitas },
+    options: { staleTime: Infinity, cacheTime: Infinity },
   });
 
   return (

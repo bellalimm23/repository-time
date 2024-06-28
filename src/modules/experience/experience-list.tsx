@@ -54,6 +54,7 @@ export default function ExperienceList(props: ExperienceListProps) {
   const createMutation = useCreateExperience();
   const queryExperiences = useGetExperiences({
     params: { nomor_identitas: props.student.nomorIdentitas },
+    options: { staleTime: Infinity, cacheTime: Infinity },
   });
   return (
     <Card withBorder pos="relative">

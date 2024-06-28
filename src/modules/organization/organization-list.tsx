@@ -59,6 +59,7 @@ export default function OrganizationList(props: OrganizationListProps) {
   const createMutation = useCreateOrganization();
   const queryOrganizations = useGetOrganizations({
     params: { nomor_identitas: props.student.nomorIdentitas },
+    options: { staleTime: Infinity, cacheTime: Infinity },
   });
 
   return (

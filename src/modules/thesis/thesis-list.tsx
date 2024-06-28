@@ -37,6 +37,7 @@ export default function ThesisList(props: ThesisListProps) {
   const createMutation = useCreateThesis();
   const queryThesisList = useGetThesisList({
     params: { nomor_identitas: props.student.nomorIdentitas },
+    options: { staleTime: Infinity, cacheTime: Infinity },
   });
 
   const createComponent = (isAdmin || isEditable) && (

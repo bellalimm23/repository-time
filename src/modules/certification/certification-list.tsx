@@ -42,6 +42,7 @@ export default function CertificationList(props: CertificationListProps) {
 
   const queryCertifications = useGetCertifications({
     params: { nomor_identitas: props.student.nomorIdentitas },
+    options: { staleTime: Infinity, cacheTime: Infinity },
   });
 
   const updateMutation = useUpdateCertification();
