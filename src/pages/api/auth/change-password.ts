@@ -33,14 +33,17 @@ export default async function handler(
             where: { nomorIdentitas: user.nomor_identitas },
             data: { password: changePassword.current_password },
           });
-          return res.status(200).json({
+          res.status(200).json({
             message: 'Password Berhasil diubah',
           });
+
+          return res.end();
         }
 
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Password Salah',
         });
+        return res.end();
       }
 
       const admin = await prisma.admin.findUnique({
@@ -52,23 +55,31 @@ export default async function handler(
             where: { nomorIdentitas: user.nomor_identitas },
             data: { password: changePassword.current_password },
           });
-          return res.status(200).json({
+          res.status(200).json({
             message: 'Password Berhasil diubah',
           });
+
+          return res.end();
         }
 
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Password Anda Salah',
         });
+
+        return res.end();
       }
 
-      return res.status(404).json({
+      res.status(404).json({
         message: 'User belum didaftarkan',
       });
+
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

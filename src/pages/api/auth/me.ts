@@ -23,23 +23,30 @@ export default async function handler(
           select: MahasiswaResouceLiteModel,
         });
 
-        return res.status(200).json({
+        res.status(200).json({
           data: decamelizeKeys({ ...mahasiswa, type: 'user' }),
         });
+
+        return res.end();
       } else if (user.type === 'admin') {
         const admin = await prisma.admin.findUnique({
           where: { nomorIdentitas: user.nomor_identitas },
           select: AdminResouceLiteModel,
         });
 
-        return res.status(200).json({
+        res.status(200).json({
           data: decamelizeKeys({ ...admin, type: 'admin' }),
         });
+
+        return res.end();
       }
     }
+    return res.end();
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

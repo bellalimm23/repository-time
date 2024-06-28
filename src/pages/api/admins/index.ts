@@ -35,9 +35,11 @@ export default async function handler(
       const admin = await prisma.admin.findMany({
         select: AdminResouceLiteModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(admin),
       });
+
+      return res.end();
     } else if (method === 'POST') {
       const currentAdmin = await EmployeeFormSchema.validate(body);
       const id = generateId();
@@ -54,14 +56,18 @@ export default async function handler(
         },
         select: AdminResouceModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(admin),
         message: 'Admin berhasil dibuat',
       });
+
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

@@ -26,14 +26,16 @@ export default async function handler(
     });
 
     if (!studyProgram) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'Program studi tidak dapat ditemukan',
       });
+      return res.end();
     }
     if (method === 'GET') {
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(studyProgram),
       });
+      return res.end();
     }
 
     await middleware(req, res, true);
@@ -50,30 +52,34 @@ export default async function handler(
         },
         select: ProgramStudiResouceModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(currentStudyProgram),
         message: 'Program Studi Berhasil diubah',
       });
+      return res.end();
     } else if (method === 'DELETE') {
       const mahasiswaLength = studyProgram.Mahasiswa.length;
 
       if (mahasiswaLength) {
-        return res.status(400).json({
+        res.status(400).json({
           message: `Program studi tidak dapat dihapus, terdapat ${mahasiswaLength} mahasiswa`,
         });
+        return res.end();
       }
 
       await prisma.programStudi.delete({
         where: { id },
       });
 
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Program studi berhasil dihapus',
       });
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+    return res.end();
   }
 }

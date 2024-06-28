@@ -25,9 +25,10 @@ export default async function handler(
       const studyPrograms = await prisma.programStudi.findMany({
         select: ProgramStudiResouceLiteModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(studyPrograms),
       });
+      return res.end();
     }
     await middleware(req, res, true);
     if (method === 'POST') {
@@ -42,14 +43,16 @@ export default async function handler(
         select: ProgramStudiResouceModel,
       });
 
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(studyProgram),
         message: 'Program studi berhasil dibuat',
       });
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+    return res.end();
   }
 }

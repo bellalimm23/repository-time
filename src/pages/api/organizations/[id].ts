@@ -34,14 +34,16 @@ export default async function handler(
       select: OrganisasiResouceModel,
     });
     if (!organization) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'Organisasi tidak dapat ditemukan',
       });
+      return res.end();
     }
     if (method === 'GET') {
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(organization),
       });
+      return res.end();
     }
     const user = (await middleware(req, res)) as JwtPayload;
     const isAdmin = user.type === 'admin';
@@ -49,9 +51,10 @@ export default async function handler(
     const nomor_identitas = user.nomor_identitas;
 
     if (nomor_identitas !== organization.nomorIdentitasMahasiswa && !isAdmin) {
-      return res.status(403).json({
+      res.status(403).json({
         message: 'Anda tidak di-izinkan mengakses fitur ini',
       });
+      return res.end();
     }
 
     if (method === 'PUT') {
@@ -87,10 +90,11 @@ export default async function handler(
         where: { id },
         select: OrganisasiResouceModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(currentOrganization),
         message: 'Organisasi berhasil diubah',
       });
+      return res.end();
     } else if (method === 'DELETE') {
       await prisma.$transaction([
         prisma.lampiranOrganisasi.deleteMany({
@@ -103,13 +107,15 @@ export default async function handler(
         }),
       ]);
 
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Organisasi berhasil dihapus',
       });
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+    return res.end();
   }
 }

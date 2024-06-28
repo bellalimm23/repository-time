@@ -80,26 +80,30 @@ export async function middleware(
     if (user) {
       const tokenExpired = isTokenExpired(user.exp);
       if (tokenExpired) {
-        return response.status(401).json({
+        response.status(401).json({
           message: 'Sesi anda telah selesai, mohon untuk login kembali',
         });
+        return response.end();
       }
 
       if (user.type === 'user' && isAdmin) {
-        return response.status(401).json({
+        response.status(401).json({
           message: 'Anda tidak diizinkan memakai fitur ini',
         });
+        return response.end();
       }
 
       return user;
     } else {
-      return response.status(401).json({
+      response.status(401).json({
         message: 'Unauthorized',
       });
+      return response.end();
     }
   } catch (e) {
-    return response.status(500).json({
+    response.status(500).json({
       message: e.message,
     });
+    return response.end();
   }
 }

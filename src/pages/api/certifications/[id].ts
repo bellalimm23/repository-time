@@ -33,14 +33,18 @@ export default async function handler(
       select: SertifikasiResouceModel,
     });
     if (!certification) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'Sertifikasi tidak dapat ditemukan',
       });
+
+      return res.end();
     }
     if (method === 'GET') {
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(certification),
       });
+
+      return res.end();
     }
 
     const user = (await middleware(req, res)) as JwtPayload;
@@ -48,9 +52,11 @@ export default async function handler(
     const nomor_identitas = user.nomor_identitas;
 
     if (nomor_identitas !== certification.nomorIdentitasMahasiswa && !isAdmin) {
-      return res.status(403).json({
+      res.status(403).json({
         message: 'Anda tidak di-izinkan mengakses fitur ini',
       });
+
+      return res.end();
     }
 
     if (method === 'PUT') {
@@ -87,10 +93,12 @@ export default async function handler(
         where: { id },
         select: SertifikasiResouceModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(currentCertification),
         message: 'Sertifikasi berhasil diubah',
       });
+
+      return res.end();
     } else if (method === 'DELETE') {
       await prisma.$transaction([
         prisma.lampiranSertifikasi.deleteMany({
@@ -105,13 +113,17 @@ export default async function handler(
         }),
       ]);
 
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Sertifikasi berhasil dihapus',
       });
+
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

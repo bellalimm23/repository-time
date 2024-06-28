@@ -36,14 +36,18 @@ export default async function handler(
         },
       });
 
-      return res.status(200).json({
+      res.status(200).json({
         data: { token: generateAccessToken({ ...mahasiswa, type: 'user' }) },
         message: 'Mahasiswa telah berhasil terdaftar',
       });
+
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

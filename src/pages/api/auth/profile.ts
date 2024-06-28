@@ -35,14 +35,18 @@ export default async function handler(
         },
       });
 
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(mahasiswa),
         message: 'Profil Berhasil diubah',
       });
+
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

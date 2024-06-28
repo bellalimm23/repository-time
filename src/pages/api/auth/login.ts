@@ -24,17 +24,21 @@ export default async function handler(
 
       if (mahasiswa) {
         if (mahasiswa.password === login.password) {
-          return res.status(200).json({
+          res.status(200).json({
             data: {
               token: generateAccessToken({ ...mahasiswa, type: 'user' }),
             },
             message: 'Mahasiswa Berhasil Login',
           });
+
+          return res.end();
         }
 
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Nomor Identitas atau Password Salah',
         });
+
+        return res.end();
       }
 
       const admin = await prisma.admin.findUnique({
@@ -43,28 +47,38 @@ export default async function handler(
       if (admin) {
         if (admin.password === login.password) {
           if (admin.status === 'inactive') {
-            return res.status(400).json({
+            res.status(400).json({
               message: 'akun tidak di-nonaktifkan, silahkan hubungi admin!',
             });
+
+            return res.end();
           }
-          return res.status(200).json({
+          res.status(200).json({
             data: { token: generateAccessToken({ ...admin, type: 'admin' }) },
             message: 'Admin Berhasil Login',
           });
+
+          return res.end();
         }
 
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Nomor Identitas atau Password Salah',
         });
+
+        return res.end();
       }
 
-      return res.status(404).json({
+      res.status(404).json({
         message: 'User belum didaftarkan',
       });
+
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

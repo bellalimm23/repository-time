@@ -30,9 +30,10 @@ export default async function handler(
       const mahasiswa = await prisma.mahasiswa.findMany({
         select: MahasiswaResouceLiteModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(mahasiswa),
       });
+      return res.end();
     }
     await middleware(req, res, true);
     if (method === 'POST') {
@@ -50,15 +51,17 @@ export default async function handler(
         },
         select: MahasiswaResouceModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(mahasiswa),
         message:
           'Mahasiswa Berhasil Ditambah, untuk default passwordnya 123456',
       });
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+    return res.end();
   }
 }

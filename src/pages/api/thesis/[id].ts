@@ -39,15 +39,17 @@ export default async function handler(
     const isApprove = thesis.status === 'approve';
 
     if (!thesis) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'Tugas Akhir tidak dapat ditemukan',
       });
+      return res.end();
     }
 
     if (method === 'GET') {
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(thesis),
       });
+      return res.end();
     }
     const user = (await middleware(req, res)) as JwtPayload;
     const isAdmin = user.type === 'admin';
@@ -55,17 +57,19 @@ export default async function handler(
     const nomor_identitas = user.nomor_identitas;
 
     if (nomor_identitas !== thesis.nomorIdentitasMahasiswa && !isAdmin) {
-      return res.status(403).json({
+      res.status(403).json({
         message: 'Anda tidak di-izinkan mengakses fitur ini',
       });
+      return res.end();
     }
 
     if (method === 'PUT') {
       if (!isApprove && !isAdmin) {
-        return res.status(400).json({
+        res.status(400).json({
           message:
             'Anda tidak dapat mengubah data ini karena telah terverifikasi',
         });
+        return res.end();
       }
       const thesis = await ThesisFormSchema.validate(body);
 
@@ -98,10 +102,11 @@ export default async function handler(
         select: TugasAkhirResouceModel,
       });
 
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(currentTugasAkhir),
         message: 'Tugas Akhir berhasil diubah',
       });
+      return res.end();
     } else if (method === 'DELETE') {
       await prisma.$transaction([
         prisma.lampiranTugasAkhir.deleteMany({
@@ -113,13 +118,16 @@ export default async function handler(
           },
         }),
       ]);
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Tugas Akhir berhasil dihapus',
       });
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

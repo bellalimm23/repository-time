@@ -36,14 +36,18 @@ export default async function handler(
       select: PendidikanResouceModel,
     });
     if (!pendidikan) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'Pendidikan tidak dapat ditemukan',
       });
+
+      return res.end();
     }
     if (method === 'GET') {
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(pendidikan),
       });
+
+      return res.end();
     }
     const user = (await middleware(req, res)) as JwtPayload;
     const isAdmin = user.type === 'admin';
@@ -51,9 +55,10 @@ export default async function handler(
     const nomor_identitas = user.nomor_identitas;
 
     if (nomor_identitas !== pendidikan.nomorIdentitasMahasiswa && !isAdmin) {
-      return res.status(403).json({
+      res.status(403).json({
         message: 'Anda tidak di-izinkan mengakses fitur ini',
       });
+      return res.end();
     }
 
     if (method === 'PUT') {
@@ -91,10 +96,11 @@ export default async function handler(
         where: { id },
         select: PendidikanResouceModel,
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(currentEducation),
         message: 'Pendidikan berhasil diubah',
       });
+      return res.end();
     } else if (method === 'DELETE') {
       await prisma.$transaction([
         prisma.lampiranPendidikan.deleteMany({
@@ -107,13 +113,16 @@ export default async function handler(
         }),
       ]);
 
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Pendidikan berhasil dihapus',
       });
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }

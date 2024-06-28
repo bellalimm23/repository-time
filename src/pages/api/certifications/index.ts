@@ -34,9 +34,11 @@ export default async function handler(
           nomorIdentitasMahasiswa: nomor_identitas,
         },
       });
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(certifications),
       });
+
+      return res.end();
     }
     await middleware(req, res);
     if (method === 'POST') {
@@ -72,14 +74,18 @@ export default async function handler(
         select: SertifikasiResouceModel,
       });
 
-      return res.status(200).json({
+      res.status(200).json({
         data: decamelizeKeys(certification),
         message: 'Sertifikat berhasil dibuat',
       });
+
+      return res.end();
     }
   } catch (e) {
-    return res.status(500).json({
+    res.status(500).json({
       message: e.message,
     });
+
+    return res.end();
   }
 }
