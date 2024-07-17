@@ -5,8 +5,10 @@ import { useProfile } from 'api-hooks/auth/mutation';
 import { meKey } from 'api-hooks/auth/query';
 import notification from 'common/helpers/notification';
 import { queryClient } from 'common/repositories/query-client';
+import Separator from 'components/common/separator';
 import Form from 'components/elements/form';
 import useYupValidationResolver from 'hooks/use-yup-validation-resolver';
+import FormAction from 'modules/admin/components/form-action';
 import {
   StudentFormSchema,
   StudentFormType,
@@ -64,6 +66,8 @@ export default function ProfileForm(props: ProfileFormProps) {
   return (
     <Form methods={methods} onSubmit={onSubmit}>
       <StudentInformationForm files={files} setFiles={setFiles} />
+      <Separator gap={16} />
+      <FormAction />
     </Form>
   );
 }
