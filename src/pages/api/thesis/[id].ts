@@ -40,7 +40,7 @@ export default async function handler(
 
     if (!thesis) {
       res.status(404).json({
-        message: 'Tugas Akhir tidak dapat ditemukan',
+        message: 'Karya Ilmiah tidak dapat ditemukan',
       });
       return res.end();
     }
@@ -104,7 +104,7 @@ export default async function handler(
 
       res.status(200).json({
         data: decamelizeKeys(currentTugasAkhir),
-        message: 'Tugas Akhir berhasil diubah',
+        message: 'Karya Ilmiah berhasil diubah',
       });
       return res.end();
     } else if (method === 'DELETE') {
@@ -119,7 +119,7 @@ export default async function handler(
         }),
       ]);
       res.status(200).json({
-        message: 'Tugas Akhir berhasil dihapus',
+        message: 'Karya Ilmiah berhasil dihapus',
       });
       return res.end();
     }

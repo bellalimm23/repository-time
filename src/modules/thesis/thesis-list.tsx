@@ -56,7 +56,7 @@ export default function ThesisList(props: ThesisListProps) {
 
   return (
     <Card withBorder pos="relative">
-      <Text textVariant="h1">Tugas Akhir</Text>
+      <Text textVariant="h1">Karya Ilmiah</Text>
       {createComponent}
       <LoaderView query={queryThesisList}>
         {({ data }) => {
@@ -109,7 +109,7 @@ export default function ThesisList(props: ThesisListProps) {
           opened={isOpened}
           title={
             <Text textVariant="h2">
-              {_thesis ? 'Detail Tugas Akhir' : 'Buat Tugas Akhir'}
+              {_thesis ? 'Detail Karya Ilmiah' : 'Buat Karya Ilmiah'}
             </Text>
           }
         >

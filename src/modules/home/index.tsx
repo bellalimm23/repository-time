@@ -51,7 +51,7 @@ export default function Home() {
             <BookSVG width={128} height={128} />
           </Center>
           <Text textVariant="body2Semibold" ta="center">
-            Cari Tugas Akhir Terlengkap STMIK TIME
+            Cari Karya Ilmiah Terlengkap STMIK TIME
           </Text>
         </Card>
       </SimpleGrid>

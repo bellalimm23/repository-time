@@ -67,7 +67,7 @@ export default function ThesisView() {
             p={16}
           >
             <Text textVariant="h1" mb={16}>
-              Detail Tugas Akhir
+              Detail Karya Ilmiah
             </Text>
             <Text textVariant="body1Semibold">Judul:</Text>
             <Text>{_thesis.judulTugasAkhir}</Text>

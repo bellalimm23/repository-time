@@ -28,16 +28,16 @@ export default function FormLabel(props: FormLabelProps) {
       case NavigationRoute.AdminStudyProgramCreate:
         return 'Buat Program Studi';
       case NavigationRoute.AdminThesisList:
-        return 'Daftar Tugas Akhir';
+        return 'Daftar Karya Ilmiah';
       case NavigationRoute.AdminThesisView:
-        return 'Detail Tugas Akhir';
+        return 'Detail Karya Ilmiah';
       case NavigationRoute.AdminThesisCreate:
-        return 'Buat Tugas Akhir';
+        return 'Buat Karya Ilmiah';
       //
       case NavigationRoute.StudentList:
         return 'Daftar Mahasiswa';
       case NavigationRoute.ThesisList:
-        return 'Daftar Tugas Akhir';
+        return 'Daftar Karya Ilmiah';
 
       case NavigationRoute.Profile:
       case NavigationRoute.Login:

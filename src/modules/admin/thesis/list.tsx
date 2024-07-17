@@ -32,7 +32,7 @@ export function useGetThesisTableList(): Column<ThesisLiteModel>[] {
       },
     },
     {
-      label: 'Judul Tugas Akhir',
+      label: 'Judul Karya Ilmiah',
       data: (row) => row.judulTugasAkhir,
     },
     {

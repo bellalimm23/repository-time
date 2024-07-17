@@ -29,8 +29,8 @@ export default function ThesisFormInformation(
       <Input
         type="text"
         name="judul_tugas_akhir"
-        label="Judul Tugas Akhir"
-        placeholder="Masukkan Judul Tugas Akhir"
+        label="Judul Karya Ilmiah"
+        placeholder="Masukkan Judul Karya Ilmiah"
       />
       <Input
         type="textarea"

@@ -97,7 +97,7 @@ export default function Header() {
           push(NavigationRoute.ThesisList);
           close();
         },
-        children: 'Tugas Akhir',
+        children: 'Karya Ilmiah',
       },
       {
         key: 'user',

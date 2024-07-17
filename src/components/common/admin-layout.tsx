@@ -38,7 +38,7 @@ export default function AdminLayout(props: AdminLayoutProps) {
   const actions = React.useMemo<ButtonProps[]>(() => {
     return [
       {
-        children: 'Tugas Akhir',
+        children: 'Karya Ilmiah',
         onClick: () => {
           push(NavigationRoute.AdminThesisList);
           close();
